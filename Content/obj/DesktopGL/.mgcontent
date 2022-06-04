@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/dev/Gravity/Content/Fonts/Default.spritefont</File>
+    <File>C:/dev/Gravity/Content/Levels/Map2.png</File>
+    <File>C:/dev/Gravity/Content/Textures/character_0000.png</File>
+    <File>C:/dev/Gravity/Content/Textures/tile_0009.png</File>
+    <File>C:/dev/Gravity/Content/Textures/tile_0111.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
