@@ -5,12 +5,16 @@
   <Config />
   <SourceFiles>
     <File>C:/dev/Gravity/Content/Fonts/Default.spritefont</File>
+    <File>C:/dev/Gravity/Content/Levels/Map1.png</File>
     <File>C:/dev/Gravity/Content/Levels/Map2.png</File>
+    <File>C:/dev/Gravity/Content/Levels/Map3.png</File>
     <File>C:/dev/Gravity/Content/Textures/character_0000.png</File>
     <File>C:/dev/Gravity/Content/Textures/tile_0009.png</File>
     <File>C:/dev/Gravity/Content/Textures/tile_0111.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

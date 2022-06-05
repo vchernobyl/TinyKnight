@@ -1,15 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
+using System;
 
 namespace Gravity
 {
     public class Hero : Entity
     {
-        private bool jumping = false;
+        public event Action? OnLevelCompleted;
 
-        public Hero(Texture2D texture, Level grid) : base(texture, grid)
+        public Hero(Texture2D texture, Level level) : base(texture, level)
         {
         }
 
@@ -18,29 +18,17 @@ namespace Gravity
             var speed = .15f;
             var jump = -.5f;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (Keyboard.IsKeyDown(Keys.Left))
                 DX = -speed;
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (Keyboard.IsKeyDown(Keys.Right))
                 DX = speed;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) && !jumping)
-            {
+            if (Keyboard.WasKeyPressed(Keys.Up))
                 DY = jump;
-                jumping = true;
-            }
-
-            if (HasCollision(CX, CY + 1) && jumping)
-            {
-                Debug.WriteLine("landed!");
-                jumping = false;
-            }
 
             base.Update(gameTime);
 
-            if (grid.Cells[CX, CY].Type == Cell.CellType.Goal)
-            {
-                Debug.WriteLine("Goal reached!");
-            }
+            if (level.Cells[CX, CY].Type == Cell.CellType.Goal)
+                OnLevelCompleted?.Invoke();
         }
     }
 }

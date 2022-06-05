@@ -6,7 +6,7 @@ namespace Gravity
     public class Entity
     {
         protected readonly Texture2D texture;
-        protected readonly Level grid;
+        protected readonly Level level;
 
         // Coordinates within the grid.
         public int CX, CY;
@@ -20,10 +20,10 @@ namespace Gravity
         // Movement.
         public float DX, DY;
 
-        public Entity(Texture2D texture, Level grid)
+        public Entity(Texture2D texture, Level level)
         {
             this.texture = texture;
-            this.grid = grid;
+            this.level = level;
         }
 
         public void SetCoordinates(float x, float y)
@@ -38,7 +38,7 @@ namespace Gravity
 
         public bool HasCollision(int cx, int cy)
         {
-            return grid.Cells[cx, cy].Solid;
+            return level.Cells[cx, cy].Solid;
         }
 
         public virtual void Update(GameTime gameTime)

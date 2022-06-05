@@ -28,3 +28,5 @@ c:\dev\Gravity\bin\Debug\netcoreapp6.0\Content\Levels\Map2.xnb
 c:\dev\Gravity\bin\Debug\netcoreapp6.0\Content\Textures\tile_0009.xnb
 c:\dev\Gravity\bin\Debug\netcoreapp6.0\Content\Textures\tile_0111.xnb
 c:\dev\Gravity\bin\Debug\netcoreapp6.0\Content\Textures\character_0000.xnb
+C:\dev\Gravity\bin\Debug\netcoreapp6.0\Content\Levels\Map1.xnb
+C:\dev\Gravity\bin\Debug\netcoreapp6.0\Content\Levels\Map3.xnb

@@ -7,8 +7,7 @@ namespace Gravity
     public class Game : Microsoft.Xna.Framework.Game
     {
         private SpriteBatch spriteBatch;
-        private Level grid;
-        private Entity hero;
+        private LevelManager levelManager;
 
         public Game()
         {
@@ -20,14 +19,7 @@ namespace Gravity
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            grid = new Level(
-                Content.Load<Texture2D>("Levels/Map2"),
-                Content.Load<Texture2D>("Textures/tile_0009"),
-                Content.Load<Texture2D>("Textures/tile_0111"));
-
-            hero = new Hero(Content.Load<Texture2D>("Textures/character_0000"), grid);
-            hero.SetCoordinates(50f, 50f);
+            levelManager = new LevelManager(Services);
         }
 
         protected override void Update(GameTime gameTime)
@@ -35,7 +27,13 @@ namespace Gravity
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            hero.Update(gameTime);
+            if (Keyboard.WasKeyPressed(Keys.N))
+                levelManager.NextLevel();
+
+            if (Keyboard.WasKeyPressed(Keys.R))
+                levelManager.SetLevel(0);
+
+            levelManager.CurrentLevel.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -46,8 +44,7 @@ namespace Gravity
 
             spriteBatch.Begin();
 
-            grid.Draw(spriteBatch);
-            hero.Draw(spriteBatch);
+            levelManager.CurrentLevel.Draw(spriteBatch);
 
             spriteBatch.End();
 

@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/dev/Gravity/Content/Textures/character_0000.png","C:/dev/Gravity/Content/bin/DesktopGL/Textures/character_0000.xnb","TextureProcessor","Texture2DContent",254,2389,0,1473159
+"C:/dev/Gravity/Content/Levels/Map3.png","C:/dev/Gravity/Content/bin/DesktopGL/Levels/Map3.xnb","TextureProcessor","Texture2DContent",125,1109,0,4286405
