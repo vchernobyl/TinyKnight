@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Diagnostics;
 
 namespace Gravity
 {
@@ -15,13 +14,12 @@ namespace Gravity
         public readonly Cell[,] Cells;
 
         private readonly Texture2D cellTexture;
-        private readonly Texture2D goalTexture;
+        private readonly Texture2D waterTexture;
         private readonly ContentManager content;
-        private readonly Hero hero;
 
         private bool showBounds = false;
 
-        public Level(Texture2D levelMap, LevelManager levelManager, IServiceProvider serviceProvider)
+        public Level(Texture2D levelMap, IServiceProvider serviceProvider)
         {
             // Get texture pixels into a one-dimensional array.
             var pixels = new Color[levelMap.Width * levelMap.Height];
@@ -39,7 +37,7 @@ namespace Gravity
 
             content = new ContentManager(serviceProvider, rootDirectory: "Content");
             cellTexture = content.Load<Texture2D>("Textures/tile_0009");
-            goalTexture = content.Load<Texture2D>("Textures/tile_0111");
+            waterTexture = content.Load<Texture2D>("Textures/tile_0033");
 
             Columns = levelMap.Width;
             Rows = levelMap.Height;
@@ -55,21 +53,27 @@ namespace Gravity
                     {
                         var color when color == Color.Black => Cell.CellType.Empty,
                         var color when color == Color.White => Cell.CellType.Wall,
-                        var color when color == Color.Yellow => Cell.CellType.Goal,
+                        var color when color == Color.Blue => Cell.CellType.Water,
+                        var color when color == Color.Yellow => Cell.CellType.Spawn,
                         _ => throw new InvalidOperationException($"Grid cell color ({pixel}) not supported!"),
                     };
                     Cells[x, y] = new Cell(x, y, type, type == Cell.CellType.Wall);
                 }
             }
-
-            hero = new Hero(content.Load<Texture2D>("Textures/character_0000"), this);
-            hero.OnLevelCompleted += () => { levelManager.NextLevel(); };
-            hero.SetCoordinates(50f, 50f);
         }
 
-        public void Update(GameTime gameTime)
+        public Point GetSpawnPosition()
         {
-            hero.Update(gameTime);
+            Point? location = null;
+
+            foreach (var cell in Cells)
+            {
+                if (cell.Type == Cell.CellType.Spawn)
+                    location = cell.Bounds.Location;
+            }
+
+            var spawnLocation = location ?? throw new Exception("Spawn location not found");
+            return spawnLocation;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -79,7 +83,7 @@ namespace Gravity
                 var texture = cell.Type switch
                 {
                     Cell.CellType.Wall => cellTexture,
-                    Cell.CellType.Goal => goalTexture,
+                    Cell.CellType.Water => waterTexture,
                     _ => null,
                 };
 
@@ -93,8 +97,6 @@ namespace Gravity
                     spriteBatch.DrawRectangleOutline(outline, Color.White, 1f);
                 }
             }
-
-            hero.Draw(spriteBatch);
         }
 
         public void Dispose()

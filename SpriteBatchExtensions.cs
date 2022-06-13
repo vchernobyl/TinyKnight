@@ -22,7 +22,7 @@ namespace Gravity
             spriteBatch.Draw(BlankPixel(spriteBatch), new Rectangle(position, size), color);
         }
 
-        public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Point position, Point size, Color color, float thickenss)
+        public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Point position, Point size, Color color, float thickenss = 1f)
         {
             var topRight = new Vector2(position.X + size.X, position.Y);
             DrawLine(spriteBatch, position.ToVector2(), topRight, color, thickenss);
@@ -35,7 +35,7 @@ namespace Gravity
             DrawLine(spriteBatch, bottomLeft, position.ToVector2(), color, thickenss);
         }
 
-        public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Rectangle rectangle, Color color, float thickness)
+        public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Rectangle rectangle, Color color, float thickness = 1f)
         {
             DrawRectangleOutline(spriteBatch, rectangle.Location, rectangle.Size, color, thickness);
         }

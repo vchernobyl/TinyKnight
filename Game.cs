@@ -1,13 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Gravity
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
+        public Level Level { get; private set; }
+
         private SpriteBatch spriteBatch;
-        private LevelManager levelManager;
+        private Spawner spawner;
+
+        private readonly List<Entity> entities = new();
 
         public Game()
         {
@@ -16,10 +21,20 @@ namespace Gravity
             IsMouseVisible = true;
         }
 
+        public void AddEntity(Entity entity)
+        {
+            entities.Add(entity);
+        }
+
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            levelManager = new LevelManager(Services);
+            Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
+            spawner = new Spawner(Level.GetSpawnPosition(), this);
+
+            var hero = new Hero(Content.Load<Texture2D>("Textures/character_0000"), Level);
+            hero.SetCoordinates(50f, 50f);
+            AddEntity(hero);
         }
 
         protected override void Update(GameTime gameTime)
@@ -27,13 +42,10 @@ namespace Gravity
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.WasKeyPressed(Keys.N))
-                levelManager.NextLevel();
-
-            if (Keyboard.WasKeyPressed(Keys.R))
-                levelManager.SetLevel(0);
-
-            levelManager.CurrentLevel.Update(gameTime);
+            foreach (var entity in entities)
+            {
+                entity.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -43,9 +55,12 @@ namespace Gravity
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-
-            levelManager.CurrentLevel.Draw(spriteBatch);
-
+            Level.Draw(spriteBatch);
+            foreach (var entity in entities)
+            {
+                entity.Draw(spriteBatch);
+            }
+            spawner.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

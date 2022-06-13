@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace Gravity
 {
     public class Hero : Entity
     {
-        public event Action? OnLevelCompleted;
+        private bool onGround = false;
 
         public Hero(Texture2D texture, Level level) : base(texture, level)
         {
@@ -16,19 +15,23 @@ namespace Gravity
         public override void Update(GameTime gameTime)
         {
             var speed = .15f;
-            var jump = -.5f;
+            var jump = -1f;
 
             if (Keyboard.IsKeyDown(Keys.Left))
                 DX = -speed;
             if (Keyboard.IsKeyDown(Keys.Right))
                 DX = speed;
-            if (Keyboard.WasKeyPressed(Keys.Up))
+            if (Keyboard.WasKeyPressed(Keys.Up) && onGround)
                 DY = jump;
 
-            base.Update(gameTime);
+            onGround = HasCollision(CX, CY + 1);
 
-            if (level.Cells[CX, CY].Type == Cell.CellType.Goal)
-                OnLevelCompleted?.Invoke();
+            if (level.Cells[CX, CY].Type == Cell.CellType.Water)
+            {
+                throw new System.Exception("Dead");
+            }
+
+            base.Update(gameTime);
         }
     }
 }
