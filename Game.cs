@@ -10,13 +10,13 @@ namespace Gravity
         public Level Level { get; private set; }
 
         private SpriteBatch spriteBatch;
-        private Spawner spawner;
 
         private readonly List<Entity> entities = new();
+        private readonly List<Spawner> spawners = new();
 
         public Game()
         {
-            new GraphicsDeviceManager(this);
+            _ = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -30,7 +30,11 @@ namespace Gravity
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
-            spawner = new Spawner(Level.GetSpawnPosition(), this);
+
+            foreach (var position in Level.GetSpawnPositions())
+            {
+                spawners.Add(new Spawner(position, this));
+            }
 
             var hero = new Hero(Content.Load<Texture2D>("Textures/character_0000"), Level);
             hero.SetCoordinates(50f, 50f);
@@ -56,11 +60,13 @@ namespace Gravity
 
             spriteBatch.Begin();
             Level.Draw(spriteBatch);
+
             foreach (var entity in entities)
-            {
                 entity.Draw(spriteBatch);
-            }
-            spawner.Draw(spriteBatch);
+
+            foreach (var spawner in spawners)
+                spawner.Draw(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace Gravity
 {
@@ -62,18 +63,15 @@ namespace Gravity
             }
         }
 
-        public Point GetSpawnPosition()
+        public List<Point> GetSpawnPositions()
         {
-            Point? location = null;
-
+            var positions = new List<Point>();
             foreach (var cell in Cells)
             {
                 if (cell.Type == Cell.CellType.Spawn)
-                    location = cell.Bounds.Location;
+                    positions.Add(cell.Bounds.Center);
             }
-
-            var spawnLocation = location ?? throw new Exception("Spawn location not found");
-            return spawnLocation;
+            return positions;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -98,6 +96,8 @@ namespace Gravity
                 }
             }
         }
+
+        public Cell this[int col, int row] => Cells[col, row];
 
         public void Dispose()
         {

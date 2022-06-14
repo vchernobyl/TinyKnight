@@ -27,9 +27,7 @@ namespace Gravity
             onGround = HasCollision(CX, CY + 1);
 
             if (level.Cells[CX, CY].Type == Cell.CellType.Water)
-            {
-                throw new System.Exception("Dead");
-            }
+                SetCoordinates(50f, 100f);
 
             base.Update(gameTime);
         }

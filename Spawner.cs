@@ -5,15 +5,13 @@ namespace Gravity
 {
     public class Spawner
     {
-        private readonly Point position;
-        private readonly Game game;
+        public Point Position { get; private set; }
 
         public Spawner(Point position, Game game)
         {
-            this.position = position;
-            this.game = game;
+            Position = position;
 
-            var enemy = new Enemy(game.Content.Load<Texture2D>("Textures/character_0015"), game.Level);
+            var enemy = new Enemy(game.Content.Load<Texture2D>("Textures/character_0015"), game.Level, this);
             enemy.SetCoordinates(position.X, position.Y);
             game.AddEntity(enemy);
         }
@@ -25,8 +23,11 @@ namespace Gravity
 
         public void Draw(SpriteBatch batch)
         {
-            var outline = new Rectangle(position.X, position.Y, Level.CellSize, Level.CellSize);
-            batch.DrawRectangleOutline(outline, Color.Yellow);
+            var outline = new Rectangle(Position.X - Level.CellSize / 2,
+                Position.Y - Level.CellSize / 2,
+                Level.CellSize,
+                Level.CellSize);
+            batch.DrawRectangleOutline(outline, Color.Yellow, 2f);
         }
     }
 }
