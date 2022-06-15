@@ -27,6 +27,8 @@ namespace Gravity
 
         public readonly float Radius = 12f;
 
+        public bool EntityCollision { get; init; } = false;
+
         public Entity(Game game, Texture2D texture, Level level)
         {
             this.game = game;
@@ -54,6 +56,7 @@ namespace Gravity
         public virtual void Update(GameTime gameTime)
         {
             // Check for collisions with other entities.
+            if (EntityCollision)
             {
                 foreach (var other in game.Entities)
                 {

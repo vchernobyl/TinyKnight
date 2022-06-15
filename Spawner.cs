@@ -7,13 +7,32 @@ namespace Gravity
     {
         public Point Position { get; private set; }
 
+        public uint MaxEntities { get; init; }
+        public double DelayBetweenSpawns { get; init; }
+
+        private uint entitiesSpawned = 0;
+        private double timer = 0f;
+
+        private readonly Game game;
+
         public Spawner(Point position, Game game)
         {
             Position = position;
+            this.game = game;
+        }
 
-            var enemy = new Enemy(game, game.Content.Load<Texture2D>("Textures/character_0015"), game.Level, this);
-            enemy.SetCoordinates(position.X, position.Y);
-            game.AddEntity(enemy);
+        public void Update(GameTime gameTime)
+        {
+            timer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (timer >= DelayBetweenSpawns && entitiesSpawned < MaxEntities)
+            {
+                timer = 0.0;
+                var enemy = new Enemy(game, game.Content.Load<Texture2D>("Textures/character_0015"), game.Level, this);
+                enemy.SetCoordinates(Position.X, Position.Y);
+                game.AddEntity(enemy);
+                entitiesSpawned++;
+            }
         }
 
         public void Draw(SpriteBatch batch)

@@ -32,7 +32,12 @@ namespace Gravity
 
             foreach (var position in Level.GetSpawnPositions())
             {
-                spawners.Add(new Spawner(position, this));
+                var spawner = new Spawner(position, this)
+                {
+                    MaxEntities = 5,
+                    DelayBetweenSpawns = 1f,
+                };
+                spawners.Add(spawner);
             }
 
             var hero = new Hero(this, Content.Load<Texture2D>("Textures/character_0000"), Level);
@@ -46,9 +51,10 @@ namespace Gravity
                 Exit();
 
             foreach (var entity in Entities)
-            {
                 entity.Update(gameTime);
-            }
+
+            foreach (var spawner in spawners)
+                spawner.Update(gameTime);
 
             base.Update(gameTime);
         }
