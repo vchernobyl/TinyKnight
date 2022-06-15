@@ -37,7 +37,7 @@ namespace Gravity
             }
 
             var hero = new Hero(Content.Load<Texture2D>("Textures/character_0000"), Level);
-            hero.SetCoordinates(50f, 50f);
+            hero.SetCoordinates(50f, 100f);
             AddEntity(hero);
         }
 

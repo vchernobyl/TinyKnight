@@ -24,10 +24,7 @@ namespace Gravity
             if (Keyboard.WasKeyPressed(Keys.Up) && onGround)
                 DY = jump;
 
-            onGround = HasCollision(CX, CY + 1);
-
-            if (level.Cells[CX, CY].Type == Cell.CellType.Water)
-                SetCoordinates(50f, 100f);
+            onGround = level.HasCollision(CX, CY + 1);
 
             base.Update(gameTime);
         }

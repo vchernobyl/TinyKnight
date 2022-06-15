@@ -12,8 +12,8 @@ namespace Gravity
 
         public readonly int Columns;
         public readonly int Rows;
-        public readonly Cell[,] Cells;
 
+        private readonly Cell[,] cells;
         private readonly Texture2D cellTexture;
         private readonly Texture2D waterTexture;
         private readonly ContentManager content;
@@ -42,7 +42,7 @@ namespace Gravity
 
             Columns = levelMap.Width;
             Rows = levelMap.Height;
-            Cells = new Cell[Columns, Rows];
+            cells = new Cell[Columns, Rows];
 
             // Generate level out of the image data.
             for (int y = 0; y < Rows; y++)
@@ -58,7 +58,7 @@ namespace Gravity
                         var color when color == Color.Yellow => Cell.CellType.Spawn,
                         _ => throw new InvalidOperationException($"Grid cell color ({pixel}) not supported!"),
                     };
-                    Cells[x, y] = new Cell(x, y, type, type == Cell.CellType.Wall);
+                    cells[x, y] = new Cell(x, y, type, type == Cell.CellType.Wall);
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace Gravity
         public List<Point> GetSpawnPositions()
         {
             var positions = new List<Point>();
-            foreach (var cell in Cells)
+            foreach (var cell in cells)
             {
                 if (cell.Type == Cell.CellType.Spawn)
                     positions.Add(cell.Bounds.Center);
@@ -74,9 +74,19 @@ namespace Gravity
             return positions;
         }
 
+        public bool IsWithinBounds(int cx, int cy)
+        {
+            return cx >= 0 && cx < Columns && cy >= 0 && cy < Rows;
+        }
+
+        public bool HasCollision(int cx, int cy)
+        {
+            return !IsWithinBounds(cx, cy) || cells[cx, cy].Solid;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var cell in Cells)
+            foreach (var cell in cells)
             {
                 var texture = cell.Type switch
                 {
@@ -97,7 +107,7 @@ namespace Gravity
             }
         }
 
-        public Cell this[int col, int row] => Cells[col, row];
+        public Cell this[int col, int row] => cells[col, row];
 
         public void Dispose()
         {

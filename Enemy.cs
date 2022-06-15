@@ -19,10 +19,10 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            if (HasCollision(CX, CY + 1))
+            if (level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(direction) * .1f;
 
-            if ((HasCollision(CX + 1, CY) && XR >= .7f) || (HasCollision(CX - 1, CY) && XR <= .3f))
+            if ((level.HasCollision(CX + 1, CY) && XR >= .7f) || (level.HasCollision(CX - 1, CY) && XR <= .3f))
             {
                 direction = -direction;
                 DX = Math.Sign(direction) * .1f;

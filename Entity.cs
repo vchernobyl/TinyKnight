@@ -9,16 +9,19 @@ namespace Gravity
         protected readonly Level level;
 
         // Coordinates within the grid.
-        public int CX, CY;
+        public int CX = 0;
+        public int CY = 0;
 
         // Position within the cell itself, within range (0, 1).
-        public float XR, YR;
+        public float XR = .5f;
+        public float YR = 1f;
 
         // Resulting coordinates.
         public float XX, YY;
 
         // Movement.
-        public float DX, DY;
+        public float DX = 0f;
+        public float DY = 0f;
 
         public Entity(Texture2D texture, Level level)
         {
@@ -36,25 +39,20 @@ namespace Gravity
             YR = (YY - CY * Level.CellSize) / Level.CellSize;
         }
 
-        public bool HasCollision(int cx, int cy)
-        {
-            return level.Cells[cx, cy].Solid;
-        }
-
         public virtual void Update(GameTime gameTime)
         {
             XR += DX;
             DX *= .9f;
 
             // Right side collision.
-            if (HasCollision(CX + 1, CY) && XR >= .7f)
+            if (level.HasCollision(CX + 1, CY) && XR >= .7f)
             {
                 XR = .7f;
                 DX = 0f;
             }
 
             // Left side collision.
-            if (HasCollision(CX - 1, CY) && XR <= .3f)
+            if (level.HasCollision(CX - 1, CY) && XR <= .3f)
             {
                 XR = .3f;
                 DX = 0f;
@@ -68,14 +66,14 @@ namespace Gravity
             DY *= .9f;
 
             // Top collision.
-            if (HasCollision(CX, CY - 1) && YR <= .3f)
+            if (level.HasCollision(CX, CY - 1) && YR <= .3f)
             {
                 DY = .05f;
                 YR = .3f;
             }
 
             // Bottom collision.
-            if (HasCollision(CX, CY + 1) && YR >= .5f)
+            if (level.HasCollision(CX, CY + 1) && YR >= .5f)
             {
                 DY = 0f;
                 YR = .5f;
