@@ -8,10 +8,9 @@ namespace Gravity
     public class Game : Microsoft.Xna.Framework.Game
     {
         public Level Level { get; private set; }
+        public readonly List<Entity> Entities = new();
 
         private SpriteBatch spriteBatch;
-
-        private readonly List<Entity> entities = new();
         private readonly List<Spawner> spawners = new();
 
         public Game()
@@ -23,7 +22,7 @@ namespace Gravity
 
         public void AddEntity(Entity entity)
         {
-            entities.Add(entity);
+            Entities.Add(entity);
         }
 
         protected override void LoadContent()
@@ -36,7 +35,7 @@ namespace Gravity
                 spawners.Add(new Spawner(position, this));
             }
 
-            var hero = new Hero(Content.Load<Texture2D>("Textures/character_0000"), Level);
+            var hero = new Hero(this, Content.Load<Texture2D>("Textures/character_0000"), Level);
             hero.SetCoordinates(50f, 100f);
             AddEntity(hero);
         }
@@ -46,7 +45,7 @@ namespace Gravity
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            foreach (var entity in entities)
+            foreach (var entity in Entities)
             {
                 entity.Update(gameTime);
             }
@@ -61,7 +60,7 @@ namespace Gravity
             spriteBatch.Begin();
             Level.Draw(spriteBatch);
 
-            foreach (var entity in entities)
+            foreach (var entity in Entities)
                 entity.Draw(spriteBatch);
 
             foreach (var spawner in spawners)

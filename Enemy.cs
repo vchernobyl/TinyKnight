@@ -10,7 +10,8 @@ namespace Gravity
 
         private int direction;
 
-        public Enemy(Texture2D texture, Level level, Spawner spawner) : base(texture, level)
+        public Enemy(Game game, Texture2D texture, Level level, Spawner spawner)
+            : base(game, texture, level)
         {
             this.spawner = spawner;
             var rng = new Random();

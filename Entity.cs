@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Gravity
 {
     public class Entity
     {
+        protected readonly Game game;
         protected readonly Texture2D texture;
         protected readonly Level level;
 
@@ -23,8 +25,11 @@ namespace Gravity
         public float DX = 0f;
         public float DY = 0f;
 
-        public Entity(Texture2D texture, Level level)
+        public readonly float Radius = 12f;
+
+        public Entity(Game game, Texture2D texture, Level level)
         {
+            this.game = game;
             this.texture = texture;
             this.level = level;
         }
@@ -39,8 +44,39 @@ namespace Gravity
             YR = (YY - CY * Level.CellSize) / Level.CellSize;
         }
 
+        public bool Overlaps(Entity other)
+        {
+            var maxDist = Radius + other.Radius;
+            var distSqr = (other.XX - XX) * (other.XX - XX) + (other.YY - YY) * (other.YY - YY);
+            return distSqr <= maxDist * maxDist;
+        }
+
         public virtual void Update(GameTime gameTime)
         {
+            // Check for collisions with other entities.
+            {
+                foreach (var other in game.Entities)
+                {
+                    // Check if entities are close enough.
+                    if (other != this &&
+                        Math.Abs(CX - other.CX) <= 2 &&
+                        Math.Abs(CY - other.CY) <= 2)
+                    {
+                        var dist = Math.Sqrt((other.XX - XX) * (other.XX - XX) + (other.YY - YY) * (other.YY - YY));
+                        if (dist <= Radius + other.Radius)
+                        {
+                            var angle = Math.Atan2(other.YY - YY, other.XX - XX);
+                            var force = .2f;
+                            var repelPower = (Radius + other.Radius - dist) / (Radius + other.Radius);
+                            DX -= (float)(Math.Cos(angle) * repelPower * force);
+                            DY -= (float)(Math.Sin(angle) * repelPower * force);
+                            other.DX += (float)(Math.Cos(angle) * repelPower * force);
+                            other.DY += (float)(Math.Sin(angle) * repelPower * force);
+                        }
+                    }
+                }
+            }
+
             XR += DX;
             DX *= .9f;
 

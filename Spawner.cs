@@ -11,14 +11,9 @@ namespace Gravity
         {
             Position = position;
 
-            var enemy = new Enemy(game.Content.Load<Texture2D>("Textures/character_0015"), game.Level, this);
+            var enemy = new Enemy(game, game.Content.Load<Texture2D>("Textures/character_0015"), game.Level, this);
             enemy.SetCoordinates(position.X, position.Y);
             game.AddEntity(enemy);
-        }
-
-        public void Update(GameTime gameTime)
-        {
-
         }
 
         public void Draw(SpriteBatch batch)

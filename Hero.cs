@@ -8,7 +8,8 @@ namespace Gravity
     {
         private bool onGround = false;
 
-        public Hero(Texture2D texture, Level level) : base(texture, level)
+        public Hero(Game game, Texture2D texture, Level level)
+            : base(game, texture, level)
         {
         }
 
