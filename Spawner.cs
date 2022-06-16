@@ -28,8 +28,10 @@ namespace Gravity
             if (timer >= DelayBetweenSpawns && entitiesSpawned < MaxEntities)
             {
                 timer = 0.0;
-                var enemy = new Enemy(game, game.Content.Load<Texture2D>("Textures/character_0015"), game.Level, this);
+                var sprite = new Sprite(game.Content.Load<Texture2D>("Textures/character_0015"));
+                var enemy = new Enemy(game, sprite, game.Level, this);
                 enemy.SetCoordinates(Position.X, Position.Y);
+                enemy.OnDie += (_) => entitiesSpawned--;
                 game.AddEntity(enemy);
                 entitiesSpawned++;
             }

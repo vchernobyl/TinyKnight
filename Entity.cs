@@ -6,7 +6,7 @@ namespace Gravity
     public class Entity
     {
         protected readonly Game game;
-        protected readonly Texture2D texture;
+        protected readonly Sprite sprite;
         protected readonly Level level;
 
         // Coordinates within the grid.
@@ -28,10 +28,10 @@ namespace Gravity
 
         public bool IsActive = true;
 
-        public Entity(Game game, Texture2D texture, Level level)
+        public Entity(Game game, Sprite sprite, Level level)
         {
             this.game = game;
-            this.texture = texture;
+            this.sprite = sprite;
             this.level = level;
         }
 
@@ -53,6 +53,8 @@ namespace Gravity
         }
 
         public virtual void OnEntityCollision(Entity other) { }
+
+        public virtual void OnDestroy() { }
 
         public virtual void Update(GameTime gameTime)
         {
@@ -105,17 +107,15 @@ namespace Gravity
             while (YR < 0) { CY--; YR++; }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch batch)
         {
             XX = (int)((CX + XR) * Level.CellSize);
             YY = (int)((CY + YR) * Level.CellSize);
 
-            // Draw the sprite at the center of the entity position, not the top-left corner.
-            var dest = new Rectangle(
-                (int)(XX - Level.CellSize / 2), (int)(YY - Level.CellSize / 2),
-                Level.CellSize, Level.CellSize);
-
-            spriteBatch.Draw(texture, dest, Color.White);
+            // Draw sprite at the center of the texture, not the top-left corner.
+            var position = new Vector2((XX - Level.CellSize / 2), (YY - Level.CellSize / 2));
+            sprite.Position = position;
+            sprite.Draw(batch);
         }
     }
 }

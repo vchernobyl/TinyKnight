@@ -8,8 +8,8 @@ namespace Gravity
     {
         private bool onGround = false;
 
-        public Hero(Game game, Texture2D texture, Level level)
-            : base(game, texture, level)
+        public Hero(Game game, Sprite sprite, Level level)
+            : base(game, sprite, level)
         {
         }
 
@@ -27,8 +27,8 @@ namespace Gravity
 
             if (Keyboard.WasKeyPressed(Keys.Space))
             {
-                var texture = game.Content.Load<Texture2D>("Textures/bullet");
-                var bullet = new Bullet(game, texture, level, new Vector2(XX, YY))
+                var sprite = new Sprite(game.Content.Load<Texture2D>("Textures/bullet"));
+                var bullet = new Bullet(game, sprite, level, new Vector2(XX, YY))
                 {
                     Direction = Vector2.UnitX,
                     Speed = 1f,

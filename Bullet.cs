@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
@@ -8,8 +7,8 @@ namespace Gravity
         public Vector2 Direction { get; init; }
         public float Speed { get; init; }
 
-        public Bullet(Game game, Texture2D texture, Level level, Vector2 position)
-            : base(game, texture, level)
+        public Bullet(Game game, Sprite sprite, Level level, Vector2 position)
+            : base(game, sprite, level)
         {
             SetCoordinates(position.X, position.Y);
         }

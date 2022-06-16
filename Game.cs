@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Gravity
@@ -46,7 +47,8 @@ namespace Gravity
                 spawners.Add(spawner);
             }
 
-            var hero = new Hero(this, Content.Load<Texture2D>("Textures/character_0000"), Level);
+            var sprite = new Sprite(Content.Load<Texture2D>("Textures/character_0000"));
+            var hero = new Hero(this, sprite, Level);
             hero.SetCoordinates(50f, 100f);
             AddEntity(hero);
         }
@@ -70,7 +72,10 @@ namespace Gravity
                 for (int i = Entities.Count - 1; i >= 0; i--)
                 {
                     if (!Entities[i].IsActive)
+                    {
+                        Entities[i].OnDestroy();
                         Entities.RemoveAt(i);
+                    }
                 }
             }
 

@@ -1,17 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Gravity
 {
     public class Enemy : Entity
     {
-        private readonly Spawner spawner;
+        public event Action<Enemy>? OnDie;
 
+        private readonly Spawner spawner;
         private int direction;
 
-        public Enemy(Game game, Texture2D texture, Level level, Spawner spawner)
-            : base(game, texture, level)
+        public Enemy(Game game, Sprite sprite, Level level, Spawner spawner)
+            : base(game, sprite, level)
         {
             this.spawner = spawner;
             var rng = new Random();
@@ -33,6 +33,11 @@ namespace Gravity
                 SetCoordinates(spawner.Position.X, spawner.Position.Y);
 
             base.Update(gameTime);
+        }
+
+        public override void OnDestroy()
+        {
+            OnDie?.Invoke(this);
         }
     }
 }
