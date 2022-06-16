@@ -25,7 +25,7 @@ namespace Gravity
             base.Update(gameTime);
         }
 
-        public override void OnCollision(Entity other)
+        public override void OnEntityCollision(Entity other)
         {
             if (other is Enemy)
             {

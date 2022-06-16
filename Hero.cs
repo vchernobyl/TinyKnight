@@ -31,7 +31,7 @@ namespace Gravity
                 var bullet = new Bullet(game, texture, level, new Vector2(XX, YY))
                 {
                     Direction = Vector2.UnitX,
-                    Speed = .8f,
+                    Speed = 1f,
                 };
                 game.AddEntity(bullet);
             }

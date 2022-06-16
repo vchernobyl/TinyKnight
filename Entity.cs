@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Gravity
 {
@@ -25,9 +24,8 @@ namespace Gravity
         public float DX = 0f;
         public float DY = 0f;
 
-        public readonly float Radius = 12f;
+        public readonly float Radius = Level.CellSize / 2;
 
-        public bool EntityCollision = false;
         public bool IsActive = true;
 
         public Entity(Game game, Texture2D texture, Level level)
@@ -54,37 +52,15 @@ namespace Gravity
             return distSqr <= maxDist * maxDist;
         }
 
-        public virtual void OnCollision(Entity other) { }
+        public virtual void OnEntityCollision(Entity other) { }
 
         public virtual void Update(GameTime gameTime)
         {
             // Check for collisions with other entities.
+            foreach (var other in game.Entities)
             {
-                foreach (var other in game.Entities)
-                {
-                    // Check if entities are close enough.
-                    if (other != this &&
-                        Math.Abs(CX - other.CX) <= 2 &&
-                        Math.Abs(CY - other.CY) <= 2)
-                    {
-                        var dist = Math.Sqrt((other.XX - XX) * (other.XX - XX) + (other.YY - YY) * (other.YY - YY));
-                        if (dist <= Radius + other.Radius)
-                        {
-                            if (EntityCollision)
-                            {
-                                var angle = Math.Atan2(other.YY - YY, other.XX - XX);
-                                var force = .2f;
-                                var repelPower = (Radius + other.Radius - dist) / (Radius + other.Radius);
-                                DX -= (float)(Math.Cos(angle) * repelPower * force);
-                                DY -= (float)(Math.Sin(angle) * repelPower * force);
-                                other.DX += (float)(Math.Cos(angle) * repelPower * force);
-                                other.DY += (float)(Math.Sin(angle) * repelPower * force);
-                            }
-
-                            OnCollision(other);
-                        }
-                    }
-                }
+                if (this != other && Overlaps(other))
+                    OnEntityCollision(other);
             }
 
             XR += DX;
