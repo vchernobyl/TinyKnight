@@ -56,6 +56,18 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Map3.png
 
+#begin Textures/bullet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/bullet.png
+
 #begin Textures/character_0000.png
 /importer:TextureImporter
 /processor:TextureProcessor

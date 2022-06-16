@@ -12,6 +12,9 @@ namespace Gravity
 
         private SpriteBatch spriteBatch;
         private readonly List<Spawner> spawners = new();
+        private readonly List<Entity> pendingEntities = new();
+
+        private bool updatingEntities = false;
 
         public Game()
         {
@@ -22,7 +25,10 @@ namespace Gravity
 
         public void AddEntity(Entity entity)
         {
-            Entities.Add(entity);
+            if (updatingEntities)
+                pendingEntities.Add(entity);
+            else
+                Entities.Add(entity);
         }
 
         protected override void LoadContent()
@@ -50,8 +56,23 @@ namespace Gravity
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            foreach (var entity in Entities)
-                entity.Update(gameTime);
+            // Entity updates
+            {
+                updatingEntities = true;
+                foreach (var entity in Entities)
+                    entity.Update(gameTime);
+                updatingEntities = false;
+
+                foreach (var entity in pendingEntities)
+                    Entities.Add(entity);
+                pendingEntities.Clear();
+
+                for (int i = Entities.Count - 1; i >= 0; i--)
+                {
+                    if (!Entities[i].IsActive)
+                        Entities.RemoveAt(i);
+                }
+            }
 
             foreach (var spawner in spawners)
                 spawner.Update(gameTime);

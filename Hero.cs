@@ -25,6 +25,17 @@ namespace Gravity
             if (Keyboard.WasKeyPressed(Keys.Up) && onGround)
                 DY = jump;
 
+            if (Keyboard.WasKeyPressed(Keys.Space))
+            {
+                var texture = game.Content.Load<Texture2D>("Textures/bullet");
+                var bullet = new Bullet(game, texture, level, new Vector2(XX, YY))
+                {
+                    Direction = Vector2.UnitX,
+                    Speed = .8f,
+                };
+                game.AddEntity(bullet);
+            }
+
             onGround = level.HasCollision(CX, CY + 1);
 
             base.Update(gameTime);

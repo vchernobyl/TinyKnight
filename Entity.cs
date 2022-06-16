@@ -27,7 +27,8 @@ namespace Gravity
 
         public readonly float Radius = 12f;
 
-        public bool EntityCollision { get; init; } = false;
+        public bool EntityCollision = false;
+        public bool IsActive = true;
 
         public Entity(Game game, Texture2D texture, Level level)
         {
@@ -53,10 +54,11 @@ namespace Gravity
             return distSqr <= maxDist * maxDist;
         }
 
+        public virtual void OnCollision(Entity other) { }
+
         public virtual void Update(GameTime gameTime)
         {
             // Check for collisions with other entities.
-            if (EntityCollision)
             {
                 foreach (var other in game.Entities)
                 {
@@ -68,13 +70,18 @@ namespace Gravity
                         var dist = Math.Sqrt((other.XX - XX) * (other.XX - XX) + (other.YY - YY) * (other.YY - YY));
                         if (dist <= Radius + other.Radius)
                         {
-                            var angle = Math.Atan2(other.YY - YY, other.XX - XX);
-                            var force = .2f;
-                            var repelPower = (Radius + other.Radius - dist) / (Radius + other.Radius);
-                            DX -= (float)(Math.Cos(angle) * repelPower * force);
-                            DY -= (float)(Math.Sin(angle) * repelPower * force);
-                            other.DX += (float)(Math.Cos(angle) * repelPower * force);
-                            other.DY += (float)(Math.Sin(angle) * repelPower * force);
+                            if (EntityCollision)
+                            {
+                                var angle = Math.Atan2(other.YY - YY, other.XX - XX);
+                                var force = .2f;
+                                var repelPower = (Radius + other.Radius - dist) / (Radius + other.Radius);
+                                DX -= (float)(Math.Cos(angle) * repelPower * force);
+                                DY -= (float)(Math.Sin(angle) * repelPower * force);
+                                other.DX += (float)(Math.Cos(angle) * repelPower * force);
+                                other.DY += (float)(Math.Sin(angle) * repelPower * force);
+                            }
+
+                            OnCollision(other);
                         }
                     }
                 }
