@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Gravity
@@ -28,6 +29,11 @@ namespace Gravity
                 direction = -direction;
                 DX = Math.Sign(direction) * .1f;
             }
+
+            if (direction > 0)
+                sprite.Effect = SpriteEffects.FlipHorizontally;
+            else
+                sprite.Effect = SpriteEffects.None;
 
             if (level[CX, CY].Type == Cell.CellType.Water)
                 SetCoordinates(spawner.Position.X, spawner.Position.Y);

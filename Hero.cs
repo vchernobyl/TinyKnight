@@ -7,6 +7,7 @@ namespace Gravity
     public class Hero : Entity
     {
         private bool onGround = false;
+        private int facing = -1;
 
         public Hero(Game game, Sprite sprite, Level level)
             : base(game, sprite, level)
@@ -19,9 +20,18 @@ namespace Gravity
             var jump = -1f;
 
             if (Keyboard.IsKeyDown(Keys.Left))
+            {
+                sprite.Effect = SpriteEffects.None;
                 DX = -speed;
+                facing = -1;
+            }
             if (Keyboard.IsKeyDown(Keys.Right))
+            {
+                sprite.Effect = SpriteEffects.FlipHorizontally;
                 DX = speed;
+                facing = 1;
+            }
+
             if (Keyboard.WasKeyPressed(Keys.Up) && onGround)
                 DY = jump;
 
@@ -30,7 +40,7 @@ namespace Gravity
                 var sprite = new Sprite(game.Content.Load<Texture2D>("Textures/bullet"));
                 var bullet = new Bullet(game, sprite, level, new Vector2(XX, YY))
                 {
-                    Direction = Vector2.UnitX,
+                    Direction = facing,
                     Speed = 1f,
                 };
                 game.AddEntity(bullet);

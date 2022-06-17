@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
     public class Bullet : Entity
     {
-        public Vector2 Direction { get; init; }
+        public int Direction { get; init; }
         public float Speed { get; init; }
 
         public Bullet(Game game, Sprite sprite, Level level, Vector2 position)
@@ -15,10 +16,16 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            DX = Direction.X * Speed;
-            DY = Direction.Y * Speed;
+            DX = Direction * Speed;
+            DY = 0f;
 
-            if (level.HasCollision(CX + 1, CY))
+            if (Direction < 0)
+                sprite.Effect = SpriteEffects.FlipHorizontally;
+            else
+                sprite.Effect = SpriteEffects.None;
+
+            if (level.HasCollision(CX + 1, CY) ||
+                level.HasCollision(CX - 1, CY))
                 IsActive = false;
 
             base.Update(gameTime);

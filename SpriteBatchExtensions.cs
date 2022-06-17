@@ -6,7 +6,7 @@ namespace Gravity
 {
     public static class SpriteBatchExtensions
     {
-        private static Texture2D pixel;
+        private static Texture2D? pixel;
         private static Texture2D BlankPixel(SpriteBatch spriteBatch)
         {
             if (pixel == null)
