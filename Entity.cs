@@ -28,6 +28,8 @@ namespace Gravity
 
         public bool IsActive = true;
 
+        public Vector2 Position => new(XX, YY);
+
         public Entity(Game game, Sprite sprite, Level level)
         {
             this.game = game;
@@ -107,14 +109,12 @@ namespace Gravity
             while (YR < 0) { CY--; YR++; }
         }
 
-        public void Draw(SpriteBatch batch)
+        public virtual void Draw(SpriteBatch batch)
         {
             XX = (int)((CX + XR) * Level.CellSize);
             YY = (int)((CY + YR) * Level.CellSize);
 
-            // Draw sprite at the center of the texture, not the top-left corner.
-            var position = new Vector2((XX - Level.CellSize / 2), (YY - Level.CellSize / 2));
-            sprite.Position = position;
+            sprite.Position = Position;
             sprite.Draw(batch);
         }
     }

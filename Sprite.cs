@@ -25,7 +25,8 @@ namespace Gravity
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(texture, Position, Source, Color.White, Rotation, Origin, Scale, Effect, 0f);
+            var center = new Vector2(Position.X - Level.CellSize / 2, Position.Y - Level.CellSize / 2);
+            batch.Draw(texture, center, Source, Color.White, Rotation, Origin, Scale, Effect, 0f);
         }
     }
 }

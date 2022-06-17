@@ -56,6 +56,24 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Map3.png
 
+#begin SoundFX/Enemy_Hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Enemy_Hit.wav
+
+#begin SoundFX/Jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Jump.wav
+
+#begin SoundFX/Shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Shot.wav
+
 #begin Textures/bullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -91,6 +109,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/character_0015.png
+
+#begin Textures/Muzzle_Flash.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Muzzle_Flash.png
 
 #begin Textures/tile_0009.png
 /importer:TextureImporter

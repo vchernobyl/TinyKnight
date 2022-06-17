@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
     public class Bullet : Entity
     {
+        // TODO: Feed the value via config file.
+        public const int Damage = 50;
+
         public int Direction { get; init; }
         public float Speed { get; init; }
 
@@ -12,6 +16,11 @@ namespace Gravity
             : base(game, sprite, level)
         {
             SetCoordinates(position.X, position.Y);
+
+            sprite.Scale = new Vector2(1.5f, 1.5f);
+
+            var sound = game.Content.Load<SoundEffect>("SoundFX/Shot");
+            sound.Play(volume: .7f, pitch: 0f, pan: 0f);
         }
 
         public override void Update(GameTime gameTime)
@@ -29,15 +38,6 @@ namespace Gravity
                 IsActive = false;
 
             base.Update(gameTime);
-        }
-
-        public override void OnEntityCollision(Entity other)
-        {
-            if (other is Enemy)
-            {
-                IsActive = false;
-                other.IsActive = false;
-            }
         }
     }
 }

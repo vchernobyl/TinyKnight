@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 
 namespace Gravity
@@ -9,12 +8,13 @@ namespace Gravity
     public class Game : Microsoft.Xna.Framework.Game
     {
         public Level Level { get; private set; }
+        public Hud Hud { get; private set; }
+
         public readonly List<Entity> Entities = new();
+        private readonly List<Entity> pendingEntities = new();
+        private readonly List<Spawner> spawners = new();
 
         private SpriteBatch spriteBatch;
-        private readonly List<Spawner> spawners = new();
-        private readonly List<Entity> pendingEntities = new();
-
         private bool updatingEntities = false;
 
         public Game()
@@ -36,6 +36,7 @@ namespace Gravity
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
+            Hud = new Hud(this);
 
             foreach (var position in Level.GetSpawnPositions())
             {
@@ -97,6 +98,8 @@ namespace Gravity
 
             foreach (var spawner in spawners)
                 spawner.Draw(spriteBatch);
+
+            Hud.Draw(spriteBatch);
 
             spriteBatch.End();
 

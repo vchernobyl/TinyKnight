@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -6,12 +7,20 @@ namespace Gravity
 {
     public class Hero : Entity
     {
+        private readonly SoundEffect jumpSound;
+        private readonly Sprite muzzleSprite;
+
         private bool onGround = false;
         private int facing = -1;
+
+        private double shotTimer = .0;
+        private double muzzleTimer = .0;
 
         public Hero(Game game, Sprite sprite, Level level)
             : base(game, sprite, level)
         {
+            jumpSound = game.Content.Load<SoundEffect>("SoundFX/Jump");
+            muzzleSprite = new Sprite(game.Content.Load<Texture2D>("Textures/Muzzle_Flash"));
         }
 
         public override void Update(GameTime gameTime)
@@ -33,12 +42,22 @@ namespace Gravity
             }
 
             if (Keyboard.WasKeyPressed(Keys.Up) && onGround)
-                DY = jump;
-
-            if (Keyboard.WasKeyPressed(Keys.Space))
             {
+                DY = jump;
+                jumpSound.Play(.7f, 0f, 0f);
+            }
+
+            shotTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            muzzleTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (Keyboard.IsKeyDown(Keys.Space) && shotTimer >= .15)
+            {
+                shotTimer = 0.0;
+                muzzleTimer = .0125;
+
                 var sprite = new Sprite(game.Content.Load<Texture2D>("Textures/bullet"));
-                var bullet = new Bullet(game, sprite, level, new Vector2(XX, YY))
+                var position = Position + Vector2.UnitX * facing * Level.CellSize;
+                var bullet = new Bullet(game, sprite, level, position)
                 {
                     Direction = facing,
                     Speed = 1f,
@@ -49,6 +68,18 @@ namespace Gravity
             onGround = level.HasCollision(CX, CY + 1);
 
             base.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch batch)
+        {
+            base.Draw(batch);
+
+            if (muzzleTimer >= .0)
+            {
+                var position = Position + Vector2.UnitX * facing * Level.CellSize;
+                muzzleSprite.Position = position;
+                muzzleSprite.Draw(batch);
+            }
         }
     }
 }
