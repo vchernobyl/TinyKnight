@@ -19,7 +19,7 @@ namespace Gravity
 
             sprite.Scale = new Vector2(1.5f, 1.5f);
 
-            var sound = game.Content.Load<SoundEffect>("SoundFX/Shot");
+            var sound = game.Content.Load<SoundEffect>("SoundFX/Pistol_Shot");
             sound.Play(volume: .7f, pitch: 0f, pan: 0f);
         }
 

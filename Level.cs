@@ -96,7 +96,7 @@ namespace Gravity
                 };
 
                 if (texture != null)
-                    spriteBatch.Draw(texture, cell.Bounds, Color.White);
+                    spriteBatch.Draw(texture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
                 if (showBounds)
                 {

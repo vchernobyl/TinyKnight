@@ -19,8 +19,11 @@ namespace Gravity
         public Hero(Game game, Sprite sprite, Level level)
             : base(game, sprite, level)
         {
-            jumpSound = game.Content.Load<SoundEffect>("SoundFX/Jump");
-            muzzleSprite = new Sprite(game.Content.Load<Texture2D>("Textures/Muzzle_Flash"));
+            jumpSound = game.Content.Load<SoundEffect>("SoundFX/Hero_Jump");
+            muzzleSprite = new Sprite(game.Content.Load<Texture2D>("Textures/Muzzle_Flash"))
+            {
+                LayerDepth = .1f
+            };
         }
 
         public override void Update(GameTime gameTime)

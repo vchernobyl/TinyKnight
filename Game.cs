@@ -11,6 +11,7 @@ namespace Gravity
         public Hud Hud { get; private set; }
 
         public readonly List<Entity> Entities = new();
+
         private readonly List<Entity> pendingEntities = new();
         private readonly List<Spawner> spawners = new();
 
@@ -90,7 +91,7 @@ namespace Gravity
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
             Level.Draw(spriteBatch);
 
             foreach (var entity in Entities)
