@@ -33,13 +33,13 @@ namespace Gravity
 
             if (Keyboard.IsKeyDown(Keys.Left))
             {
-                sprite.Effect = SpriteEffects.None;
+                sprite.Flip = SpriteEffects.None;
                 DX = -speed;
                 facing = -1;
             }
             if (Keyboard.IsKeyDown(Keys.Right))
             {
-                sprite.Effect = SpriteEffects.FlipHorizontally;
+                sprite.Flip = SpriteEffects.FlipHorizontally;
                 DX = speed;
                 facing = 1;
             }

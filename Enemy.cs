@@ -20,9 +20,7 @@ namespace Gravity
             : base(game, sprite, level)
         {
             this.spawner = spawner;
-
             hitSound = game.Content.Load<SoundEffect>("SoundFX/Enemy_Hit");
-
             facing = new Random().Next(0, 2) == 0 ? 1 : -1;
         }
 
@@ -38,9 +36,9 @@ namespace Gravity
             }
 
             if (facing > 0)
-                sprite.Effect = SpriteEffects.FlipHorizontally;
+                sprite.Flip = SpriteEffects.FlipHorizontally;
             else
-                sprite.Effect = SpriteEffects.None;
+                sprite.Flip = SpriteEffects.None;
 
             if (level[CX, CY].Type == Cell.CellType.Water)
                 SetCoordinates(spawner.Position.X, spawner.Position.Y);

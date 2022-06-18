@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Gravity
 {
@@ -92,16 +94,17 @@ namespace Gravity
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(SpriteSortMode.BackToFront);
-            Level.Draw(spriteBatch);
+            {
+                Level.Draw(spriteBatch);
 
-            foreach (var entity in Entities)
-                entity.Draw(spriteBatch);
+                foreach (var entity in Entities)
+                    entity.Draw(spriteBatch);
 
-            foreach (var spawner in spawners)
-                spawner.Draw(spriteBatch);
+                foreach (var spawner in spawners)
+                    spawner.Draw(spriteBatch);
 
-            Hud.Draw(spriteBatch);
-
+                Hud.Draw(spriteBatch);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
