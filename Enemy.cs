@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Threading;
 
 namespace Gravity
 {
@@ -58,6 +59,9 @@ namespace Gravity
 
                 // Knockback
                 DX = Math.Sign(other.DX) * .085f;
+
+                game.Camera.Shake(.425f);
+                Thread.Sleep(10);
 
                 if (Health <= 0)
                     IsActive = false;

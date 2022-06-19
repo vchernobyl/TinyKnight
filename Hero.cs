@@ -66,6 +66,9 @@ namespace Gravity
                     Speed = 1f,
                 };
                 game.AddEntity(bullet);
+
+                // Knockback.
+                DX = -facing * .05f;
             }
 
             onGround = level.HasCollision(CX, CY + 1);

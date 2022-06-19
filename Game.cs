@@ -9,6 +9,7 @@ namespace Gravity
     {
         public Level Level { get; private set; }
         public Hud Hud { get; private set; }
+        public Camera Camera { get; private set; }
 
         public readonly List<Entity> Entities = new();
 
@@ -22,6 +23,9 @@ namespace Gravity
         public Game()
         {
             _ = new GraphicsDeviceManager(this);
+
+            Camera = new Camera();
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -89,6 +93,8 @@ namespace Gravity
             foreach (var spawner in spawners)
                 spawner.Update(gameTime);
 
+            Camera.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -97,7 +103,7 @@ namespace Gravity
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Regular drawing.
-            spriteBatch.Begin(SpriteSortMode.BackToFront);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: Camera.Transform);
             {
                 Level.Draw(spriteBatch);
 
@@ -112,7 +118,7 @@ namespace Gravity
             spriteBatch.End();
 
             // Drawing with effect.
-            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: flash);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: flash, transformMatrix: Camera.Transform);
             {
                 foreach (var entity in Entities)
                 {
