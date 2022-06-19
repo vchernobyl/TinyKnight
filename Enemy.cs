@@ -54,6 +54,11 @@ namespace Gravity
                 Health -= Bullet.Damage;
                 hitSound.Play(.5f, 0f, 0f);
 
+                Flash(duration: .1);
+
+                // Knockback
+                DX = Math.Sign(other.DX) * .085f;
+
                 if (Health <= 0)
                     IsActive = false;
             }

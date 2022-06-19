@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 
@@ -30,6 +29,7 @@ namespace Gravity
         public Sprite(Texture2D texture)
         {
             this.texture = texture;
+
             Origin = Vector2.Zero;
             Scale = Vector2.One;
             Rotation = 0f;

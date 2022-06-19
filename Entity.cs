@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Gravity
 {
@@ -30,6 +31,10 @@ namespace Gravity
 
         public Vector2 Position => new(XX, YY);
 
+        public bool IsFlashing => flashTime > .0;
+
+        private double flashTime = .0;
+
         public Entity(Game game, Sprite sprite, Level level)
         {
             this.game = game;
@@ -54,12 +59,19 @@ namespace Gravity
             return distSqr <= maxDist * maxDist;
         }
 
+        public void Flash(double duration)
+        {
+            flashTime = duration;
+        }
+
         public virtual void OnEntityCollision(Entity other) { }
 
         public virtual void OnDestroy() { }
 
         public virtual void Update(GameTime gameTime)
         {
+            flashTime = Math.Max(.0, flashTime - gameTime.ElapsedGameTime.TotalSeconds);
+
             // Check for collisions with other entities.
             foreach (var other in game.Entities)
             {

@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Gravity
 {
@@ -18,6 +16,7 @@ namespace Gravity
         private readonly List<Spawner> spawners = new();
 
         private SpriteBatch spriteBatch;
+        private Effect flash;
         private bool updatingEntities = false;
 
         public Game()
@@ -38,6 +37,10 @@ namespace Gravity
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+            flash = Content.Load<Effect>("Effects/FlashEffect");
+            flash.Parameters["flash_color"].SetValue(Vector4.One);
+
             Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
             Hud = new Hud(this);
 
@@ -93,6 +96,7 @@ namespace Gravity
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            // Regular drawing.
             spriteBatch.Begin(SpriteSortMode.BackToFront);
             {
                 Level.Draw(spriteBatch);
@@ -104,6 +108,17 @@ namespace Gravity
                     spawner.Draw(spriteBatch);
 
                 Hud.Draw(spriteBatch);
+            }
+            spriteBatch.End();
+
+            // Drawing with effect.
+            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: flash);
+            {
+                foreach (var entity in Entities)
+                {
+                    if (entity.IsFlashing)
+                        entity.Draw(spriteBatch);
+                }
             }
             spriteBatch.End();
 
