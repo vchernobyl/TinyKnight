@@ -7,7 +7,7 @@ namespace Gravity
     public class Bullet : Entity
     {
         // TODO: Feed the value via config file.
-        public const int Damage = 20;
+        public const int Damage = 50;
 
         public int Direction { get; init; }
         public float Speed { get; init; }

@@ -119,14 +119,14 @@ namespace Gravity
 
             while (YR > 1) { CY++; YR--; }
             while (YR < 0) { CY--; YR++; }
+
+            XX = (int)((CX + XR) * Level.CellSize);
+            YY = (int)((CY + YR) * Level.CellSize);
+            sprite.Position = Position;
         }
 
         public virtual void Draw(SpriteBatch batch)
         {
-            XX = (int)((CX + XR) * Level.CellSize);
-            YY = (int)((CY + YR) * Level.CellSize);
-
-            sprite.Position = Position;
             sprite.Draw(batch);
         }
     }

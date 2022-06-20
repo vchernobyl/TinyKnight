@@ -30,7 +30,7 @@ namespace Gravity
         {
             this.texture = texture;
 
-            Origin = Vector2.Zero;
+            Origin = texture.Bounds.Center.ToVector2();
             Scale = Vector2.One;
             Rotation = 0f;
             Source = texture.Bounds;
@@ -40,8 +40,7 @@ namespace Gravity
 
         public void Draw(SpriteBatch batch)
         {
-            var center = new Vector2(Position.X - Level.CellSize / 2, Position.Y - Level.CellSize / 2);
-            batch.Draw(texture, center, Source, Color.White, Rotation, Origin, Scale, Flip, LayerDepth);
+            batch.Draw(texture, Position, Source, Color.White, Rotation, Origin, Scale, Flip, LayerDepth);
         }
     }
 }

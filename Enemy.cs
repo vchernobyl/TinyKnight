@@ -16,13 +16,15 @@ namespace Gravity
         private readonly SoundEffect hitSound;
 
         private int facing;
+        private double deathTimer = .6;
+        private bool startDeathAnimation = false;
 
         public Enemy(Game game, Sprite sprite, Level level, Spawner spawner)
             : base(game, sprite, level)
         {
             this.spawner = spawner;
             hitSound = game.Content.Load<SoundEffect>("SoundFX/Enemy_Hit");
-            facing = new Random().Next(0, 2) == 0 ? 1 : -1;
+            facing = Numerics.Pick(RNG.IntRange(0, 2), -1, 1);
         }
 
         public override void Update(GameTime gameTime)
@@ -44,6 +46,16 @@ namespace Gravity
             if (level[CX, CY].Type == Cell.CellType.Water)
                 SetCoordinates(spawner.Position.X, spawner.Position.Y);
 
+            if (startDeathAnimation)
+            {
+                deathTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                sprite.Rotation += .1f;
+
+                if (deathTimer <= 0f)
+                    IsActive = false;
+            }
+
             base.Update(gameTime);
         }
 
@@ -64,7 +76,11 @@ namespace Gravity
                 Thread.Sleep(10);
 
                 if (Health <= 0)
-                    IsActive = false;
+                {
+                    DY += -.75f;
+                    DX += -facing * .1f;
+                    startDeathAnimation = true;
+                }
             }
         }
 

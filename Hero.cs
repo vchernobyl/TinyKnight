@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Gravity
 {
@@ -24,6 +25,16 @@ namespace Gravity
             {
                 LayerDepth = .1f
             };
+        }
+
+        public override void OnEntityCollision(Entity other)
+        {
+            // TODO: Player death state.
+            if (other is Enemy && false)
+            {
+                DY = -.3f;
+                DX = Math.Sign(other.DX)* .3f;
+            }
         }
 
         public override void Update(GameTime gameTime)
