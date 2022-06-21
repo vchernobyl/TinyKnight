@@ -13,5 +13,10 @@ namespace Gravity
                 _ => throw new ArgumentException("Index is out of range"),
             };
         }
+
+        public static T PickOne<T>(T a, T b)
+        {
+            return Pick(RNG.IntRange(0, 2), a, b);
+        }
     }
 }

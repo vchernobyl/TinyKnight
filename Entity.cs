@@ -28,6 +28,7 @@ namespace Gravity
         public readonly float Radius = Level.CellSize / 2;
 
         public bool IsActive = true;
+        public bool Collision = true;
 
         public Vector2 Position => new(XX, YY);
 
@@ -73,27 +74,35 @@ namespace Gravity
             flashTime = Math.Max(.0, flashTime - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.
-            foreach (var other in game.Entities)
+            if (Collision)
             {
-                if (this != other && Overlaps(other))
-                    OnEntityCollision(other);
+                foreach (var other in game.Entities)
+                {
+                    if (this != other && Overlaps(other))
+                        OnEntityCollision(other);
+                }
             }
 
             XR += DX;
-            DX *= .9f;
 
-            // Right side collision.
-            if (level.HasCollision(CX + 1, CY) && XR >= .7f)
+            if (Collision)
             {
-                XR = .7f;
-                DX = 0f;
-            }
+                // Apply horizontal friction.
+                DX *= .9f;
 
-            // Left side collision.
-            if (level.HasCollision(CX - 1, CY) && XR <= .3f)
-            {
-                XR = .3f;
-                DX = 0f;
+                // Right side collision.
+                if (Collision && level.HasCollision(CX + 1, CY) && XR >= .7f)
+                {
+                    XR = .7f;
+                    DX = 0f;
+                }
+
+                // Left side collision.
+                if (Collision && level.HasCollision(CX - 1, CY) && XR <= .3f)
+                {
+                    XR = .3f;
+                    DX = 0f;
+                }
             }
 
             while (XR > 1) { XR--; CX++; }
@@ -101,20 +110,25 @@ namespace Gravity
 
             YR += DY;
             DY += .05f;
-            DY *= .9f;
 
-            // Top collision.
-            if (level.HasCollision(CX, CY - 1) && YR <= .3f)
+            if (Collision)
             {
-                DY = .05f;
-                YR = .3f;
-            }
+                // Apply vertical friction.
+                DY *= .9f;
 
-            // Bottom collision.
-            if (level.HasCollision(CX, CY + 1) && YR >= .5f)
-            {
-                DY = 0f;
-                YR = .5f;
+                // Top collision.
+                if (Collision && level.HasCollision(CX, CY - 1) && YR <= .3f)
+                {
+                    DY = .05f;
+                    YR = .3f;
+                }
+
+                // Bottom collision.
+                if (Collision && level.HasCollision(CX, CY + 1) && YR >= .5f)
+                {
+                    DY = 0f;
+                    YR = .5f;
+                }
             }
 
             while (YR > 1) { CY++; YR--; }

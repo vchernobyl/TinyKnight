@@ -52,11 +52,11 @@ namespace Gravity
                     var pixel = levelData[x, y];
                     var type = pixel switch
                     {
-                        var color when color == Color.Black => Cell.CellType.Empty,
-                        var color when color == Color.White => Cell.CellType.Wall,
-                        var color when color == Color.Blue => Cell.CellType.Water,
-                        var color when color == Color.Yellow => Cell.CellType.Spawn,
-                        _ => throw new InvalidOperationException($"Grid cell color ({pixel}) not supported!"),
+                        var _ when pixel == Color.Black => Cell.CellType.Empty,
+                        var _ when pixel == Color.White => Cell.CellType.Wall,
+                        var _ when pixel == Color.Blue => Cell.CellType.Water,
+                        var _ when pixel == Color.Yellow => Cell.CellType.Spawn,
+                        _ => throw new ArgumentException($"Grid cell color ({pixel}) not supported!"),
                     };
                     cells[x, y] = new Cell(x, y, type, type == Cell.CellType.Wall);
                 }

@@ -9,16 +9,17 @@ namespace Gravity
         // TODO: Feed the value via config file.
         public const int Damage = 50;
 
-        public int Direction { get; init; }
-        public float Speed { get; init; }
+        public Vector2 Velocity { get; init; }
 
         private readonly float spreadVariation = 0.025f;
         private readonly float spread;
 
-        public Bullet(Game game, Sprite sprite, Level level, Vector2 position)
+        public Bullet(Game game, Sprite sprite, Level level, Vector2 position, Vector2 velocity)
             : base(game, sprite, level)
         {
             SetCoordinates(position.X, position.Y);
+
+            Velocity = velocity;
 
             spread = RNG.FloatRange(-spreadVariation, spreadVariation);
 
@@ -28,10 +29,10 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            DX = Direction * Speed;
+            DX = Velocity.X;
             DY = spread;
 
-            if (Direction < 0)
+            if (Velocity.X < 0)
                 sprite.Flip = SpriteEffects.FlipHorizontally;
             else
                 sprite.Flip = SpriteEffects.None;

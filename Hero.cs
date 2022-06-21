@@ -71,11 +71,7 @@ namespace Gravity
 
                 var sprite = new Sprite(game.Content.Load<Texture2D>("Textures/bullet"));
                 var position = Position + Vector2.UnitX * facing * Level.CellSize;
-                var bullet = new Bullet(game, sprite, level, position)
-                {
-                    Direction = facing,
-                    Speed = 1f,
-                };
+                var bullet = new Bullet(game, sprite, level, position, Vector2.UnitX * facing);
                 game.AddEntity(bullet);
 
                 // Knockback.

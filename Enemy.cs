@@ -16,7 +16,7 @@ namespace Gravity
         private readonly SoundEffect hitSound;
 
         private int facing;
-        private double deathTimer = .6;
+        private double deathTimer = 2.0;
         private bool startDeathAnimation = false;
 
         public Enemy(Game game, Sprite sprite, Level level, Spawner spawner)
@@ -24,15 +24,17 @@ namespace Gravity
         {
             this.spawner = spawner;
             hitSound = game.Content.Load<SoundEffect>("SoundFX/Enemy_Hit");
-            facing = Numerics.Pick(RNG.IntRange(0, 2), -1, 1);
+            facing = Numerics.PickOne(-1, 1);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (level.HasCollision(CX, CY + 1))
+            if (!startDeathAnimation && level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(facing) * .1f;
 
-            if ((level.HasCollision(CX + 1, CY) && XR >= .7f) || (level.HasCollision(CX - 1, CY) && XR <= .3f))
+            if (!startDeathAnimation &&
+                ((level.HasCollision(CX + 1, CY) && XR >= .7f) ||
+                (level.HasCollision(CX - 1, CY) && XR <= .3f)))
             {
                 facing = -facing;
                 DX = Math.Sign(facing) * .1f;
@@ -43,14 +45,20 @@ namespace Gravity
             else
                 sprite.Flip = SpriteEffects.None;
 
-            if (level[CX, CY].Type == Cell.CellType.Water)
+            if (!startDeathAnimation &&
+                level.IsWithinBounds(CX, CY) &&
+                level[CX, CY].Type == Cell.CellType.Water)
+            {
                 SetCoordinates(spawner.Position.X, spawner.Position.Y);
+            }
 
             if (startDeathAnimation)
             {
                 deathTimer -= gameTime.ElapsedGameTime.TotalSeconds;
 
-                sprite.Rotation += .1f;
+                sprite.Rotation += RNG.FloatRange(
+                    MathHelper.PiOver4,
+                    MathHelper.PiOver2) * DX;
 
                 if (deathTimer <= 0f)
                     IsActive = false;
@@ -61,7 +69,7 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Bullet)
+            if (other is Bullet bullet)
             {
                 other.IsActive = false;
                 Health -= Bullet.Damage;
@@ -77,9 +85,10 @@ namespace Gravity
 
                 if (Health <= 0)
                 {
-                    DY += -.75f;
-                    DX += -facing * .1f;
+                    DY = RNG.FloatRange(-.4f, -.5f);
+                    DX = Math.Sign(bullet.Velocity.X) * RNG.FloatRange(.1f, .2f);
                     startDeathAnimation = true;
+                    Collision = false;
                 }
             }
         }
