@@ -14,14 +14,14 @@ namespace Gravity
         private readonly float spreadVariation = 0.025f;
         private readonly float spread;
 
-        public Bullet(Game game, Sprite sprite, Level level, Vector2 position, Vector2 velocity)
-            : base(game, sprite, level)
+        public Bullet(Game game, Sprite sprite, Vector2 position, Vector2 velocity)
+            : base(game, sprite)
         {
             SetCoordinates(position.X, position.Y);
 
             Velocity = velocity;
 
-            spread = RNG.FloatRange(-spreadVariation, spreadVariation);
+            spread = Random.FloatRange(-spreadVariation, spreadVariation);
 
             var sound = game.Content.Load<SoundEffect>("SoundFX/Pistol_Shot");
             sound.Play(volume: .7f, pitch: 0f, pan: 0f);

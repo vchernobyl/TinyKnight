@@ -5,22 +5,19 @@ namespace Gravity
 {
     public class Hud
     {
-        public uint EnemiesKilled = 0;
-
+        private readonly Hero hero;
         private readonly SpriteFont font;
-        private readonly Vector2 position;
 
         public Hud(Game game)
         {
+            hero = game.Hero;
             font = game.Content.Load<SpriteFont>("Fonts/Default");
-            position = new Vector2(game.GraphicsDevice.Viewport.Width / 2, 10);
         }
 
         public void Draw(SpriteBatch batch)
         {
-            var size = font.MeasureString($"{EnemiesKilled}");
-            var offset = new Vector2(size.X / 2f, 0f);
-            batch.DrawString(font, $"{EnemiesKilled}", position - offset, Color.White);
+            batch.DrawString(font, $"Enemies destroyed: {hero.EnemiesKilled}", new Vector2(10f, 5f), Color.White);
+            batch.DrawString(font, $"Coins: {hero.Coins}", new Vector2(10f, 30f), Color.White);
         }
     }
 }

@@ -30,17 +30,21 @@ namespace Gravity
         public bool IsActive = true;
         public bool Collision = true;
 
-        public Vector2 Position => new(XX, YY);
+        public Vector2 Position
+        {
+            get => new(XX, YY);
+            set => SetCoordinates(value.X, value.Y);
+        }
 
         public bool IsFlashing => flashTime > .0;
 
         private double flashTime = .0;
 
-        public Entity(Game game, Sprite sprite, Level level)
+        public Entity(Game game, Sprite sprite)
         {
             this.game = game;
             this.sprite = sprite;
-            this.level = level;
+            this.level = game.Level;
         }
 
         public void SetCoordinates(float x, float y)
@@ -51,6 +55,7 @@ namespace Gravity
             CY = (int)(YY / Level.CellSize);
             XR = (XX - CX * Level.CellSize) / Level.CellSize;
             YR = (YY - CY * Level.CellSize) / Level.CellSize;
+            sprite.Position = Position;
         }
 
         public bool Overlaps(Entity other)

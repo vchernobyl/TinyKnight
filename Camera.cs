@@ -5,7 +5,7 @@ namespace Gravity
 {
     public class Camera
     {
-        public Vector2 Origin;
+        public Vector2 Origin = new(100, 100);
         public Matrix Transform => Matrix.CreateTranslation(Position.X, Position.Y, 0f);
 
         private Vector2 shakeOffset;
@@ -23,8 +23,8 @@ namespace Gravity
             if (trauma > 0f)
             {
                 var shake = trauma * trauma * trauma;
-                shakeOffset.X = MaxOffset * shake * RNG.FloatRange(-1f, 1f);
-                shakeOffset.Y = MaxOffset * shake * RNG.FloatRange(-1f, 1f);
+                shakeOffset.X = MaxOffset * shake * Random.FloatRange(-1f, 1f);
+                shakeOffset.Y = MaxOffset * shake * Random.FloatRange(-1f, 1f);
             }
         }
 

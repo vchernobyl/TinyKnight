@@ -16,7 +16,7 @@ namespace Gravity
 
         public static T PickOne<T>(T a, T b)
         {
-            return Pick(RNG.IntRange(0, 2), a, b);
+            return Pick(Random.IntRange(0, 2), a, b);
         }
     }
 }

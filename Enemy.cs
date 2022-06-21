@@ -19,8 +19,8 @@ namespace Gravity
         private double deathTimer = 2.0;
         private bool startDeathAnimation = false;
 
-        public Enemy(Game game, Sprite sprite, Level level, Spawner spawner)
-            : base(game, sprite, level)
+        public Enemy(Game game, Sprite sprite, Spawner spawner)
+            : base(game, sprite)
         {
             this.spawner = spawner;
             hitSound = game.Content.Load<SoundEffect>("SoundFX/Enemy_Hit");
@@ -56,7 +56,7 @@ namespace Gravity
             {
                 deathTimer -= gameTime.ElapsedGameTime.TotalSeconds;
 
-                sprite.Rotation += RNG.FloatRange(
+                sprite.Rotation += Random.FloatRange(
                     MathHelper.PiOver4,
                     MathHelper.PiOver2) * DX;
 
@@ -85,17 +85,21 @@ namespace Gravity
 
                 if (Health <= 0)
                 {
-                    DY = RNG.FloatRange(-.4f, -.5f);
-                    DX = Math.Sign(bullet.Velocity.X) * RNG.FloatRange(.1f, .2f);
+                    DY = Random.FloatRange(-.4f, -.5f);
+                    DX = Math.Sign(bullet.Velocity.X) * Random.FloatRange(.1f, .2f);
                     startDeathAnimation = true;
                     Collision = false;
+
+                    var coin = new Coin(game);
+                    coin.SetCoordinates(XX, YY);
+                    game.AddEntity(coin);
                 }
             }
         }
 
         public override void OnDestroy()
         {
-            game.Hud.EnemiesKilled++;
+            game.Hero.EnemiesKilled++;
             OnDie?.Invoke(this);
         }
     }

@@ -8,6 +8,9 @@ namespace Gravity
 {
     public class Hero : Entity
     {
+        public uint Coins { get; private set; }
+        public uint EnemiesKilled { get; set; }
+
         private readonly SoundEffect jumpSound;
         private readonly Sprite muzzleSprite;
 
@@ -17,14 +20,19 @@ namespace Gravity
         private double shotTimer = .0;
         private double muzzleTimer = .0;
 
-        public Hero(Game game, Sprite sprite, Level level)
-            : base(game, sprite, level)
+        public Hero(Game game, Sprite sprite)
+            : base(game, sprite)
         {
             jumpSound = game.Content.Load<SoundEffect>("SoundFX/Hero_Jump");
             muzzleSprite = new Sprite(game.Content.Load<Texture2D>("Textures/Muzzle_Flash"))
             {
                 LayerDepth = .1f
             };
+        }
+
+        public void PickupCoin()
+        {
+            Coins++;
         }
 
         public override void OnEntityCollision(Entity other)
@@ -71,7 +79,7 @@ namespace Gravity
 
                 var sprite = new Sprite(game.Content.Load<Texture2D>("Textures/bullet"));
                 var position = Position + Vector2.UnitX * facing * Level.CellSize;
-                var bullet = new Bullet(game, sprite, level, position, Vector2.UnitX * facing);
+                var bullet = new Bullet(game, sprite, position, Vector2.UnitX * facing);
                 game.AddEntity(bullet);
 
                 // Knockback.

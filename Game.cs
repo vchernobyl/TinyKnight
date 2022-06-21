@@ -9,12 +9,15 @@ namespace Gravity
     {
         public Level Level { get; private set; }
         public Hud Hud { get; private set; }
-        public Camera Camera { get; private set; }
+        public Hero Hero { get; private set; }
+
+        public Camera Camera { get; } = new Camera();
 
         public readonly List<Entity> Entities = new();
 
         private readonly List<Entity> pendingEntities = new();
         private readonly List<Spawner> spawners = new();
+        private readonly GraphicsDeviceManager graphics;
 
         private SpriteBatch spriteBatch;
         private Effect flash;
@@ -22,10 +25,7 @@ namespace Gravity
 
         public Game()
         {
-            _ = new GraphicsDeviceManager(this);
-
-            Camera = new Camera();
-
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -38,14 +38,28 @@ namespace Gravity
                 Entities.Add(entity);
         }
 
+        protected override void Initialize()
+        {
+            graphics.PreferredBackBufferWidth = 1020;
+            graphics.PreferredBackBufferHeight = 780;
+            graphics.ApplyChanges();
+
+            base.Initialize();
+        }
+
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
             flash = Content.Load<Effect>("Effects/FlashEffect");
             flash.Parameters["flash_color"].SetValue(Vector4.One);
 
             Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
+
+            var sprite = new Sprite(Content.Load<Texture2D>("Textures/character_0000"));
+            Hero = new Hero(this, sprite);
+            Hero.SetCoordinates(50f, 100f);
+
             Hud = new Hud(this);
 
             foreach (var position in Level.GetSpawnPositions())
@@ -58,10 +72,7 @@ namespace Gravity
                 spawners.Add(spawner);
             }
 
-            var sprite = new Sprite(Content.Load<Texture2D>("Textures/character_0000"));
-            var hero = new Hero(this, sprite, Level);
-            hero.SetCoordinates(50f, 100f);
-            AddEntity(hero);
+            AddEntity(Hero);
         }
 
         protected override void Update(GameTime gameTime)

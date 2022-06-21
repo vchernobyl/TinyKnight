@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Gravity
+﻿namespace Gravity
 {
-    public static class RNG
+    public static class Random
     {
-        private static readonly Random random = Random.Shared;
+        private static readonly System.Random random = System.Random.Shared;
 
         public static int IntValue => random.Next();
 
