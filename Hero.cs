@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -10,29 +9,25 @@ namespace Gravity
     {
         public uint Coins { get; private set; }
         public uint EnemiesKilled { get; set; }
+        public int Facing { get; private set; } = -1;
 
-        private readonly SoundEffect jumpSound;
-        private readonly Sprite muzzleSprite;
+        private readonly Pistol pistol;
 
         private bool onGround = false;
-        private int facing = -1;
 
-        private double shotTimer = .0;
-        private double muzzleTimer = .0;
-
-        public Hero(Game game, Sprite sprite)
-            : base(game, sprite)
+        public Hero(Game game) : base(game, new Sprite(Textures.Hero))
         {
-            jumpSound = game.Content.Load<SoundEffect>("SoundFX/Hero_Jump");
-            muzzleSprite = new Sprite(game.Content.Load<Texture2D>("Textures/Muzzle_Flash"))
-            {
-                LayerDepth = .1f
-            };
+            pistol = new Pistol(game, this);
         }
 
         public void PickupCoin()
         {
             Coins++;
+        }
+
+        public void Knockback(float amount)
+        {
+            DX = -Facing * amount;
         }
 
         public override void OnEntityCollision(Entity other)
@@ -50,57 +45,36 @@ namespace Gravity
             var speed = .15f;
             var jump = -1f;
 
-            if (Keyboard.IsKeyDown(Keys.Left))
+            if (Input.IsKeyDown(Keys.Left))
             {
                 sprite.Flip = SpriteEffects.None;
                 DX = -speed;
-                facing = -1;
+                Facing = -1;
             }
-            if (Keyboard.IsKeyDown(Keys.Right))
+            if (Input.IsKeyDown(Keys.Right))
             {
                 sprite.Flip = SpriteEffects.FlipHorizontally;
                 DX = speed;
-                facing = 1;
+                Facing = 1;
             }
 
-            if (Keyboard.WasKeyPressed(Keys.Up) && onGround)
+            if (Input.WasKeyPressed(Keys.Up) && onGround)
             {
                 DY = jump;
-                jumpSound.Play(.7f, 0f, 0f);
-            }
-
-            shotTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            muzzleTimer -= gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (Keyboard.IsKeyDown(Keys.Space) && shotTimer >= .15)
-            {
-                shotTimer = 0.0;
-                muzzleTimer = .0125;
-
-                var sprite = new Sprite(game.Content.Load<Texture2D>("Textures/bullet"));
-                var position = Position + Vector2.UnitX * facing * Level.CellSize;
-                var bullet = new Bullet(game, sprite, position, Vector2.UnitX * facing);
-                game.AddEntity(bullet);
-
-                // Knockback.
-                DX = -facing * .05f;
+                SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
             }
 
             onGround = level.HasCollision(CX, CY + 1);
 
             base.Update(gameTime);
+
+            pistol.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch batch)
         {
             base.Draw(batch);
-
-            if (muzzleTimer >= .0)
-            {
-                var position = Position + Vector2.UnitX * facing * Level.CellSize;
-                muzzleSprite.Position = position;
-                muzzleSprite.Draw(batch);
-            }
+            pistol.Draw(batch);
         }
     }
 }

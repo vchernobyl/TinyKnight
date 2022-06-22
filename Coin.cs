@@ -1,16 +1,9 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace Gravity
+﻿namespace Gravity
 {
     public class Coin : Entity
     {
-        private readonly SoundEffect pickupSound;
-
-        public Coin(Game game)
-            : base(game, new Sprite(game.Content.Load<Texture2D>("Textures/Coin")))
+        public Coin(Game game) : base(game, new Sprite(Textures.Coin))
         {
-            pickupSound = game.Content.Load<SoundEffect>("SoundFX/Coin_Pickup");
         }
 
         public override void OnEntityCollision(Entity other)
@@ -18,7 +11,7 @@ namespace Gravity
             if (other is Hero hero)
             {
                 hero.PickupCoin();
-                pickupSound.Play();
+                SoundFX.CoinPickup.Play();
                 IsActive = false;
             }
         }

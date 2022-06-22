@@ -6,18 +6,16 @@ namespace Gravity
     public class Hud
     {
         private readonly Hero hero;
-        private readonly SpriteFont font;
 
-        public Hud(Game game)
+        public Hud(Hero hero)
         {
-            hero = game.Hero;
-            font = game.Content.Load<SpriteFont>("Fonts/Default");
+            this.hero = hero;
         }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.DrawString(font, $"Enemies destroyed: {hero.EnemiesKilled}", new Vector2(10f, 5f), Color.White);
-            batch.DrawString(font, $"Coins: {hero.Coins}", new Vector2(10f, 30f), Color.White);
+            batch.DrawString(Fonts.Default, $"Enemies destroyed: {hero.EnemiesKilled}", new Vector2(10f, 5f), Color.White);
+            batch.DrawString(Fonts.Default, $"Coins: {hero.Coins}", new Vector2(10f, 30f), Color.White);
         }
     }
 }

@@ -20,7 +20,6 @@ namespace Gravity
         private readonly GraphicsDeviceManager graphics;
 
         private SpriteBatch spriteBatch;
-        private Effect flash;
         private bool updatingEntities = false;
 
         public Game()
@@ -49,18 +48,18 @@ namespace Gravity
 
         protected override void LoadContent()
         {
+            Assets.Load(Content);
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            flash = Content.Load<Effect>("Effects/FlashEffect");
-            flash.Parameters["flash_color"].SetValue(Vector4.One);
+            Effects.Flash.Parameters["flash_color"].SetValue(Vector4.One);
 
             Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
 
-            var sprite = new Sprite(Content.Load<Texture2D>("Textures/character_0000"));
-            Hero = new Hero(this, sprite);
+            Hero = new Hero(this);
             Hero.SetCoordinates(50f, 100f);
 
-            Hud = new Hud(this);
+            Hud = new Hud(Hero);
 
             foreach (var position in Level.GetSpawnPositions())
             {
@@ -77,7 +76,7 @@ namespace Gravity
 
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // Entity updates
@@ -129,7 +128,7 @@ namespace Gravity
             spriteBatch.End();
 
             // Drawing with effect.
-            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: flash, transformMatrix: Camera.Transform);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: Effects.Flash, transformMatrix: Camera.Transform);
             {
                 foreach (var entity in Entities)
                 {

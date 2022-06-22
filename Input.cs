@@ -2,7 +2,7 @@
 
 namespace Gravity
 {
-    public class Keyboard
+    public class Input
     {
         private static KeyboardState current;
         private static KeyboardState previous;
@@ -10,7 +10,7 @@ namespace Gravity
         public static KeyboardState GetState()
         {
             previous = current;
-            current = Microsoft.Xna.Framework.Input.Keyboard.GetState();
+            current = Keyboard.GetState();
             return current;
         }
 

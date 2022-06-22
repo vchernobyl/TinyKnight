@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
@@ -7,30 +6,24 @@ namespace Gravity
     public class Bullet : Entity
     {
         // TODO: Feed the value via config file.
-        public const int Damage = 50;
+        public const int Damage = 40;
 
-        public Vector2 Velocity { get; init; }
+        public Vector2 Velocity;
 
         private readonly float spreadVariation = 0.025f;
-        private readonly float spread;
 
-        public Bullet(Game game, Sprite sprite, Vector2 position, Vector2 velocity)
-            : base(game, sprite)
+        public Bullet(Game game, Vector2 position, Vector2 velocity)
+            : base(game, new Sprite(Textures.Bullet))
         {
             SetCoordinates(position.X, position.Y);
-
             Velocity = velocity;
-
-            spread = Random.FloatRange(-spreadVariation, spreadVariation);
-
-            var sound = game.Content.Load<SoundEffect>("SoundFX/Pistol_Shot");
-            sound.Play(volume: .7f, pitch: 0f, pan: 0f);
+            Velocity.Y = Random.FloatRange(-spreadVariation, spreadVariation);
         }
 
         public override void Update(GameTime gameTime)
         {
             DX = Velocity.X;
-            DY = spread;
+            DY = Velocity.Y;
 
             if (Velocity.X < 0)
                 sprite.Flip = SpriteEffects.FlipHorizontally;
