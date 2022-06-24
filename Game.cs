@@ -11,7 +11,8 @@ namespace Gravity
         public Hud Hud { get; private set; }
         public Hero Hero { get; private set; }
 
-        public Camera Camera { get; } = new Camera();
+        public readonly Camera WorldCamera = new();
+        public readonly Camera UiCamera = new();
 
         public readonly List<Entity> Entities = new();
 
@@ -24,6 +25,8 @@ namespace Gravity
 
         public Game()
         {
+            WorldCamera.Origin = new Vector2(100f, 100f);
+
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -103,7 +106,8 @@ namespace Gravity
             foreach (var spawner in spawners)
                 spawner.Update(gameTime);
 
-            Camera.Update(gameTime);
+            WorldCamera.Update(gameTime);
+            UiCamera.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -112,8 +116,8 @@ namespace Gravity
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Regular drawing.
-            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: Camera.Transform);
+            // Entities.
+            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: WorldCamera.Transform);
             {
                 Level.Draw(spriteBatch);
 
@@ -122,19 +126,24 @@ namespace Gravity
 
                 foreach (var spawner in spawners)
                     spawner.Draw(spriteBatch);
-
-                Hud.Draw(spriteBatch);
             }
             spriteBatch.End();
 
-            // Drawing with effect.
-            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: Effects.Flash, transformMatrix: Camera.Transform);
+            // Effects.
+            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: Effects.Flash, transformMatrix: WorldCamera.Transform);
             {
                 foreach (var entity in Entities)
                 {
                     if (entity.IsFlashing)
                         entity.Draw(spriteBatch);
                 }
+            }
+            spriteBatch.End();
+
+            // UI.
+            spriteBatch.Begin(transformMatrix: UiCamera.Transform);
+            {
+                Hud.Draw(spriteBatch);
             }
             spriteBatch.End();
 

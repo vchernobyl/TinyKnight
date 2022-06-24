@@ -5,7 +5,7 @@ namespace Gravity
 {
     public class Camera
     {
-        public Vector2 Origin = new(100, 100);
+        public Vector2 Origin;
         public Matrix Transform => Matrix.CreateTranslation(Position.X, Position.Y, 0f);
 
         private Vector2 shakeOffset;

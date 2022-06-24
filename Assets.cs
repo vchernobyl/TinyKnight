@@ -18,6 +18,7 @@ namespace Gravity
     public static class Textures
     {
         public static Texture2D Bullet { get; private set; }
+        public static Texture2D Pellet { get; private set; }
         public static Texture2D MuzzleFlash { get; private set; }
         public static Texture2D Coin { get; private set; }
         public static Texture2D Hero { get; private set; }
@@ -25,6 +26,7 @@ namespace Gravity
         public static void Load(ContentManager content)
         {
             Bullet = content.Load<Texture2D>("Textures/bullet");
+            Pellet = content.Load<Texture2D>("Textures/Pellet");
             MuzzleFlash = content.Load<Texture2D>("Textures/Muzzle_Flash");
             Coin = content.Load<Texture2D>("Textures/Coin");
             Hero = content.Load<Texture2D>("Textures/character_0000");
@@ -34,6 +36,7 @@ namespace Gravity
     public static class SoundFX
     {
         public static SoundEffect PistolShot { get; private set; }
+        public static SoundEffect ShotgunShot { get; private set; }
         public static SoundEffect HeroJump { get; private set; }
         public static SoundEffect EnemyHit { get; private set; }
         public static SoundEffect CoinPickup { get; private set; }
@@ -41,6 +44,7 @@ namespace Gravity
         public static void Load(ContentManager content)
         {
             PistolShot = content.Load<SoundEffect>("SoundFX/Pistol_Shot");
+            ShotgunShot = content.Load<SoundEffect>("SoundFX/Shotgun_Shot");
             HeroJump = content.Load<SoundEffect>("SoundFX/Hero_Jump");
             EnemyHit = content.Load<SoundEffect>("SoundFX/Enemy_Hit");
             CoinPickup = content.Load<SoundEffect>("SoundFX/Coin_Pickup");

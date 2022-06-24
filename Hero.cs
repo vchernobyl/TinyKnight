@@ -11,13 +11,13 @@ namespace Gravity
         public uint EnemiesKilled { get; set; }
         public int Facing { get; private set; } = -1;
 
-        private readonly Pistol pistol;
+        private readonly Shotgun weapon;
 
         private bool onGround = false;
 
         public Hero(Game game) : base(game, new Sprite(Textures.Hero))
         {
-            pistol = new Pistol(game, this);
+            weapon = new Shotgun(game, this);
         }
 
         public void PickupCoin()
@@ -68,13 +68,13 @@ namespace Gravity
 
             base.Update(gameTime);
 
-            pistol.Update(gameTime);
+            weapon.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch batch)
         {
             base.Draw(batch);
-            pistol.Draw(batch);
+            weapon.Draw(batch);
         }
     }
 }

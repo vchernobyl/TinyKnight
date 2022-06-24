@@ -69,10 +69,10 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Bullet bullet)
+            if (other is Shotgun.Pellet bullet)
             {
                 other.IsActive = false;
-                Health -= Bullet.Damage;
+                Health -= bullet.Damage;
                 hitSound.Play(.5f, 0f, 0f);
 
                 Flash(duration: .1);
@@ -80,7 +80,7 @@ namespace Gravity
                 // Knockback
                 DX = Math.Sign(other.DX) * .085f;
 
-                game.Camera.Shake(.425f);
+                game.WorldCamera.Shake(.425f);
                 Thread.Sleep(10);
 
                 if (Health <= 0)

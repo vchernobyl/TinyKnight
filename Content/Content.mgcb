@@ -86,6 +86,12 @@
 /processorParam:Quality=Best
 /build:SoundFX/Pistol_Shot.wav
 
+#begin SoundFX/Shotgun_Shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Shotgun_Shot.wav
+
 #begin Textures/bullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -145,6 +151,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Muzzle_Flash.png
+
+#begin Textures/Pellet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Pellet.png
 
 #begin Textures/Rainbow.png
 /importer:TextureImporter
