@@ -11,13 +11,13 @@ namespace Gravity
         public uint EnemiesKilled { get; set; }
         public int Facing { get; private set; } = -1;
 
-        private readonly Shotgun weapon;
+        private readonly Pistol weapon;
 
         private bool onGround = false;
 
         public Hero(Game game) : base(game, new Sprite(Textures.Hero))
         {
-            weapon = new Shotgun(game, this);
+            weapon = new Pistol(game, this);
         }
 
         public void PickupCoin()

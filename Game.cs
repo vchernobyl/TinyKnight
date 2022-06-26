@@ -25,8 +25,6 @@ namespace Gravity
 
         public Game()
         {
-            WorldCamera.Origin = new Vector2(100f, 100f);
-
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -42,8 +40,8 @@ namespace Gravity
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 1020;
-            graphics.PreferredBackBufferHeight = 780;
+            graphics.PreferredBackBufferWidth = 1500;
+            graphics.PreferredBackBufferHeight = 900;
             graphics.ApplyChanges();
 
             base.Initialize();
@@ -58,6 +56,10 @@ namespace Gravity
             Effects.Flash.Parameters["flash_color"].SetValue(Vector4.One);
 
             Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
+
+            var centerX = graphics.PreferredBackBufferWidth / 2 - Level.Width / 2;
+            var centerY = graphics.PreferredBackBufferHeight / 2 - Level.Height / 2;
+            WorldCamera.Position = new Vector2(centerX, centerY);
 
             Hero = new Hero(this);
             Hero.SetCoordinates(50f, 100f);

@@ -9,16 +9,19 @@ namespace Gravity
     public class Level : IDisposable
     {
         public const int CellSize = 24;
+        public const bool ShowBounds = false;
 
         public readonly int Columns;
         public readonly int Rows;
+
+        public int Width => Columns * CellSize;
+        public int Height => Rows * CellSize;
+        public Point Size => new(Width, Height);
 
         private readonly Cell[,] cells;
         private readonly Texture2D cellTexture;
         private readonly Texture2D waterTexture;
         private readonly ContentManager content;
-
-        private bool showBounds = false;
 
         public Level(Texture2D levelMap, IServiceProvider serviceProvider)
         {
@@ -98,7 +101,7 @@ namespace Gravity
                 if (texture != null)
                     spriteBatch.Draw(texture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
-                if (showBounds)
+                if (ShowBounds)
                 {
                     var outline = cell.Bounds;
                     outline.Inflate(-1f, -1f);

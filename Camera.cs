@@ -5,11 +5,11 @@ namespace Gravity
 {
     public class Camera
     {
-        public Vector2 Origin;
-        public Matrix Transform => Matrix.CreateTranslation(Position.X, Position.Y, 0f);
+        public Vector2 Position;
+        public Matrix Transform => Matrix.CreateTranslation(ShakyPosition.X, ShakyPosition.Y, 0f);
 
         private Vector2 shakeOffset;
-        private Vector2 Position => Origin + shakeOffset;
+        private Vector2 ShakyPosition => Position + shakeOffset;
 
         private const float MaxOffset = 35f;
         private const float ShakeDecrease = 0.03f;

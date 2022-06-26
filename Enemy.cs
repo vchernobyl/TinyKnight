@@ -69,7 +69,7 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Shotgun.Pellet bullet)
+            if (other is Pistol.Bullet bullet)
             {
                 other.IsActive = false;
                 Health -= bullet.Damage;
@@ -90,8 +90,7 @@ namespace Gravity
                     startDeathAnimation = true;
                     Collision = false;
 
-                    var coin = new Coin(game);
-                    coin.SetCoordinates(XX, YY);
+                    var coin = new Coin(game) { Position = this.Position };
                     game.AddEntity(coin);
                 }
             }
