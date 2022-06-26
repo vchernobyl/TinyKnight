@@ -30,6 +30,9 @@ namespace Gravity
         public bool IsActive = true;
         public bool Collision = true;
 
+        public float FrictionX = .9f;
+        public float FrictionY = .9f;
+
         public Vector2 Position
         {
             get => new(XX, YY);
@@ -91,7 +94,7 @@ namespace Gravity
             }
 
             XR += DX;
-            DX *= .9f;
+            DX *= FrictionX;
 
             // Right side collision.
             if (level.HasCollision(CX + 1, CY) && XR >= .7f)
@@ -114,7 +117,7 @@ namespace Gravity
 
             YR += DY;
             DY += .05f;
-            DY *= .9f;
+            DY *= FrictionY;
 
             // Top collision.
             if (level.HasCollision(CX, CY - 1) && YR <= .3f)

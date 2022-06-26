@@ -1,13 +1,80 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Gravity
 {
     public class Shotgun
     {
-        // TODO: [Pellet] and [Bullet] classes are exactly the same. We can refactor it
-        // later into a [Projectile] class.
+        public class Cluster : Entity
+        {
+            public Vector2 Velocity;
+            public readonly int Damage;
+
+            private readonly Sprite muzzleSprite;
+            private readonly Timer deathTimer;
+
+            private double muzzleTime = 0;
+            private bool collided = false;
+
+            public Cluster(Game game, Vector2 position, Vector2 velocity, int damage)
+                : base(game, new Sprite(Textures.Bullet))
+            {
+                Position = position;
+                Velocity = velocity;
+                Damage = damage;
+                Collision = true;
+                DY = velocity.Y;
+                DX = velocity.X;
+                FrictionX = .96f;
+
+                muzzleSprite = new Sprite(Textures.MuzzleFlash) { LayerDepth = 0f };
+                deathTimer = new Timer(duration: .05, onEnd: () => { IsActive = false; });
+            }
+
+            public override void OnLevelCollision(Vector2 normal)
+            {
+                if (!collided)
+                {
+                    collided = true;
+                    muzzleTime = .05;
+                    deathTimer.Start();
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        var radians = Numerics.VectorToRadians(normal) + Random.FloatRange(-MathF.PI / 4f, MathF.PI / 4f);
+                        var velocity = Numerics.RadiansToVector(radians);
+                        game.AddEntity(new Pellet(game, Position, velocity, damage: 90));
+                    }
+                }
+            }
+
+            public override void Update(GameTime gameTime)
+            {
+                if (collided)
+                {
+                    DX = 0f;
+                    DY = 0f;
+                }
+                deathTimer.Update(gameTime);
+                muzzleTime = Math.Max(0, muzzleTime - gameTime.ElapsedGameTime.TotalSeconds);
+                sprite.Rotation = Numerics.VectorToRadians(new Vector2(DX, DY));
+                base.Update(gameTime);
+            }
+
+            public override void Draw(SpriteBatch batch)
+            {
+                if (muzzleTime > 0)
+                {
+                    muzzleSprite.Position = Position;
+                    muzzleSprite.Draw(batch);
+                }
+
+                base.Draw(batch);
+            }
+        }
+
         public class Pellet : Entity
         {
             public Vector2 Velocity;
@@ -16,7 +83,7 @@ namespace Gravity
             private uint collisions = 0;
 
             public Pellet(Game game, Vector2 position, Vector2 velocity, int damage)
-                : base(game, new Sprite(Textures.Bullet))
+                : base(game, new Sprite(Textures.Pellet))
             {
                 Position = position;
                 Velocity = velocity;
@@ -28,7 +95,7 @@ namespace Gravity
             {
                 Velocity = Vector2.Reflect(Velocity, normal);
 
-                if (collisions++ == 10)
+                if (collisions++ == 4)
                     IsActive = false;
             }
 
@@ -84,14 +151,19 @@ namespace Gravity
                 shotTimer = 0;
                 muzzleTimer = .0125;
 
-                for (int i = 0; i < 6; i++)
-                {
-                    var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
-                    var velocity = new Vector2(hero.Facing * ProjectileSpeed, Random.FloatRange(-.75f, .75f));
-                    var bullet = new Pellet(game, position, velocity, Damage);
-                    game.AddEntity(bullet);
-                    hero.Knockback(Knockback);
-                }
+                var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
+                var velocity = new Vector2(hero.Facing * ProjectileSpeed, -.35f);
+                var cluster = new Cluster(game, position, velocity, damage: 100);
+                game.AddEntity(cluster);
+
+                //for (int i = 0; i < 6; i++)
+                //{
+                //    var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
+                //    var velocity = new Vector2(hero.Facing * ProjectileSpeed, Random.FloatRange(-.75f, .75f));
+                //    var bullet = new Pellet(game, position, velocity, Damage);
+                //    game.AddEntity(bullet);
+                //    hero.Knockback(Knockback);
+                //}
 
                 SoundFX.ShotgunShot.Play(volume: .7f, 0f, 0f);
             }

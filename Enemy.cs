@@ -69,7 +69,7 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Pistol.Bullet bullet)
+            if (other is Shotgun.Pellet bullet)
             {
                 other.IsActive = false;
                 Health -= bullet.Damage;
