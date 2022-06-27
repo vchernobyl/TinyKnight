@@ -10,10 +10,11 @@ namespace Gravity
     {
         public int Health { get; set; } = 100;
 
+        public bool Alive => Health > 0;
+
         public event Action<Enemy>? OnDie;
 
         private readonly Spawner spawner;
-        private readonly SoundEffect hitSound;
 
         private int facing;
         private double deathTimer = 2.0;
@@ -23,7 +24,6 @@ namespace Gravity
             : base(game, sprite)
         {
             this.spawner = spawner;
-            hitSound = game.Content.Load<SoundEffect>("SoundFX/Enemy_Hit");
             facing = Numerics.PickOne(-1, 1);
         }
 
@@ -69,11 +69,10 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Shotgun.Pellet bullet)
+            if (other is IProjectile projectile)
             {
-                other.IsActive = false;
-                Health -= bullet.Damage;
-                hitSound.Play(.5f, 0f, 0f);
+                Health -= projectile.Damage;
+                SoundFX.EnemyHit.Play(.5f, 0f, 0f);
 
                 Flash(duration: .1);
 
@@ -86,7 +85,7 @@ namespace Gravity
                 if (Health <= 0)
                 {
                     DY = Random.FloatRange(-.4f, -.5f);
-                    DX = Math.Sign(bullet.Velocity.X) * Random.FloatRange(.1f, .2f);
+                    DX = Math.Sign(projectile.Velocity.X) * Random.FloatRange(.1f, .2f);
                     startDeathAnimation = true;
                     Collision = false;
 

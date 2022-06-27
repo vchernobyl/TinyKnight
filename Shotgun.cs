@@ -7,10 +7,10 @@ namespace Gravity
 {
     public class Shotgun
     {
-        public class Cluster : Entity
+        public class Cluster : Entity, IProjectile
         {
-            public Vector2 Velocity;
-            public readonly int Damage;
+            public Vector2 Velocity { get; set; }
+            public int Damage { get; set; }
 
             private readonly Sprite muzzleSprite;
             private readonly Timer deathTimer;
@@ -33,7 +33,22 @@ namespace Gravity
                 deathTimer = new Timer(duration: .05, onEnd: () => { IsActive = false; });
             }
 
+            public override void OnEntityCollision(Entity other)
+            {
+                if (other is Enemy enemy && enemy.Alive)
+                {
+                    // TODO: Call enemy.Hurt() instead.
+                    enemy.OnEntityCollision(this);
+                    DischargeCluster(-Vector2.UnitY);
+                }
+            }
+
             public override void OnLevelCollision(Vector2 normal)
+            {
+                DischargeCluster(normal);
+            }
+
+            private void DischargeCluster(Vector2 normal)
             {
                 if (!collided)
                 {
@@ -75,20 +90,28 @@ namespace Gravity
             }
         }
 
-        public class Pellet : Entity
+        public class Pellet : Entity, IProjectile
         {
-            public Vector2 Velocity;
-            public readonly int Damage;
+            public Vector2 Velocity { get; set; }
+            public int Damage { get; set; }
 
             private uint collisions = 0;
 
             public Pellet(Game game, Vector2 position, Vector2 velocity, int damage)
-                : base(game, new Sprite(Textures.Pellet))
+                : base(game, new Sprite(Textures.Bullet))
             {
                 Position = position;
                 Velocity = velocity;
                 Damage = damage;
                 Collision = true;
+            }
+
+            public override void OnEntityCollision(Entity other)
+            {
+                if (other is Enemy && other.Collision)
+                {
+                    IsActive = false;
+                }
             }
 
             public override void OnLevelCollision(Vector2 normal)
@@ -103,6 +126,9 @@ namespace Gravity
             {
                 DX = Velocity.X;
                 DY = Velocity.Y;
+
+                sprite.Rotation = Numerics.VectorToRadians(new Vector2(DX, DY));
+
                 base.Update(gameTime);
             }
 
@@ -156,16 +182,8 @@ namespace Gravity
                 var cluster = new Cluster(game, position, velocity, damage: 100);
                 game.AddEntity(cluster);
 
-                //for (int i = 0; i < 6; i++)
-                //{
-                //    var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
-                //    var velocity = new Vector2(hero.Facing * ProjectileSpeed, Random.FloatRange(-.75f, .75f));
-                //    var bullet = new Pellet(game, position, velocity, Damage);
-                //    game.AddEntity(bullet);
-                //    hero.Knockback(Knockback);
-                //}
-
                 SoundFX.ShotgunShot.Play(volume: .7f, 0f, 0f);
+                game.WorldCamera.Shake(trauma: .465f);
             }
         }
 

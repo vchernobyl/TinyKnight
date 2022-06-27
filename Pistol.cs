@@ -6,12 +6,10 @@ namespace Gravity
 {
     public class Pistol
     {
-        // TODO: [Pellet] and [Bullet] classes are exactly the same. We can refactor it
-        // later into a [Projectile] class.
-        public class Bullet : Entity
+        public class Bullet : Entity, IProjectile
         {
-            public readonly Vector2 Velocity;
-            public readonly int Damage;
+            public Vector2 Velocity { get; set; }
+            public int Damage { get; set; }
 
             public Bullet(Game game, Vector2 position, Vector2 velocity, int damage)
                 : base(game, new Sprite(Textures.Bullet))
@@ -19,6 +17,14 @@ namespace Gravity
                 Position = position;
                 Velocity = velocity;
                 Damage = damage;
+            }
+
+            public override void OnEntityCollision(Entity other)
+            {
+                if (other is Enemy && other.Collision)
+                {
+                    IsActive = false;
+                }
             }
 
             public override void Update(GameTime gameTime)
