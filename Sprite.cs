@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 
 namespace Gravity
 {
@@ -10,19 +9,9 @@ namespace Gravity
         public Vector2 Scale { get; set; }
         public Vector2 Origin { get; set; }
         public float Rotation { get; set; }
+        public float LayerDepth { get; set; }
         public Rectangle Source { get; set; }
         public SpriteEffects Flip { get; set; }
-
-        private float layerDepth;
-        public float LayerDepth
-        {
-            get { return layerDepth; }
-            set
-            {
-                Debug.Assert(value >= 0f && layerDepth <= 1f);
-                layerDepth = value;
-            }
-        }
 
         private readonly Texture2D texture;
 

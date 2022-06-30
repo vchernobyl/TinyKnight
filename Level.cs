@@ -9,7 +9,7 @@ namespace Gravity
     public class Level : IDisposable
     {
         public const int CellSize = 24;
-        public const bool ShowBounds = false;
+        public const bool ShowBounds = true;
 
         public readonly int Columns;
         public readonly int Rows;
@@ -22,6 +22,8 @@ namespace Gravity
         private readonly Texture2D cellTexture;
         private readonly Texture2D waterTexture;
         private readonly ContentManager content;
+
+        private readonly SquareGrid grid;
 
         public Level(Texture2D levelMap, IServiceProvider serviceProvider)
         {
@@ -47,6 +49,8 @@ namespace Gravity
             Rows = levelMap.Height;
             cells = new Cell[Columns, Rows];
 
+            grid = new SquareGrid(Columns, Rows);
+
             // Generate level out of the image data.
             for (int y = 0; y < Rows; y++)
             {
@@ -61,7 +65,12 @@ namespace Gravity
                         var _ when pixel == Color.Yellow => Cell.CellType.Spawn,
                         _ => throw new ArgumentException($"Grid cell color ({pixel}) not supported!"),
                     };
-                    cells[x, y] = new Cell(x, y, type, type == Cell.CellType.Wall);
+
+                    var cell = new Cell(x, y, type, type == Cell.CellType.Wall);
+                    cells[x, y] = cell;
+
+                    if (cell.Solid)
+                        grid.Solids.Add(cell.Location);
                 }
             }
         }
@@ -103,9 +112,10 @@ namespace Gravity
 
                 if (ShowBounds)
                 {
+                    var color = grid.Passable(cell.Location) ? Color.White : Color.Red;
                     var outline = cell.Bounds;
                     outline.Inflate(-1f, -1f);
-                    spriteBatch.DrawRectangleOutline(outline, Color.White, 1f);
+                    spriteBatch.DrawRectangleOutline(outline, color, 1f);
                 }
             }
         }

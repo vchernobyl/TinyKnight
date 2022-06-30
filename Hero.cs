@@ -11,13 +11,17 @@ namespace Gravity
         public uint EnemiesKilled { get; set; }
         public int Facing { get; private set; } = -1;
 
-        private readonly Shotgun weapon;
+        private readonly IWeapon Pistol;
+        private readonly IWeapon Shotgun;
 
+        private IWeapon weapon;
         private bool onGround = false;
 
         public Hero(Game game) : base(game, new Sprite(Textures.Hero))
         {
-            weapon = new Shotgun(game, this);
+            Pistol = new Pistol(game, this);
+            Shotgun = new Shotgun(game, this);
+            weapon = Pistol;
         }
 
         public void PickupCoin()
@@ -45,6 +49,7 @@ namespace Gravity
             var speed = .15f;
             var jump = -1f;
 
+            // Movement.
             if (Input.IsKeyDown(Keys.Left))
             {
                 sprite.Flip = SpriteEffects.None;
@@ -57,12 +62,17 @@ namespace Gravity
                 DX = speed;
                 Facing = 1;
             }
-
             if (Input.WasKeyPressed(Keys.Up) && onGround)
             {
                 DY = jump;
                 SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
             }
+
+            // Weapon switching.
+            if (Input.WasKeyPressed(Keys.D1))
+                weapon = Pistol;
+            if (Input.WasKeyPressed(Keys.D2))
+                weapon = Shotgun;
 
             onGround = level.HasCollision(CX, CY + 1);
 

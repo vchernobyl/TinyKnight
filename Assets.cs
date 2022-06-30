@@ -22,6 +22,8 @@ namespace Gravity
         public static Texture2D MuzzleFlash { get; private set; }
         public static Texture2D Coin { get; private set; }
         public static Texture2D Hero { get; private set; }
+        public static Texture2D Enemy { get; private set; }
+        public static Texture2D Flyer { get; private set; }
 
         public static void Load(ContentManager content)
         {
@@ -30,6 +32,8 @@ namespace Gravity
             MuzzleFlash = content.Load<Texture2D>("Textures/Muzzle_Flash");
             Coin = content.Load<Texture2D>("Textures/Coin");
             Hero = content.Load<Texture2D>("Textures/character_0000");
+            Enemy = content.Load<Texture2D>("Textures/character_0015");
+            Flyer = content.Load<Texture2D>("Textures/Flyer");
         }
     }
 

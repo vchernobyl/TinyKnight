@@ -32,6 +32,7 @@ namespace Gravity
 
         public float FrictionX = .9f;
         public float FrictionY = .9f;
+        public float Gravity = .05f;
 
         public Vector2 Position
         {
@@ -116,7 +117,7 @@ namespace Gravity
             while (XR < 0) { XR++; CX--; }
 
             YR += DY;
-            DY += .05f;
+            DY += Gravity;
             DY *= FrictionY;
 
             // Top collision.

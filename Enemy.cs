@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Threading;
@@ -20,8 +19,8 @@ namespace Gravity
         private double deathTimer = 2.0;
         private bool startDeathAnimation = false;
 
-        public Enemy(Game game, Sprite sprite, Spawner spawner)
-            : base(game, sprite)
+        public Enemy(Game game, Spawner spawner) 
+            : base(game, new Sprite(Textures.Enemy))
         {
             this.spawner = spawner;
             facing = Numerics.PickOne(-1, 1);

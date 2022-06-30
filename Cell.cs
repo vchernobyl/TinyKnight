@@ -19,6 +19,7 @@ namespace Gravity
         public bool Solid { get; set; }
 
         public Rectangle Bounds => new(X * Level.CellSize, Y * Level.CellSize, Level.CellSize, Level.CellSize);
+        public Point Location => new(X, Y);
 
         public Cell(int x, int y, CellType type, bool solid)
         {
