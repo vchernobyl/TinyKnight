@@ -15,7 +15,7 @@ namespace Gravity
     // altogether and just pass Level to the A* algorithm.
     public class SquareGrid : IWeightedGraph<Point>
     {
-        public static readonly Point[] Directions =
+        private static readonly Point[] Directions =
         {
             new Point(1, 0),
             new Point(0, -1),
@@ -62,29 +62,51 @@ namespace Gravity
         }
     }
 
-    public class AStarSearch
+    public class Pathfinding
     {
-        public Dictionary<Point, Point> cameFrom = new();
-        public Dictionary<Point, int> costSoFar = new();
+        private readonly Dictionary<Point, Point> cameFrom = new();
+        private readonly Dictionary<Point, int> costSoFar = new();
+        private readonly List<Point> path = new();
+        private readonly IWeightedGraph<Point> graph;
 
-        public static int Heuristic(Point a, Point b)
+        public Pathfinding(IWeightedGraph<Point> graph)
+        {
+            this.graph = graph;
+        }
+
+        private static int Heuristic(Point a, Point b)
         {
             return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
         }
 
-        public AStarSearch(IWeightedGraph<Point> graph, Point start, Point goal)
+        public List<Point> FindPath(Point start, Point goal)
         {
-            var path = new PriorityQueue<Point, int>();
-            path.Enqueue(start, 0);
+            cameFrom.Clear();
+            costSoFar.Clear();
+            path.Clear();
+
+            var frontier = new PriorityQueue<Point, int>();
+            frontier.Enqueue(start, 0);
 
             cameFrom[start] = start;
             costSoFar[start] = 0;
 
-            while (path.Count > 0)
+            while (frontier.Count > 0)
             {
-                var current = path.Dequeue();
-                if (current.Equals(goal))
+                var current = frontier.Dequeue();
+
+                // Reconstruct path and terminate.
+                if (current == goal)
+                {
+                    while (current != start)
+                    {
+                        path.Add(current);
+                        current = cameFrom[current];
+                    }
+                    path.Add(start);
+                    path.Reverse();
                     break;
+                }
 
                 foreach (var next in graph.Neighbours(current))
                 {
@@ -93,11 +115,13 @@ namespace Gravity
                     {
                         costSoFar[next] = newCost;
                         var priority = newCost + Heuristic(next, goal);
-                        path.Enqueue(next, priority);
+                        frontier.Enqueue(next, priority);
                         cameFrom[next] = current;
                     }
                 }
             }
+
+            return path;
         }
     }
 }

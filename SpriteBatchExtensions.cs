@@ -17,11 +17,17 @@ namespace Gravity
             return pixel;
         }
 
+        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rectangle, Color color)
+        {
+            spriteBatch.Draw(BlankPixel(spriteBatch), rectangle, color);
+        }
+
         public static void DrawRectangle(this SpriteBatch spriteBatch, Point position, Point size, Color color)
         {
             spriteBatch.Draw(BlankPixel(spriteBatch), new Rectangle(position, size), color);
         }
 
+        // TODO: Why is this taking Point instead of Vector2? We should probably allow of drawing in floating point precision.
         public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Point position, Point size, Color color, float thickenss = 1f)
         {
             var topRight = new Vector2(position.X + size.X, position.Y);

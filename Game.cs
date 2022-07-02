@@ -62,7 +62,7 @@ namespace Gravity
             WorldCamera.Position = new Vector2(centerX, centerY);
 
             Hero = new Hero(this);
-            Hero.SetCoordinates(50f, 100f);
+            Hero.SetCoordinates(50f, 200f);
 
             Hud = new Hud(Hero);
 
@@ -78,7 +78,7 @@ namespace Gravity
 
             AddEntity(Hero);
 
-            var flyer = new Flyer(this) { Position = new Vector2(200f, 200f) };
+            var flyer = new Flyer(this);
             AddEntity(flyer);
         }
 

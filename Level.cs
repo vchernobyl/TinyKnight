@@ -13,17 +13,17 @@ namespace Gravity
 
         public readonly int Columns;
         public readonly int Rows;
+        public readonly SquareGrid Grid;
 
         public int Width => Columns * CellSize;
         public int Height => Rows * CellSize;
         public Point Size => new(Width, Height);
 
-        private readonly Cell[,] cells;
+        public readonly Cell[,] Cells;
         private readonly Texture2D cellTexture;
         private readonly Texture2D waterTexture;
         private readonly ContentManager content;
 
-        private readonly SquareGrid grid;
 
         public Level(Texture2D levelMap, IServiceProvider serviceProvider)
         {
@@ -47,9 +47,9 @@ namespace Gravity
 
             Columns = levelMap.Width;
             Rows = levelMap.Height;
-            cells = new Cell[Columns, Rows];
+            Cells = new Cell[Columns, Rows];
 
-            grid = new SquareGrid(Columns, Rows);
+            Grid = new SquareGrid(Columns, Rows);
 
             // Generate level out of the image data.
             for (int y = 0; y < Rows; y++)
@@ -67,10 +67,10 @@ namespace Gravity
                     };
 
                     var cell = new Cell(x, y, type, type == Cell.CellType.Wall);
-                    cells[x, y] = cell;
+                    Cells[x, y] = cell;
 
                     if (cell.Solid)
-                        grid.Solids.Add(cell.Location);
+                        Grid.Solids.Add(cell.Location);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace Gravity
         public List<Point> GetSpawnPositions()
         {
             var positions = new List<Point>();
-            foreach (var cell in cells)
+            foreach (var cell in Cells)
             {
                 if (cell.Type == Cell.CellType.Spawn)
                     positions.Add(cell.Bounds.Center);
@@ -93,12 +93,12 @@ namespace Gravity
 
         public bool HasCollision(int cx, int cy)
         {
-            return !IsWithinBounds(cx, cy) || cells[cx, cy].Solid;
+            return !IsWithinBounds(cx, cy) || Cells[cx, cy].Solid;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var cell in cells)
+            foreach (var cell in Cells)
             {
                 var texture = cell.Type switch
                 {
@@ -112,7 +112,7 @@ namespace Gravity
 
                 if (ShowBounds)
                 {
-                    var color = grid.Passable(cell.Location) ? Color.White : Color.Red;
+                    var color = Grid.Passable(cell.Location) ? Color.White : Color.Red;
                     var outline = cell.Bounds;
                     outline.Inflate(-1f, -1f);
                     spriteBatch.DrawRectangleOutline(outline, color, 1f);
@@ -120,7 +120,7 @@ namespace Gravity
             }
         }
 
-        public Cell this[int col, int row] => cells[col, row];
+        public Cell this[int col, int row] => Cells[col, row];
 
         public void Dispose()
         {
