@@ -4,7 +4,7 @@ using System;
 
 namespace Gravity
 {
-    public class Cluster : Entity, IProjectile
+    public class Cluster : Entity
     {
         public Vector2 Velocity { get; set; }
         public int Damage { get; set; }
@@ -32,10 +32,12 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Enemy enemy && enemy.Alive)
+            if (other is IDamageable enemy)
             {
-                // TODO: Call enemy.Hurt() instead.
-                enemy.OnEntityCollision(this);
+                enemy.ReceiveDamage(Damage);
+
+                // TODO: Only discharge cluster if hit against enemy which is stil alive,
+                // not its corpse.
                 DischargeCluster(-Vector2.UnitY);
             }
         }

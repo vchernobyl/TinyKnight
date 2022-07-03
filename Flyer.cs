@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
-    public class Flyer : Entity
+    public class Flyer : Entity, IDamageable
     {
         private readonly Hero hero;
         private readonly Pathfinding pathfinding;
+        private readonly bool showNavigation = false;
 
         private List<Vector2> path = new();
         private int pointIndex = 0;
@@ -52,21 +53,30 @@ namespace Gravity
 
         public override void Draw(SpriteBatch batch)
         {
-            for (int i = 0; i < path.Count - 1; i++)
-                batch.DrawLine(path[i], path[i + 1], Color.DarkBlue, thickness: 2f);
-
-            foreach (var point in path)
+            if (showNavigation)
             {
-                var rectangle = new Rectangle(
-                    (int)point.X - Level.CellSize / 2,
-                    (int)point.Y - Level.CellSize / 2,
-                    Level.CellSize,
-                    Level.CellSize);
-                rectangle.Inflate(-9.5f, -9.5f);
-                batch.DrawRectangle(rectangle, Color.Blue);
+                for (int i = 0; i < path.Count - 1; i++)
+                    batch.DrawLine(path[i], path[i + 1], Color.DarkBlue, thickness: 2f);
+
+                foreach (var point in path)
+                {
+                    var rectangle = new Rectangle(
+                        (int)point.X - Level.CellSize / 2,
+                        (int)point.Y - Level.CellSize / 2,
+                        Level.CellSize,
+                        Level.CellSize);
+                    rectangle.Inflate(-9.5f, -9.5f);
+                    batch.DrawRectangle(rectangle, Color.Blue);
+                }
             }
 
             base.Draw(batch);
+        }
+
+        public void ReceiveDamage(int amount)
+        {
+            Flash(duration: .1f);
+            game.WorldCamera.Shake(.5f);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Gravity
 {
-    public class Enemy : Entity
+    public class Enemy : Entity, IDamageable
     {
         public int Health { get; set; } = 100;
 
@@ -66,38 +66,41 @@ namespace Gravity
             base.Update(gameTime);
         }
 
-        public override void OnEntityCollision(Entity other)
-        {
-            if (other is IProjectile projectile)
-            {
-                Health -= projectile.Damage;
-                SoundFX.EnemyHit.Play(.5f, 0f, 0f);
-
-                Flash(duration: .1);
-
-                // Knockback
-                DX = Math.Sign(other.DX) * .085f;
-
-                game.WorldCamera.Shake(.425f);
-                Thread.Sleep(10);
-
-                if (Health <= 0)
-                {
-                    DY = Random.FloatRange(-.4f, -.5f);
-                    DX = Math.Sign(projectile.Velocity.X) * Random.FloatRange(.1f, .2f);
-                    startDeathAnimation = true;
-                    Collision = false;
-
-                    var coin = new Coin(game) { Position = this.Position };
-                    game.AddEntity(coin);
-                }
-            }
-        }
-
         public override void OnDestroy()
         {
             game.Hero.EnemiesKilled++;
             OnDie?.Invoke(this);
+        }
+
+        public void ReceiveDamage(int amount)
+        {
+            // Don't take damage if entity is dead or collision is disabled.
+            if (Health <= 0 || !Collision)
+                return;
+
+            Health -= amount;
+            SoundFX.EnemyHit.Play(.5f, 0f, 0f);
+
+            Flash(duration: .1);
+
+            // TODO: Apply knockbar from the projectile itself.
+            // DX = Math.Sign(other.DX) * .085f;
+
+            game.WorldCamera.Shake(.425f);
+            Thread.Sleep(10);
+
+            if (Health <= 0)
+            {
+                DY = Random.FloatRange(-.4f, -.5f);
+
+                // TODO: Apply horizontal force from projectile itself.
+                // DX = Math.Sign(projectile.Velocity.X) * Random.FloatRange(.1f, .2f);
+                startDeathAnimation = true;
+                Collision = false;
+
+                var coin = new Coin(game) { Position = this.Position };
+                game.AddEntity(coin);
+            }
         }
     }
 }

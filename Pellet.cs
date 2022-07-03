@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
-    public class Pellet : Entity, IProjectile
+    public class Pellet : Entity
     {
         public Vector2 Velocity { get; set; }
         public int Damage { get; set; }
@@ -21,10 +21,8 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Enemy && other.Collision)
-            {
-                IsActive = false;
-            }
+            if (other is IDamageable enemy)
+                enemy.ReceiveDamage(Damage);
         }
 
         public override void OnLevelCollision(Vector2 normal)
