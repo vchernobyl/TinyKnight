@@ -79,6 +79,22 @@ namespace Gravity
             return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
         }
 
+        private static List<Point> SimplifyPath(List<Point> path)
+        {
+            var simplified = new List<Point>();
+            var directionOld = Point.Zero;
+
+            for (int i = 1; i < path.Count; i++)
+            {
+                var directionNew = path[i - 1] - path[i];
+                if (directionNew != directionOld)
+                    simplified.Add(path[i]);
+                directionOld = directionNew;
+            }
+
+            return simplified;
+        }
+
         public List<Point> FindPath(Point start, Point goal)
         {
             cameFrom.Clear();
@@ -121,7 +137,7 @@ namespace Gravity
                 }
             }
 
-            return path;
+            return SimplifyPath(path);
         }
     }
 }

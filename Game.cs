@@ -77,9 +77,7 @@ namespace Gravity
             }
 
             AddEntity(Hero);
-
-            var flyer = new Flyer(this);
-            AddEntity(flyer);
+            AddEntity(new Flyer(this) {Position = new Vector2(800f, 250f) });
         }
 
         protected override void Update(GameTime gameTime)

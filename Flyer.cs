@@ -10,17 +10,38 @@ namespace Gravity
         private readonly Pathfinding pathfinding;
 
         private List<Point> path = new();
+        private int pointIndex = 0;
+        private double timer = 0;
 
         public Flyer(Game game) : base(game, new Sprite(Textures.Flyer))
         {
             hero = game.Hero;
-            Position = new Vector2(300f, 200f);
             pathfinding = new Pathfinding(level.Grid);
         }
 
         public override void Update(GameTime gameTime)
         {
-            path = pathfinding.FindPath(new Point(CX, CY), new Point(hero.CX, hero.CY));
+            ///timer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (path.Count == 0 || timer >= .15)
+            {
+                timer = 0;
+                pointIndex = 0;
+                path = pathfinding.FindPath(new Point(CX, CY), new Point(hero.CX, hero.CY));
+            }
+    
+            if (path.Count > 0 && pointIndex < path.Count)
+            {
+                var currentPoint = path[pointIndex];
+                if (currentPoint == new Point(CX, CY))
+                    pointIndex++;
+
+                var movement = currentPoint - new Point(CX, CY);
+                movement.ToVector2().Normalize();
+                DX = movement.X * .05f;
+                DY = movement.Y * .05f;
+            }
+
             base.Update(gameTime);
         }
 
@@ -31,7 +52,7 @@ namespace Gravity
                 var position = new Point(node.X * Level.CellSize, node.Y * Level.CellSize);
                 var size = new Point(Level.CellSize, Level.CellSize);
                 var rect = new Rectangle(position, size);
-                rect.Inflate(-9f, -9f);
+                rect.Inflate(-10f, -10f);
                 batch.DrawRectangle(rect, Color.LawnGreen);
             }
 
