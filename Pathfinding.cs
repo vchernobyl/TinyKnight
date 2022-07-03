@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Gravity
 {
@@ -66,7 +67,7 @@ namespace Gravity
     {
         private readonly Dictionary<Point, Point> cameFrom = new();
         private readonly Dictionary<Point, int> costSoFar = new();
-        private readonly List<Point> path = new();
+        private readonly List<Vector2> path = new();
         private readonly IWeightedGraph<Point> graph;
 
         public Pathfinding(IWeightedGraph<Point> graph)
@@ -79,10 +80,10 @@ namespace Gravity
             return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
         }
 
-        private static List<Point> SimplifyPath(List<Point> path)
+        private static List<Vector2> SimplifyPath(List<Vector2> path)
         {
-            var simplified = new List<Point>();
-            var directionOld = Point.Zero;
+            var simplified = new List<Vector2>();
+            var directionOld = Vector2.Zero;
 
             for (int i = 1; i < path.Count; i++)
             {
@@ -92,31 +93,42 @@ namespace Gravity
                 directionOld = directionNew;
             }
 
+
+            var last = path.Last();
+            if (!simplified.Contains(last))
+                simplified.Add(path.Last());
+
             return simplified;
         }
 
-        public List<Point> FindPath(Point start, Point goal)
+        public List<Vector2> FindPath(Vector2 start, Vector2 goal)
         {
             cameFrom.Clear();
             costSoFar.Clear();
             path.Clear();
 
-            var frontier = new PriorityQueue<Point, int>();
-            frontier.Enqueue(start, 0);
+            var startNode = new Point((int)start.X / Level.CellSize, (int)start.Y / Level.CellSize);
+            var goalNode = new Point((int)goal.X / Level.CellSize, (int)goal.Y / Level.CellSize);
 
-            cameFrom[start] = start;
-            costSoFar[start] = 0;
+            var frontier = new PriorityQueue<Point, int>();
+            frontier.Enqueue(startNode, 0);
+
+            cameFrom[startNode] = startNode;
+            costSoFar[startNode] = 0;
 
             while (frontier.Count > 0)
             {
                 var current = frontier.Dequeue();
 
                 // Reconstruct path and terminate.
-                if (current == goal)
+                if (current == goalNode)
                 {
-                    while (current != start)
+                    while (current != startNode)
                     {
-                        path.Add(current);
+                        var waypoint = new Vector2(
+                            current.X * Level.CellSize + Level.CellSize / 2f,
+                            current.Y * Level.CellSize + Level.CellSize / 2f);
+                        path.Add(waypoint);
                         current = cameFrom[current];
                     }
                     path.Add(start);
@@ -130,7 +142,7 @@ namespace Gravity
                     if (!costSoFar.ContainsKey(next) || newCost < costSoFar[next])
                     {
                         costSoFar[next] = newCost;
-                        var priority = newCost + Heuristic(next, goal);
+                        var priority = newCost + Heuristic(next, goalNode);
                         frontier.Enqueue(next, priority);
                         cameFrom[next] = current;
                     }

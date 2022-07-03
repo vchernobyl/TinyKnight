@@ -9,35 +9,40 @@ namespace Gravity
         private readonly Hero hero;
         private readonly Pathfinding pathfinding;
 
-        private List<Point> path = new();
+        private List<Vector2> path = new();
         private int pointIndex = 0;
         private double timer = 0;
 
         public Flyer(Game game) : base(game, new Sprite(Textures.Flyer))
         {
+            Gravity = 0f;
             hero = game.Hero;
             pathfinding = new Pathfinding(level.Grid);
         }
 
         public override void Update(GameTime gameTime)
         {
-            ///timer += gameTime.ElapsedGameTime.TotalSeconds;
+            timer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (path.Count == 0 || timer >= .15)
+            if (path.Count == 0 || timer >= 1.5)
             {
                 timer = 0;
                 pointIndex = 0;
-                path = pathfinding.FindPath(new Point(CX, CY), new Point(hero.CX, hero.CY));
+                path = pathfinding.FindPath(Position, hero.Position);
             }
-    
+
             if (path.Count > 0 && pointIndex < path.Count)
             {
                 var currentPoint = path[pointIndex];
-                if (currentPoint == new Point(CX, CY))
+
+                // Move to the towards next waypoint if close enough to the current target waypoint.
+                if (Vector2.Distance(Position, currentPoint) < 10f)
                     pointIndex++;
 
-                var movement = currentPoint - new Point(CX, CY);
-                movement.ToVector2().Normalize();
+                var movement = currentPoint - Position;
+                if (movement != Vector2.Zero)
+                    movement.Normalize();
+
                 DX = movement.X * .05f;
                 DY = movement.Y * .05f;
             }
@@ -47,17 +52,21 @@ namespace Gravity
 
         public override void Draw(SpriteBatch batch)
         {
-            foreach (var node in path)
+            for (int i = 0; i < path.Count - 1; i++)
+                batch.DrawLine(path[i], path[i + 1], Color.DarkBlue, thickness: 2f);
+
+            foreach (var point in path)
             {
-                var position = new Point(node.X * Level.CellSize, node.Y * Level.CellSize);
-                var size = new Point(Level.CellSize, Level.CellSize);
-                var rect = new Rectangle(position, size);
-                rect.Inflate(-10f, -10f);
-                batch.DrawRectangle(rect, Color.LawnGreen);
+                var rectangle = new Rectangle(
+                    (int)point.X - Level.CellSize / 2,
+                    (int)point.Y - Level.CellSize / 2,
+                    Level.CellSize,
+                    Level.CellSize);
+                rectangle.Inflate(-9.5f, -9.5f);
+                batch.DrawRectangle(rectangle, Color.Blue);
             }
 
             base.Draw(batch);
         }
     }
 }
-
