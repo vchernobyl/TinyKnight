@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
-    public class Flyer : Entity, IDamageable
+    public class Flyer : Damageable
     {
         private readonly Hero hero;
         private readonly Pathfinding pathfinding;
@@ -14,7 +14,7 @@ namespace Gravity
         private int pointIndex = 0;
         private double timer = 0;
 
-        public Flyer(Game game) : base(game, new Sprite(Textures.Flyer))
+        public Flyer(Game game) : base(game, new Sprite(Textures.Flyer), health: 100)
         {
             Gravity = 0f;
             hero = game.Hero;
@@ -73,10 +73,10 @@ namespace Gravity
             base.Draw(batch);
         }
 
-        public void ReceiveDamage(int amount)
+        public override void Die()
         {
-            Flash(duration: .1f);
-            game.WorldCamera.Shake(.5f);
+            game.Hero.EnemiesKilled++;
+            IsActive = false;
         }
     }
 }

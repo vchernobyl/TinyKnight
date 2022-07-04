@@ -21,8 +21,11 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is IDamageable enemy)
+            if (other is Damageable enemy && enemy.IsAlive)
+            {
                 enemy.ReceiveDamage(Damage);
+                IsActive = false;
+            }
         }
 
         public override void OnLevelCollision(Vector2 normal)

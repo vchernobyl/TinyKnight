@@ -1,26 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Threading;
 
 namespace Gravity
 {
-    public class Enemy : Entity, IDamageable
+    public class Enemy : Damageable
     {
-        public int Health { get; set; } = 100;
-
-        public bool Alive => Health > 0;
-
-        public event Action<Enemy>? OnDie;
-
         private readonly Spawner spawner;
 
         private int facing;
         private double deathTimer = 2.0;
         private bool startDeathAnimation = false;
 
-        public Enemy(Game game, Spawner spawner) 
-            : base(game, new Sprite(Textures.Enemy))
+        public Enemy(Game game, Spawner spawner)
+            : base(game, new Sprite(Textures.Enemy), health: 100)
         {
             this.spawner = spawner;
             facing = Numerics.PickOne(-1, 1);
@@ -66,41 +59,15 @@ namespace Gravity
             base.Update(gameTime);
         }
 
-        public override void OnDestroy()
+        public override void Die()
         {
             game.Hero.EnemiesKilled++;
-            OnDie?.Invoke(this);
-        }
 
-        public void ReceiveDamage(int amount)
-        {
-            // Don't take damage if entity is dead or collision is disabled.
-            if (Health <= 0 || !Collision)
-                return;
+            DY = Random.FloatRange(-.4f, -.5f);
+            startDeathAnimation = true;
+            Collision = false;
 
-            Health -= amount;
-            SoundFX.EnemyHit.Play(.5f, 0f, 0f);
-
-            Flash(duration: .1);
-
-            // TODO: Apply knockbar from the projectile itself.
-            // DX = Math.Sign(other.DX) * .085f;
-
-            game.WorldCamera.Shake(.425f);
-            Thread.Sleep(10);
-
-            if (Health <= 0)
-            {
-                DY = Random.FloatRange(-.4f, -.5f);
-
-                // TODO: Apply horizontal force from projectile itself.
-                // DX = Math.Sign(projectile.Velocity.X) * Random.FloatRange(.1f, .2f);
-                startDeathAnimation = true;
-                Collision = false;
-
-                var coin = new Coin(game) { Position = this.Position };
-                game.AddEntity(coin);
-            }
+            game.AddEntity(new Coin(game) { Position = Position });
         }
     }
 }

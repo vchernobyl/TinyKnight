@@ -32,13 +32,11 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is IDamageable enemy)
+            if (other is Damageable enemy && enemy.IsAlive)
             {
                 enemy.ReceiveDamage(Damage);
-
-                // TODO: Only discharge cluster if hit against enemy which is stil alive,
-                // not its corpse.
                 DischargeCluster(-Vector2.UnitY);
+                IsActive = false;
             }
         }
 
