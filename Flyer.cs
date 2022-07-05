@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
-    public class Flyer : Damageable
+    public class Flyer : Damageable, IEnemy
     {
         private readonly Hero hero;
         private readonly Pathfinding pathfinding;
         private readonly NavigationGrid navGrid;
-        private readonly bool showNavigation = true;
+        private readonly bool showNavigation = false;
 
         private List<Vector2> path = new();
         private int pointIndex = 0;
@@ -97,8 +97,8 @@ namespace Gravity
 
         public override void Die()
         {
-            //game.Hero.EnemiesKilled++;
-            //IsActive = false;
+            game.Hero.EnemiesKilled++;
+            IsActive = false;
         }
     }
 }

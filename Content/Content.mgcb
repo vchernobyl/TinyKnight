@@ -74,6 +74,12 @@
 /processorParam:Quality=Best
 /build:SoundFX/Enemy_Hit.wav
 
+#begin SoundFX/Hero_Hurt.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Hero_Hurt.wav
+
 #begin SoundFX/Hero_Jump.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

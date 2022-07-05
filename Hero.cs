@@ -16,6 +16,8 @@ namespace Gravity
 
         private IWeapon weapon;
         private bool onGround = false;
+        private bool hurting = false;
+        private double hurtTime = 0;
 
         public Hero(Game game) : base(game, new Sprite(Textures.Hero))
         {
@@ -31,41 +33,53 @@ namespace Gravity
 
         public void Knockback(float amount)
         {
-            DX = -Facing * amount;
+            DX += -Facing * amount;
         }
 
         public override void OnEntityCollision(Entity other)
         {
             // TODO: Player death state.
-            if (other is Enemy && false)
+            if (other is IEnemy && !hurting)
             {
+                hurting = true;
+                hurtTime = .35;
+                SoundFX.HeroHurt.Play();
+                Flash(duration: .15f, new Vector4(1f, 0f, 0f, 1f));
+
                 DY = -.3f;
-                DX = Math.Sign(other.DX)* .3f;
+                DX = Math.Sign(XX - other.XX) * .3f;
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            var speed = .15f;
+            var speed = .0175f;
             var jump = -1f;
 
+            hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
+            if (hurtTime == 0)
+                hurting = false;
+
             // Movement.
-            if (Input.IsKeyDown(Keys.Left))
+            if (!hurting)
             {
-                sprite.Flip = SpriteEffects.None;
-                DX = -speed;
-                Facing = -1;
-            }
-            if (Input.IsKeyDown(Keys.Right))
-            {
-                sprite.Flip = SpriteEffects.FlipHorizontally;
-                DX = speed;
-                Facing = 1;
-            }
-            if (Input.WasKeyPressed(Keys.Up) && onGround)
-            {
-                DY = jump;
-                SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
+                if (Input.IsKeyDown(Keys.Left))
+                {
+                    sprite.Flip = SpriteEffects.None;
+                    DX += -speed;
+                    Facing = -1;
+                }
+                if (Input.IsKeyDown(Keys.Right))
+                {
+                    sprite.Flip = SpriteEffects.FlipHorizontally;
+                    DX += speed;
+                    Facing = 1;
+                }
+                if (Input.WasKeyPressed(Keys.Up) && onGround)
+                {
+                    DY = jump;
+                    SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
+                }
             }
 
             // Weapon switching.

@@ -77,7 +77,6 @@ namespace Gravity
             }
 
             AddEntity(Hero);
-            AddEntity(new Flyer(this) {Position = new Vector2(800f, 250f) });
         }
 
         protected override void Update(GameTime gameTime)
@@ -138,7 +137,10 @@ namespace Gravity
                 foreach (var entity in Entities)
                 {
                     if (entity.IsFlashing)
+                    {
+                        Effects.Flash.Parameters["flash_color"].SetValue(entity.FlashColor);
                         entity.Draw(spriteBatch);
+                    }
                 }
             }
             spriteBatch.End();

@@ -40,9 +40,10 @@ namespace Gravity
             set => SetCoordinates(value.X, value.Y);
         }
 
-        public bool IsFlashing => flashTime > .0;
+        public bool IsFlashing => flashDuration > .0;
 
-        private double flashTime = .0;
+        private double flashDuration = .0;
+        public Vector4 FlashColor = Vector4.One;
 
         public Entity(Game game, Sprite sprite)
         {
@@ -69,9 +70,15 @@ namespace Gravity
             return distSqr <= maxDist * maxDist;
         }
 
+        public void Flash(double duration, Vector4 color)
+        {
+            flashDuration = duration;
+            FlashColor = color;
+        }
+
         public void Flash(double duration)
         {
-            flashTime = duration;
+            Flash(duration, Vector4.One);
         }
 
         public virtual void OnEntityCollision(Entity other) { }
@@ -82,7 +89,7 @@ namespace Gravity
 
         public virtual void Update(GameTime gameTime)
         {
-            flashTime = Math.Max(.0, flashTime - gameTime.ElapsedGameTime.TotalSeconds);
+            flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.
             if (Collision)

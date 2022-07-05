@@ -4,18 +4,15 @@ using System;
 
 namespace Gravity
 {
-    public class Enemy : Damageable
+    public class Walker : Damageable, IEnemy
     {
-        private readonly Spawner spawner;
-
         private int facing;
         private double deathTimer = 2.0;
         private bool startDeathAnimation = false;
 
-        public Enemy(Game game, Spawner spawner)
+        public Walker(Game game)
             : base(game, new Sprite(Textures.Enemy), health: 100)
         {
-            this.spawner = spawner;
             facing = Numerics.PickOne(-1, 1);
         }
 
@@ -36,13 +33,6 @@ namespace Gravity
                 sprite.Flip = SpriteEffects.FlipHorizontally;
             else
                 sprite.Flip = SpriteEffects.None;
-
-            if (!startDeathAnimation &&
-                level.IsWithinBounds(CX, CY) &&
-                level[CX, CY].Type == Cell.CellType.Water)
-            {
-                SetCoordinates(spawner.Position.X, spawner.Position.Y);
-            }
 
             if (startDeathAnimation)
             {

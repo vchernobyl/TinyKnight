@@ -28,7 +28,7 @@ namespace Gravity
             if (timer >= DelayBetweenSpawns && entitiesSpawned < MaxEntities)
             {
                 timer = 0.0;
-                var enemy = new Enemy(game, this);
+                var enemy = new Flyer(game);
                 enemy.SetCoordinates(Position.X, Position.Y);
                 enemy.OnDie += (_) => entitiesSpawned--;
                 game.AddEntity(enemy);

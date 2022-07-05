@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace Gravity
 {
+    // TODO: Should this also be applicable to the hero?
     public abstract class Damageable : Entity
     {
         public int Health { get; private set; }
@@ -20,15 +21,19 @@ namespace Gravity
         public void ReceiveDamage(int amount)
         {
             Health -= amount;
-            SoundFX.EnemyHit.Play();
+            SoundFX.EnemyHit.Play(volume: .5f, 0f, 0f);
             Flash(duration: .1f);
-            Thread.Sleep(millisecondsTimeout: 10);
+            Thread.Sleep(millisecondsTimeout: 20);
+
+            // TODO: Move this to the projectile/weapon itself.
+            game.WorldCamera.Shake(trauma: .48f);
 
             OnHit?.Invoke(this);
 
             if (Health <= 0)
             {
                 OnDie?.Invoke(this);
+                game.AddEntity(new Coin(game) { Position = Position });
                 Die();
             }
         }
