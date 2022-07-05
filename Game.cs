@@ -55,7 +55,7 @@ namespace Gravity
 
             Effects.Flash.Parameters["flash_color"].SetValue(Vector4.One);
 
-            Level = new Level(Content.Load<Texture2D>("Levels/Map1"), Services);
+            Level = new Level(Content.Load<Texture2D>("Levels/Map1"), this);
 
             var centerX = graphics.PreferredBackBufferWidth / 2 - Level.Width / 2;
             var centerY = graphics.PreferredBackBufferHeight / 2 - Level.Height / 2;
@@ -66,16 +66,6 @@ namespace Gravity
 
             Hud = new Hud(Hero);
 
-            foreach (var position in Level.GetSpawnPositions())
-            {
-                var spawner = new Spawner(position, this)
-                {
-                    MaxEntities = 5,
-                    DelayBetweenSpawns = 1f,
-                };
-                spawners.Add(spawner);
-            }
-
             AddEntity(Hero);
         }
 
@@ -83,6 +73,8 @@ namespace Gravity
         {
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            Level.Update(gameTime);
 
             // Entity updates
             {

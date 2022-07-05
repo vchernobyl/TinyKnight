@@ -39,10 +39,10 @@ namespace Gravity
         public override void OnEntityCollision(Entity other)
         {
             // TODO: Player death state.
-            if (other is IEnemy && !hurting)
+            if (other is Damageable enemy && enemy.IsAlive && !hurting)
             {
                 hurting = true;
-                hurtTime = .35;
+                hurtTime = .2;
                 SoundFX.HeroHurt.Play();
                 Flash(duration: .15f, new Vector4(1f, 0f, 0f, 1f));
 

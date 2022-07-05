@@ -5,7 +5,12 @@ namespace Gravity
 {
     public class Spawner
     {
-        public Point Position { get; private set; }
+        public enum EnemyType
+        {
+            Walker, Flyer
+        }
+
+        public Vector2 Position { get; private set; }
 
         public uint MaxEntities { get; init; }
         public double DelayBetweenSpawns { get; init; }
@@ -14,11 +19,13 @@ namespace Gravity
         private double timer = 0f;
 
         private readonly Game game;
+        private readonly EnemyType enemyType;
 
-        public Spawner(Point position, Game game)
+        public Spawner(Vector2 position, Game game, EnemyType enemyType)
         {
             Position = position;
             this.game = game;
+            this.enemyType = enemyType;
         }
 
         public void Update(GameTime gameTime)
@@ -28,7 +35,14 @@ namespace Gravity
             if (timer >= DelayBetweenSpawns && entitiesSpawned < MaxEntities)
             {
                 timer = 0.0;
-                var enemy = new Flyer(game);
+
+                Damageable enemy = enemyType switch
+                {
+                    EnemyType.Flyer => new Flyer(game),
+                    EnemyType.Walker => new Walker(game),
+                    _ => throw new System.ArgumentException($"Enemy type {enemyType} not supported!")
+                };
+
                 enemy.SetCoordinates(Position.X, Position.Y);
                 enemy.OnDie += (_) => entitiesSpawned--;
                 game.AddEntity(enemy);
@@ -38,8 +52,9 @@ namespace Gravity
 
         public void Draw(SpriteBatch batch)
         {
-            var outline = new Rectangle(Position.X - Level.CellSize / 2,
-                Position.Y - Level.CellSize / 2,
+            var outline = new Rectangle(
+                (int)Position.X - Level.CellSize / 2,
+                (int)Position.Y - Level.CellSize / 2,
                 Level.CellSize,
                 Level.CellSize);
             batch.DrawRectangleOutline(outline, Color.Yellow, 2f);

@@ -8,8 +8,8 @@ namespace Gravity
         {
             Empty,
             Wall, 
-            Water,
-            Spawn,
+            WalkerSpawn, 
+            FlyerSpawn, 
         }
 
         public readonly int X;
