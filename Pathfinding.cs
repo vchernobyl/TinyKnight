@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,9 @@ namespace Gravity
         IEnumerable<Point> Neighbours(Point p);
     }
 
-    // TODO: This is VERY similar to the Level class.
-    // It's probably even better to get rid of this class
-    // altogether and just pass Level to the A* algorithm.
-    public class SquareGrid : IWeightedGraph<Point>
+    public class NavigationGrid : IWeightedGraph<Point>
     {
-        private static readonly Point[] Directions =
+        public static readonly Point[] Directions =
         {
             new Point(1, 0),
             new Point(0, -1),
@@ -27,12 +25,14 @@ namespace Gravity
         public readonly int Width;
         public readonly int Height;
         public readonly ISet<Point> Solids;
+        public readonly ISet<Point> NearSolids;
 
-        public SquareGrid(int width, int height)
+        public NavigationGrid(int width, int height)
         {
             Width = width;
             Height = height;
             Solids = new HashSet<Point>();
+            NearSolids = new HashSet<Point>();
         }
 
         public bool InBounds(Point p)
@@ -48,8 +48,7 @@ namespace Gravity
 
         public int Cost(Point a, Point b)
         {
-            // For now every passable node has the same cost.
-            return 1;
+            return NearSolids.Contains(a) ? 5 : 1;
         }
 
         public IEnumerable<Point> Neighbours(Point p)
@@ -59,6 +58,29 @@ namespace Gravity
                 var next = new Point(p.X + direction.X, p.Y + direction.Y);
                 if (InBounds(next) && Passable(next))
                     yield return next;
+            }
+        }
+
+        public void Draw(SpriteBatch batch)
+        {
+            foreach (var node in Solids)
+            {
+                var rect = new Rectangle(
+                    node.X * Level.CellSize,
+                    node.Y * Level.CellSize,
+                    Level.CellSize,
+                    Level.CellSize);
+                batch.DrawRectangleOutline(rect, Color.Red, 2f);
+            }
+
+            foreach (var node in NearSolids)
+            {
+                var rect = new Rectangle(
+                    node.X * Level.CellSize,
+                    node.Y * Level.CellSize,
+                    Level.CellSize,
+                    Level.CellSize);
+                batch.DrawRectangleOutline(rect, Color.Green, 2f);
             }
         }
     }
@@ -93,7 +115,7 @@ namespace Gravity
                 directionOld = directionNew;
             }
 
-
+            // TODO: This shouldn't be necessary!
             var last = path.Last();
             if (!simplified.Contains(last))
                 simplified.Add(path.Last());

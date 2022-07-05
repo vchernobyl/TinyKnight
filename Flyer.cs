@@ -8,7 +8,8 @@ namespace Gravity
     {
         private readonly Hero hero;
         private readonly Pathfinding pathfinding;
-        private readonly bool showNavigation = false;
+        private readonly NavigationGrid navGrid;
+        private readonly bool showNavigation = true;
 
         private List<Vector2> path = new();
         private int pointIndex = 0;
@@ -18,7 +19,26 @@ namespace Gravity
         {
             Gravity = 0f;
             hero = game.Hero;
-            pathfinding = new Pathfinding(level.Grid);
+
+            navGrid = new NavigationGrid(level.Columns, level.Rows);
+            foreach (var cell in level.Cells)
+            {
+                if (cell.Solid)
+                    navGrid.Solids.Add(cell.Location);
+            }
+
+            foreach (var solid in navGrid.Solids)
+            {
+                foreach (var direction in NavigationGrid.Directions)
+                {
+                    var neighbour = new Point(solid.X + direction.X, solid.Y + direction.Y);
+                    if (navGrid.InBounds(neighbour) &&
+                        navGrid.Passable(neighbour))
+                        navGrid.NearSolids.Add(neighbour);
+                }
+            }
+
+            pathfinding = new Pathfinding(navGrid);
         }
 
         public override void Update(GameTime gameTime)
@@ -44,8 +64,8 @@ namespace Gravity
                 if (movement != Vector2.Zero)
                     movement.Normalize();
 
-                DX = movement.X * .05f;
-                DY = movement.Y * .05f;
+                DX += movement.X * .005f;
+                DY += movement.Y * .005f;
             }
 
             base.Update(gameTime);
@@ -68,6 +88,8 @@ namespace Gravity
                     rectangle.Inflate(-9.5f, -9.5f);
                     batch.DrawRectangle(rectangle, Color.Blue);
                 }
+
+                navGrid.Draw(batch);
             }
 
             base.Draw(batch);
@@ -75,8 +97,8 @@ namespace Gravity
 
         public override void Die()
         {
-            game.Hero.EnemiesKilled++;
-            IsActive = false;
+            //game.Hero.EnemiesKilled++;
+            //IsActive = false;
         }
     }
 }

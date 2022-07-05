@@ -12,7 +12,6 @@ namespace Gravity
 
         public readonly int Columns;
         public readonly int Rows;
-        public readonly SquareGrid Grid;
 
         public int Width => Columns * CellSize;
         public int Height => Rows * CellSize;
@@ -48,8 +47,6 @@ namespace Gravity
             Rows = levelMap.Height;
             Cells = new Cell[Columns, Rows];
 
-            Grid = new SquareGrid(Columns, Rows);
-
             // Generate level out of the image data.
             for (int y = 0; y < Rows; y++)
             {
@@ -67,9 +64,6 @@ namespace Gravity
 
                     var cell = new Cell(x, y, type, type == Cell.CellType.Wall);
                     Cells[x, y] = cell;
-
-                    if (cell.Solid)
-                        Grid.Solids.Add(cell.Location);
                 }
             }
         }
@@ -111,7 +105,7 @@ namespace Gravity
 
                 if (showBounds)
                 {
-                    var color = Grid.Passable(cell.Location) ? Color.White : Color.Red;
+                    var color = cell.Solid ? Color.Red: Color.White;
                     var outline = cell.Bounds;
                     outline.Inflate(-1f, -1f);
                     spriteBatch.DrawRectangleOutline(outline, color, 1f);
