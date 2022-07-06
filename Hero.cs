@@ -7,7 +7,6 @@ namespace Gravity
 {
     public class Hero : Entity
     {
-        public uint Coins { get; private set; }
         public uint EnemiesKilled { get; set; }
         public int Facing { get; private set; } = -1;
 
@@ -24,11 +23,6 @@ namespace Gravity
             Pistol = new Pistol(game, this);
             Shotgun = new Shotgun(game, this);
             weapon = Pistol;
-        }
-
-        public void PickupCoin()
-        {
-            Coins++;
         }
 
         public void Knockback(float amount)
@@ -88,7 +82,7 @@ namespace Gravity
             if (Input.WasKeyPressed(Keys.D2))
                 weapon = Shotgun;
 
-            onGround = level.HasCollision(CX, CY + 1);
+            onGround = Level.HasCollision(CX, CY + 1);
 
             base.Update(gameTime);
 

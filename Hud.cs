@@ -5,17 +5,16 @@ namespace Gravity
 {
     public class Hud
     {
-        private readonly Hero hero;
+        private readonly Game game;
 
-        public Hud(Hero hero)
+        public Hud(Game game)
         {
-            this.hero = hero;
+            this.game = game;
         }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.DrawString(Fonts.Default, $"Enemies destroyed: {hero.EnemiesKilled}", new Vector2(10f, 5f), Color.White);
-            batch.DrawString(Fonts.Default, $"Coins: {hero.Coins}", new Vector2(10f, 30f), Color.White);
+            batch.DrawString(Fonts.Default, $"Enemies destroyed: {game.Hero.EnemiesKilled}", new Vector2(10f, 5f), Color.White);
         }
     }
 }

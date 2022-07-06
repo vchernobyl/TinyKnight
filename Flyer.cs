@@ -20,8 +20,8 @@ namespace Gravity
             Gravity = 0f;
             hero = game.Hero;
 
-            navGrid = new NavigationGrid(level.Columns, level.Rows);
-            foreach (var cell in level.Cells)
+            navGrid = new NavigationGrid(Level.Columns, Level.Rows);
+            foreach (var cell in Level.Cells)
             {
                 if (cell.Solid)
                     navGrid.Solids.Add(cell.Location);

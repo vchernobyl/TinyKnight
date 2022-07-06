@@ -18,12 +18,12 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            if (!startDeathAnimation && level.HasCollision(CX, CY + 1))
+            if (!startDeathAnimation && Level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(facing) * .1f;
 
             if (!startDeathAnimation &&
-                ((level.HasCollision(CX + 1, CY) && XR >= .7f) ||
-                (level.HasCollision(CX - 1, CY) && XR <= .3f)))
+                ((Level.HasCollision(CX + 1, CY) && XR >= .7f) ||
+                (Level.HasCollision(CX - 1, CY) && XR <= .3f)))
             {
                 facing = -facing;
                 DX = Math.Sign(facing) * .1f;

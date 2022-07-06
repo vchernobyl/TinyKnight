@@ -9,7 +9,7 @@ namespace Gravity
     {
         public Level Level { get; private set; }
         public Hud Hud { get; private set; }
-        public Hero Hero { get; private set; }
+        public Hero Hero { get; set; }
 
         public readonly Camera WorldCamera = new();
         public readonly Camera UiCamera = new(); // TODO: UI Camera doesn't need shake functionality, should it be refactored?
@@ -60,12 +60,12 @@ namespace Gravity
             var centerY = graphics.PreferredBackBufferHeight / 2 - Level.Height / 2;
             WorldCamera.Position = new Vector2(centerX, centerY);
 
-            Hero = new Hero(this);
-            Hero.SetCoordinates(50f, 200f);
+            //Hero = new Hero(this);
+            //Hero.SetCoordinates(50f, 200f);
 
-            Hud = new Hud(Hero);
+            Hud = new Hud(this);
 
-            AddEntity(Hero);
+            //AddEntity(Hero);
         }
 
         protected override void Update(GameTime gameTime)

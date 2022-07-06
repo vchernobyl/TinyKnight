@@ -10,6 +10,7 @@ namespace Gravity
             Wall, 
             WalkerSpawn, 
             FlyerSpawn, 
+            Hero, 
         }
 
         public readonly int X;

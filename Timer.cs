@@ -6,13 +6,15 @@ namespace Gravity
     public class Timer
     {
         private readonly Action onEnd;
+        private readonly double duration;
 
-        private double duration;
+        private double time = 0;
         private bool started = false;
 
         public Timer(double duration, Action onEnd)
         {
             this.duration = duration;
+            this.time = duration;
             this.onEnd = onEnd;
         }
 
@@ -21,12 +23,18 @@ namespace Gravity
             started = true;
         }
 
+        public void Reset()
+        {
+            started = false;
+            time = duration;
+        }
+
         public void Update(GameTime gameTime)
         {
             if (started)
             {
-                duration -= gameTime.ElapsedGameTime.TotalSeconds;
-                if (duration <= 0)
+                time -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (time <= 0)
                     onEnd.Invoke();
             }
         }

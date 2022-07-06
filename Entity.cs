@@ -8,7 +8,7 @@ namespace Gravity
     {
         protected readonly Game game;
         protected readonly Sprite sprite;
-        protected readonly Level level;
+        protected Level Level => game.Level;
 
         // Coordinates within the grid.
         public int CX = 0;
@@ -49,7 +49,6 @@ namespace Gravity
         {
             this.game = game;
             this.sprite = sprite;
-            this.level = game.Level;
         }
 
         public void SetCoordinates(float x, float y)
@@ -105,7 +104,7 @@ namespace Gravity
             DX *= FrictionX;
 
             // Right side collision.
-            if (level.HasCollision(CX + 1, CY) && XR >= .7f)
+            if (Level.HasCollision(CX + 1, CY) && XR >= .7f)
             {
                 XR = .7f;
                 DX = 0f;
@@ -113,7 +112,7 @@ namespace Gravity
             }
 
             // Left side collision.
-            if (level.HasCollision(CX - 1, CY) && XR <= .3f)
+            if (Level.HasCollision(CX - 1, CY) && XR <= .3f)
             {
                 XR = .3f;
                 DX = 0f;
@@ -128,7 +127,7 @@ namespace Gravity
             DY *= FrictionY;
 
             // Top collision.
-            if (level.HasCollision(CX, CY - 1) && YR <= .3f)
+            if (Level.HasCollision(CX, CY - 1) && YR <= .3f)
             {
                 DY = .05f;
                 YR = .3f;
@@ -136,7 +135,7 @@ namespace Gravity
             }
 
             // Bottom collision.
-            if (level.HasCollision(CX, CY + 1) && YR >= .5f)
+            if (Level.HasCollision(CX, CY + 1) && YR >= .5f)
             {
                 DY = 0f;
                 YR = .5f;

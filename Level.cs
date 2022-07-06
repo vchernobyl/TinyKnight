@@ -58,27 +58,25 @@ namespace Gravity
                         var _ when pixel == Color.White => Cell.CellType.Wall,
                         var _ when pixel == Color.Red => Cell.CellType.WalkerSpawn,
                         var _ when pixel == Color.Yellow  => Cell.CellType.FlyerSpawn,
+                        var _ when pixel == Color.Blue => Cell.CellType.Hero,
                         _ => throw new ArgumentException($"Cell type with color {pixel} is not supported"),
                     };
                     
                     if (type == Cell.CellType.WalkerSpawn)
                     {
-                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Walker)
-                        {
-
-                            MaxEntities = 4,
-                            DelayBetweenSpawns = 1f,
-                        };
+                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Walker);
                         game.AddEntity(spawner);
                     }
                     if (type == Cell.CellType.FlyerSpawn)
                     {
-                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Flyer)
-                        {
-                            MaxEntities = 3,
-                            DelayBetweenSpawns = 1f,
-                        };
+                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Flyer);
                         game.AddEntity(spawner);
+                    }
+                    if (type == Cell.CellType.Hero)
+                    {
+                        var hero = new Hero(game) { Position = new Vector2(x * CellSize, y * CellSize) };
+                        game.Hero = hero;
+                        game.AddEntity(hero);
                     }
 
                     var cell = new Cell(x, y, type, type == Cell.CellType.Wall);
@@ -101,14 +99,8 @@ namespace Gravity
         {
             foreach (var cell in Cells)
             {
-                var texture = cell.Type switch
-                {
-                    Cell.CellType.Wall => cellTexture,
-                    _ => null,
-                };
-
-                if (texture != null)
-                    batch.Draw(texture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                if (cell.Type == Cell.CellType.Wall)
+                    batch.Draw(cellTexture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
                 if (showBounds)
                 {

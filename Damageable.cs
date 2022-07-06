@@ -9,13 +9,17 @@ namespace Gravity
         public int Health { get; private set; }
         public bool IsAlive => Health > 0;
 
-        public Action<Damageable>? OnHit;
         public Action<Damageable>? OnDie;
 
         public Damageable(Game game, Sprite sprite, int health)
             : base(game, sprite)
         {
             Health = health;
+        }
+
+        public void Heal(int amount)
+        {
+            Health += amount;
         }
 
         public void ReceiveDamage(int amount)
@@ -27,8 +31,6 @@ namespace Gravity
 
             // TODO: Move this to the projectile/weapon itself.
             game.WorldCamera.Shake(trauma: .48f);
-
-            OnHit?.Invoke(this);
 
             if (Health <= 0)
             {
