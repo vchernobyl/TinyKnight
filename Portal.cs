@@ -12,18 +12,17 @@ namespace Gravity
         }
 
         public uint MaxEntities { get; init; } = 3;
-        public double DelayBetweenSpawns { get; init; } = 2.0;
-
-        private uint entitiesSpawned = 0;
-        private double spawnTime = 0f;
 
         private readonly EnemyType enemyType;
         private readonly bool showDebugInfo = false;
 
         private readonly Timer recoveryTimer;
+        private readonly Timer spawnTimer;
 
         private const double RecoveryTime = 5.0;
+        private const double SpawnInterval = 2.0;
 
+        private uint entitiesSpawned = 0;
         private bool activated = true;
 
         public Portal(Vector2 position, Game game, EnemyType enemyType)
@@ -35,6 +34,8 @@ namespace Gravity
             this.sprite.LayerDepth = 1f;
             this.sprite.Scale = Vector2.One / 1.5f;
             this.recoveryTimer = new Timer(RecoveryTime, Reactivate);
+            this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true);
+            this.spawnTimer.Start();
         }
 
         private void Reactivate()
@@ -43,6 +44,24 @@ namespace Gravity
             activated = true;
             sprite.Color = Color.White;
             recoveryTimer.Reset();
+        }
+
+        private void Spawn()
+        {
+            if (entitiesSpawned < MaxEntities && activated)
+            {
+                Damageable enemy = enemyType switch
+                {
+                    EnemyType.Flyer => new Flyer(game),
+                    EnemyType.Walker => new Walker(game),
+                    _ => throw new ArgumentException($"Enemy type {enemyType} not supported!")
+                };
+
+                enemy.SetCoordinates(Position.X, Position.Y);
+                enemy.OnDie += (_) => entitiesSpawned--;
+                game.AddEntity(enemy);
+                entitiesSpawned++;
+            }
         }
 
         private static Sprite GetSprite(EnemyType enemyType)
@@ -59,29 +78,8 @@ namespace Gravity
         public override void Update(GameTime gameTime)
         {
             recoveryTimer.Update(gameTime);
-
-            spawnTime += gameTime.ElapsedGameTime.TotalSeconds;
-
+            spawnTimer.Update(gameTime);
             sprite.Rotation -= .025f;
-
-            if (spawnTime >= DelayBetweenSpawns && entitiesSpawned < MaxEntities && activated)
-            {
-                spawnTime = 0.0;
-
-                Damageable enemy = enemyType switch
-                {
-                    EnemyType.Flyer => new Flyer(game),
-                    EnemyType.Walker => new Walker(game),
-                    _ => throw new ArgumentException($"Enemy type {enemyType} not supported!")
-                };
-
-                enemy.SetCoordinates(Position.X, Position.Y);
-                enemy.OnDie += (_) => entitiesSpawned--;
-                game.AddEntity(enemy);
-                entitiesSpawned++;
-
-            }
-
             base.Update(gameTime);
         }
 
