@@ -8,7 +8,7 @@ namespace Gravity
     {
         protected readonly Game game;
         protected readonly Sprite sprite;
-        protected Level Level => game.Level;
+        public Level Level => game.Level;
 
         // Coordinates within the grid.
         public int CX = 0;

@@ -14,10 +14,11 @@ namespace Gravity
 
         public bool IsRunning => time > 0;
 
-        public Timer(double duration, Action onEnd, bool repeating = false)
+        public Timer(double duration, Action onEnd,
+            bool repeating = false, bool immediate = false)
         {
             this.duration = duration;
-            this.time = duration;
+            this.time = immediate ? 0 : duration;
             this.onEnd = onEnd;
             this.repeating = repeating;
         }

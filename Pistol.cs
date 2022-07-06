@@ -11,7 +11,7 @@ namespace Gravity
         private readonly Hero hero;
 
         private const double ShotsPerSecond = 8;
-        private const float Knockback = .075f;
+        private const float Knockback = .025f;
         private const float Spread = 0.025f;
         private const float ProjectileSpeed = .95f;
         private const int Damage = 40;

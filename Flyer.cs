@@ -6,19 +6,19 @@ namespace Gravity
 {
     public class Flyer : Damageable, IEnemy
     {
-        private readonly Hero hero;
         private readonly Pathfinding pathfinding;
         private readonly NavigationGrid navGrid;
+        private readonly Timer pathfindingTimer;
         private readonly bool showNavigation = false;
 
         private List<Vector2> path = new();
         private int pointIndex = 0;
-        private double timer = 0;
 
         public Flyer(Game game) : base(game, new Sprite(Textures.Flyer), health: 100)
         {
             Gravity = 0f;
-            hero = game.Hero;
+            pathfindingTimer = new Timer(duration: 1.5, RecalculatePath, repeating: true, immediate: true);
+            pathfindingTimer.Start();
 
             navGrid = new NavigationGrid(Level.Columns, Level.Rows);
             foreach (var cell in Level.Cells)
@@ -41,16 +41,15 @@ namespace Gravity
             pathfinding = new Pathfinding(navGrid);
         }
 
+        private void RecalculatePath()
+        {
+            pointIndex = 0;
+            path = pathfinding.FindPath(Position, game.Hero.Position);
+        }
+
         public override void Update(GameTime gameTime)
         {
-            timer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (path.Count == 0 || timer >= 1.5)
-            {
-                timer = 0;
-                pointIndex = 0;
-                path = pathfinding.FindPath(Position, hero.Position);
-            }
+            pathfindingTimer.Update(gameTime);
 
             if (path.Count > 0 && pointIndex < path.Count)
             {
