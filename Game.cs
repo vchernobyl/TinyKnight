@@ -12,12 +12,11 @@ namespace Gravity
         public Hero Hero { get; private set; }
 
         public readonly Camera WorldCamera = new();
-        public readonly Camera UiCamera = new();
+        public readonly Camera UiCamera = new(); // TODO: UI Camera doesn't need shake functionality, should it be refactored?
 
         public readonly List<Entity> Entities = new();
 
         private readonly List<Entity> pendingEntities = new();
-        private readonly List<Spawner> spawners = new();
         private readonly GraphicsDeviceManager graphics;
 
         private SpriteBatch spriteBatch;
@@ -74,8 +73,6 @@ namespace Gravity
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Level.Update(gameTime);
-
             // Entity updates
             {
                 updatingEntities = true;
@@ -97,9 +94,6 @@ namespace Gravity
                 }
             }
 
-            foreach (var spawner in spawners)
-                spawner.Update(gameTime);
-
             WorldCamera.Update(gameTime);
             UiCamera.Update(gameTime);
 
@@ -117,9 +111,6 @@ namespace Gravity
 
                 foreach (var entity in Entities)
                     entity.Draw(spriteBatch);
-
-                foreach (var spawner in spawners)
-                    spawner.Draw(spriteBatch);
             }
             spriteBatch.End();
 

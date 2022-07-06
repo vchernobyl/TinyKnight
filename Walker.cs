@@ -56,8 +56,6 @@ namespace Gravity
             DY = Random.FloatRange(-.4f, -.5f);
             startDeathAnimation = true;
             Collision = false;
-
-            game.AddEntity(new Coin(game) { Position = Position });
         }
     }
 }

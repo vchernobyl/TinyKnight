@@ -24,6 +24,8 @@ namespace Gravity
         public static Texture2D Hero { get; private set; }
         public static Texture2D Enemy { get; private set; }
         public static Texture2D Flyer { get; private set; }
+        public static Texture2D PortalOrange { get; private set; }
+        public static Texture2D PortalYellow { get; private set; }
 
         public static void Load(ContentManager content)
         {
@@ -34,6 +36,8 @@ namespace Gravity
             Hero = content.Load<Texture2D>("Textures/character_0000");
             Enemy = content.Load<Texture2D>("Textures/character_0015");
             Flyer = content.Load<Texture2D>("Textures/Flyer");
+            PortalOrange = content.Load<Texture2D>("Textures/Portal_Orange");
+            PortalYellow = content.Load<Texture2D>("Textures/Portal_Yellow");
         }
     }
 

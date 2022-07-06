@@ -12,6 +12,7 @@ namespace Gravity
         public float LayerDepth { get; set; }
         public Rectangle Source { get; set; }
         public SpriteEffects Flip { get; set; }
+        public Color Color { get; set; }
 
         private readonly Texture2D texture;
 
@@ -25,11 +26,12 @@ namespace Gravity
             Source = texture.Bounds;
             Flip = SpriteEffects.None;
             LayerDepth = .5f;
+            Color = Color.White;
         }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(texture, Position, Source, Color.White, Rotation, Origin, Scale, Flip, LayerDepth);
+            batch.Draw(texture, Position, Source, Color, Rotation, Origin, Scale, Flip, LayerDepth);
         }
     }
 }

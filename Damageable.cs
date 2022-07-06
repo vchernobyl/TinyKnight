@@ -33,7 +33,6 @@ namespace Gravity
             if (Health <= 0)
             {
                 OnDie?.Invoke(this);
-                game.AddEntity(new Coin(game) { Position = Position });
                 Die();
             }
         }

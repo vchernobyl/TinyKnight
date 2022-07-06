@@ -23,7 +23,6 @@ namespace Gravity
 
         private readonly Texture2D cellTexture;
         private readonly bool showBounds = false;
-        private readonly List<Spawner> spawners = new();
 
         public Level(Texture2D levelMap, Game game)
         {
@@ -64,22 +63,22 @@ namespace Gravity
                     
                     if (type == Cell.CellType.WalkerSpawn)
                     {
-                        var spawner = new Spawner(new Vector2(x * CellSize, y * CellSize), game, Spawner.EnemyType.Walker)
+                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Walker)
                         {
 
                             MaxEntities = 4,
                             DelayBetweenSpawns = 1f,
                         };
-                        spawners.Add(spawner);
+                        game.AddEntity(spawner);
                     }
                     if (type == Cell.CellType.FlyerSpawn)
                     {
-                        var spawner = new Spawner(new Vector2(x * CellSize, y * CellSize), game, Spawner.EnemyType.Flyer)
+                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Flyer)
                         {
                             MaxEntities = 3,
                             DelayBetweenSpawns = 1f,
                         };
-                        spawners.Add(spawner);
+                        game.AddEntity(spawner);
                     }
 
                     var cell = new Cell(x, y, type, type == Cell.CellType.Wall);
@@ -96,14 +95,6 @@ namespace Gravity
         public bool HasCollision(int cx, int cy)
         {
             return !IsWithinBounds(cx, cy) || Cells[cx, cy].Solid;
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            foreach (var spawner in spawners)
-            {
-                spawner.Update(gameTime);
-            }
         }
 
         public void Draw(SpriteBatch batch)
@@ -126,11 +117,6 @@ namespace Gravity
                     outline.Inflate(-1f, -1f);
                     batch.DrawRectangleOutline(outline, color, 1f);
                 }
-            }
-
-            foreach (var spawner in spawners)
-            {
-                spawner.Draw(batch);
             }
         }
 
