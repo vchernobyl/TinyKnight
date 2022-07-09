@@ -84,8 +84,6 @@ namespace Gravity
 
             onGround = Level.HasCollision(CX, CY + 1);
 
-            base.Update(gameTime);
-
             weapon.Update(gameTime);
         }
 

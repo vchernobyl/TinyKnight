@@ -72,7 +72,6 @@ namespace Gravity
             deathTimer.Update(gameTime);
             muzzleTime = Math.Max(0, muzzleTime - gameTime.ElapsedGameTime.TotalSeconds);
             sprite.Rotation = Numerics.VectorToRadians(new Vector2(DX, DY));
-            base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch batch)

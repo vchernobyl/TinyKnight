@@ -86,8 +86,15 @@ namespace Gravity
 
         public virtual void OnDestroy() { }
 
-        public virtual void Update(GameTime gameTime)
+        // This update should be called by entities.
+        public virtual void Update(GameTime gameTime) { }
+
+        // This should only be called by the underlying game loop.
+        // NOT to be used by entities directly.
+        public void EntityUpdate(GameTime gameTime)
         {
+            Update(gameTime);
+
             flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.

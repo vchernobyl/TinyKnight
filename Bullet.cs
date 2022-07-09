@@ -40,8 +40,6 @@ namespace Gravity
                 sprite.Flip = SpriteEffects.FlipHorizontally;
             else
                 sprite.Flip = SpriteEffects.None;
-
-            base.Update(gameTime);
         }
     }
 }

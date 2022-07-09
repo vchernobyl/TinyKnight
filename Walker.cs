@@ -7,8 +7,7 @@ namespace Gravity
     public class Walker : Damageable, IEnemy
     {
         private int facing;
-        private double deathTimer = 2.0;
-        private bool startDeathAnimation = false;
+        private bool dead = false;
 
         public Walker(Game game)
             : base(game, new Sprite(Textures.Enemy), health: 100)
@@ -16,12 +15,18 @@ namespace Gravity
             facing = Numerics.PickOne(-1, 1);
         }
 
+        public override void OnLevelCollision(Vector2 normal)
+        {
+            if (dead && normal == -Vector2.UnitY)
+                IsActive = false;
+        }
+
         public override void Update(GameTime gameTime)
         {
-            if (!startDeathAnimation && Level.HasCollision(CX, CY + 1))
+            if (!dead && Level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(facing) * .1f;
 
-            if (!startDeathAnimation &&
+            if (!dead &&
                 ((Level.HasCollision(CX + 1, CY) && XR >= .7f) ||
                 (Level.HasCollision(CX - 1, CY) && XR <= .3f)))
             {
@@ -34,19 +39,12 @@ namespace Gravity
             else
                 sprite.Flip = SpriteEffects.None;
 
-            if (startDeathAnimation)
+            if (dead)
             {
-                deathTimer -= gameTime.ElapsedGameTime.TotalSeconds;
-
                 sprite.Rotation += Random.FloatRange(
                     MathHelper.PiOver4,
                     MathHelper.PiOver2) * DX;
-
-                if (deathTimer <= 0f)
-                    IsActive = false;
             }
-
-            base.Update(gameTime);
         }
 
         public override void Die()
@@ -54,8 +52,7 @@ namespace Gravity
             game.Hero.EnemiesKilled++;
 
             DY = Random.FloatRange(-.4f, -.5f);
-            startDeathAnimation = true;
-            Collision = false;
+            dead = true;
         }
     }
 }

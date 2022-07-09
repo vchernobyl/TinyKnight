@@ -13,10 +13,12 @@ namespace Gravity
 
         private List<Vector2> path = new();
         private int pointIndex = 0;
+        private bool dead = false;
 
         public Flyer(Game game) : base(game, new Sprite(Textures.Flyer), health: 100)
         {
             Gravity = 0f;
+
             pathfindingTimer = new Timer(duration: 1.5, RecalculatePath, repeating: true, immediate: true);
             pathfindingTimer.Start();
 
@@ -47,8 +49,20 @@ namespace Gravity
             path = pathfinding.FindPath(Position, game.Hero.Position);
         }
 
+        public override void OnLevelCollision(Vector2 normal)
+        {
+            if (dead && normal == -Vector2.UnitY)
+                IsActive = false;
+        }
+
         public override void Update(GameTime gameTime)
         {
+            if (dead)
+            {
+                sprite.Rotation += .3f;
+                return;
+            }
+
             pathfindingTimer.Update(gameTime);
 
             if (path.Count > 0 && pointIndex < path.Count)
@@ -66,8 +80,6 @@ namespace Gravity
                 DX += movement.X * .005f;
                 DY += movement.Y * .005f;
             }
-
-            base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch batch)
@@ -97,7 +109,9 @@ namespace Gravity
         public override void Die()
         {
             game.Hero.EnemiesKilled++;
-            IsActive = false;
+            dead = true;
+            DY = -.5f;
+            Gravity = .05f;
         }
     }
 }

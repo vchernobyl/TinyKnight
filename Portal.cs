@@ -80,7 +80,6 @@ namespace Gravity
             recoveryTimer.Update(gameTime);
             spawnTimer.Update(gameTime);
             sprite.Rotation -= .025f;
-            base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch batch)

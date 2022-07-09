@@ -40,9 +40,7 @@ namespace Gravity
         {
             DX = Velocity.X;
             DY = Velocity.Y;
-
             sprite.Rotation = Numerics.VectorToRadians(new Vector2(DX, DY));
-            base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch batch)

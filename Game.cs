@@ -60,12 +60,7 @@ namespace Gravity
             var centerY = graphics.PreferredBackBufferHeight / 2 - Level.Height / 2;
             WorldCamera.Position = new Vector2(centerX, centerY);
 
-            //Hero = new Hero(this);
-            //Hero.SetCoordinates(50f, 200f);
-
             Hud = new Hud(this);
-
-            //AddEntity(Hero);
         }
 
         protected override void Update(GameTime gameTime)
@@ -73,24 +68,21 @@ namespace Gravity
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // Entity updates
+            updatingEntities = true;
+            foreach (var entity in Entities)
+                entity.EntityUpdate(gameTime);
+            updatingEntities = false;
+
+            foreach (var entity in pendingEntities)
+                Entities.Add(entity);
+            pendingEntities.Clear();
+
+            for (int i = Entities.Count - 1; i >= 0; i--)
             {
-                updatingEntities = true;
-                foreach (var entity in Entities)
-                    entity.Update(gameTime);
-                updatingEntities = false;
-
-                foreach (var entity in pendingEntities)
-                    Entities.Add(entity);
-                pendingEntities.Clear();
-
-                for (int i = Entities.Count - 1; i >= 0; i--)
+                if (!Entities[i].IsActive)
                 {
-                    if (!Entities[i].IsActive)
-                    {
-                        Entities[i].OnDestroy();
-                        Entities.RemoveAt(i);
-                    }
+                    Entities[i].OnDestroy();
+                    Entities.RemoveAt(i);
                 }
             }
 
