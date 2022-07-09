@@ -72,12 +72,6 @@ namespace Gravity
                         var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Flyer);
                         game.AddEntity(spawner);
                     }
-                    if (type == Cell.CellType.Hero)
-                    {
-                        var hero = new Hero(game) { Position = new Vector2(x * CellSize, y * CellSize) };
-                        game.Hero = hero;
-                        game.AddEntity(hero);
-                    }
 
                     var cell = new Cell(x, y, type, type == Cell.CellType.Wall);
                     Cells[x, y] = cell;

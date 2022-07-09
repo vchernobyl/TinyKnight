@@ -10,19 +10,23 @@ namespace Gravity
         public uint EnemiesKilled { get; set; }
         public int Facing { get; private set; } = -1;
 
-        private readonly IWeapon Pistol;
-        private readonly IWeapon Shotgun;
-
+        private readonly Weapons weapons;
         private IWeapon weapon;
+
         private bool onGround = false;
         private bool hurting = false;
         private double hurtTime = 0;
 
         public Hero(Game game) : base(game, new Sprite(Textures.Hero))
         {
-            Pistol = new Pistol(game, this);
-            Shotgun = new Shotgun(game, this);
-            weapon = Pistol;
+            weapons = new Weapons(game, this);
+            weapon = weapons.Pistol;
+
+            foreach (var entity in game.Entities)
+            {
+                if (entity is Portal and Damageable portal)
+                    portal.OnDie += (portal) => { weapon = weapons.GetRandomWeapon(weapon); };
+            }
         }
 
         public void Knockback(float amount)
@@ -78,9 +82,9 @@ namespace Gravity
 
             // Weapon switching.
             if (Input.WasKeyPressed(Keys.D1))
-                weapon = Pistol;
+                weapon = weapons.Pistol;
             if (Input.WasKeyPressed(Keys.D2))
-                weapon = Shotgun;
+                weapon = weapons.Shotgun;
 
             onGround = Level.HasCollision(CX, CY + 1);
 

@@ -60,6 +60,9 @@ namespace Gravity
             var centerY = graphics.PreferredBackBufferHeight / 2 - Level.Height / 2;
             WorldCamera.Position = new Vector2(centerX, centerY);
 
+            Hero = new Hero(this) { Position = new Vector2(100f, 200f) };
+            Entities.Add(Hero);
+
             Hud = new Hud(this);
         }
 
