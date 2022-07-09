@@ -11,7 +11,7 @@ namespace Gravity
         public int Facing { get; private set; } = -1;
 
         private readonly Weapons weapons;
-        private IWeapon weapon;
+        private Weapon weapon;
 
         private bool onGround = false;
         private bool hurting = false;
@@ -20,7 +20,7 @@ namespace Gravity
         public Hero(Game game) : base(game, new Sprite(Textures.Hero))
         {
             weapons = new Weapons(game, this);
-            weapon = weapons.Pistol;
+            weapon = weapons.Bazooka;
 
             foreach (var entity in game.Entities)
             {
@@ -85,8 +85,13 @@ namespace Gravity
                 weapon = weapons.Pistol;
             if (Input.WasKeyPressed(Keys.D2))
                 weapon = weapons.Shotgun;
+            if (Input.WasKeyPressed(Keys.D3))
+                weapon = weapons.Bazooka;
 
             onGround = Level.HasCollision(CX, CY + 1);
+
+            if (Input.IsKeyDown(Keys.Space))
+                weapon.Shoot();
 
             weapon.Update(gameTime);
         }

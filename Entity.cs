@@ -25,7 +25,7 @@ namespace Gravity
         public float DX = 0f;
         public float DY = 0f;
 
-        public readonly float Radius = Level.CellSize / 2;
+        public float Radius = Level.CellSize / 2;
 
         public bool IsActive = true;
         public bool Collision = true;

@@ -8,12 +8,8 @@ namespace Gravity
         public Vector2 Velocity { get; set; }
         public int Damage { get; set; }
 
-        public Bullet(Game game, Vector2 position, Vector2 velocity, int damage)
-            : base(game, new Sprite(Textures.Bullet))
+        public Bullet(Game game) : base(game, new Sprite(Textures.Bullet))
         {
-            Position = position;
-            Velocity = velocity;
-            Damage = damage;
         }
 
         public override void OnEntityCollision(Entity other)
