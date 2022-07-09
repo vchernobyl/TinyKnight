@@ -53,6 +53,8 @@ namespace Gravity
         public static SoundEffect EnemyHit { get; private set; }
         public static SoundEffect CoinPickup { get; private set; }
         public static SoundEffect HeroHurt { get; private set; }
+        public static SoundEffect BazookaShot { get; private set; }
+        public static SoundEffect Explosion { get; private set; }
 
         public static void Load(ContentManager content)
         {
@@ -62,6 +64,8 @@ namespace Gravity
             EnemyHit = content.Load<SoundEffect>("SoundFX/Enemy_Hit");
             CoinPickup = content.Load<SoundEffect>("SoundFX/Coin_Pickup");
             HeroHurt = content.Load<SoundEffect>("SoundFX/Hero_Hurt");
+            BazookaShot = content.Load<SoundEffect>("SoundFX/Bazooka_Shot");
+            Explosion = content.Load<SoundEffect>("SoundFX/Explosion");
         }
     }
 

@@ -4,13 +4,13 @@ namespace Gravity
 {
     public class Explosion : Entity
     {
-        private const float ExplosionRadius = 5f;
         private double time = 0;
+        private const float ExplosionRadius = 5f;
 
         public Explosion(Game game) : base(game, new Sprite(Textures.Circle))
         {
             sprite.Color = Color.Yellow;
-            sprite.Scale *= ExplosionRadius;
+            sprite.Scale *= 2f;
             Gravity = 0f;
             Radius = Level.CellSize / 2f * ExplosionRadius;
         }
@@ -47,6 +47,7 @@ namespace Gravity
             IsActive = false;
             game.AddEntity(new Explosion(game) { Position = Position });
             game.WorldCamera.Shake(.765f);
+            SoundFX.Explosion.Play();
         }
 
         public override void OnEntityCollision(Entity other)
@@ -86,6 +87,7 @@ namespace Gravity
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing * .75f, 0f);
             game.AddEntity(new Rocket(game) { Position = position, Velocity = velocity });
+            SoundFX.BazookaShot.Play();
         }
     }
 }

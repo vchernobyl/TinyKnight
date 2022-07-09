@@ -95,11 +95,5 @@ namespace Gravity
 
             weapon.Update(gameTime);
         }
-
-        public override void Draw(SpriteBatch batch)
-        {
-            base.Draw(batch);
-            weapon.Draw(batch);
-        }
     }
 }

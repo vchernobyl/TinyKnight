@@ -62,6 +62,12 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Map3.png
 
+#begin SoundFX/Bazooka_Shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Bazooka_Shot.wav
+
 #begin SoundFX/Coin_Pickup.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -73,6 +79,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundFX/Enemy_Hit.wav
+
+#begin SoundFX/Explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Explosion.wav
 
 #begin SoundFX/Hero_Hurt.wav
 /importer:WavImporter
