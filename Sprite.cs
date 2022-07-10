@@ -6,8 +6,8 @@ namespace Gravity
     public class Sprite
     {
         public Vector2 Position { get; set; }
-        public Vector2 Scale { get; set; }
         public Vector2 Origin { get; set; }
+        public float Scale { get; set; }
         public float Rotation { get; set; }
         public float LayerDepth { get; set; }
         public Rectangle Source { get; set; }
@@ -21,7 +21,7 @@ namespace Gravity
             this.texture = texture;
 
             Origin = texture.Bounds.Center.ToVector2();
-            Scale = Vector2.One;
+            Scale = 1f;
             Rotation = 0f;
             Source = texture.Bounds;
             Flip = SpriteEffects.None;

@@ -19,7 +19,13 @@ namespace Gravity
         private readonly List<Entity> pendingEntities = new();
         private readonly GraphicsDeviceManager graphics;
 
-        private SpriteBatch spriteBatch;
+        #region Particles
+        private SmokeParticleSystem smoke;
+        private const float TimeBetweenSmokePuffs = .5f;
+        private float timeTillPuff = 0f;
+        #endregion
+
+        public SpriteBatch SpriteBatch { get; private set; }
         private bool updatingEntities = false;
 
         public Game()
@@ -27,6 +33,9 @@ namespace Gravity
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            smoke = new SmokeParticleSystem(this, 2);
+            Components.Add(smoke);
         }
 
         public void AddEntity(Entity entity)
@@ -50,7 +59,7 @@ namespace Gravity
         {
             Assets.Load(Content);
 
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             Effects.Flash.Parameters["flash_color"].SetValue(Vector4.One);
 
@@ -70,6 +79,17 @@ namespace Gravity
         {
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            // Smoke.
+            timeTillPuff -= (float)gameTime.DeltaTime();
+            if (timeTillPuff < 0f)
+            {
+                var where = Vector2.Zero;
+                where.X = graphics.GraphicsDevice.Viewport.Width / 2;
+                where.Y = graphics.GraphicsDevice.Viewport.Height / 2;
+                smoke.AddParticles(where);
+                timeTillPuff = TimeBetweenSmokePuffs;
+            }
 
             updatingEntities = true;
             foreach (var entity in Entities)
@@ -100,35 +120,35 @@ namespace Gravity
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Entities.
-            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: WorldCamera.Transform);
+            SpriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: WorldCamera.Transform);
             {
-                Level.Draw(spriteBatch);
+                Level.Draw(SpriteBatch);
 
                 foreach (var entity in Entities)
-                    entity.Draw(spriteBatch);
+                    entity.Draw(SpriteBatch);
             }
-            spriteBatch.End();
+            SpriteBatch.End();
 
             // Effects.
-            spriteBatch.Begin(SpriteSortMode.BackToFront, effect: Effects.Flash, transformMatrix: WorldCamera.Transform);
+            SpriteBatch.Begin(SpriteSortMode.BackToFront, effect: Effects.Flash, transformMatrix: WorldCamera.Transform);
             {
                 foreach (var entity in Entities)
                 {
                     if (entity.IsFlashing)
                     {
                         Effects.Flash.Parameters["flash_color"].SetValue(entity.FlashColor);
-                        entity.Draw(spriteBatch);
+                        entity.Draw(SpriteBatch);
                     }
                 }
             }
-            spriteBatch.End();
+            SpriteBatch.End();
 
             // UI.
-            spriteBatch.Begin(transformMatrix: UiCamera.Transform);
+            SpriteBatch.Begin(transformMatrix: UiCamera.Transform);
             {
-                Hud.Draw(spriteBatch);
+                Hud.Draw(SpriteBatch);
             }
-            spriteBatch.End();
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }
