@@ -8,5 +8,10 @@ namespace Gravity
         {
             return gameTime.ElapsedGameTime.TotalSeconds;
         }
+
+        public static float DeltaTimeF(this GameTime gameTime)
+        {
+            return (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
     }
 }

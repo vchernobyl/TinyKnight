@@ -110,6 +110,18 @@
 /processorParam:Quality=Best
 /build:SoundFX/Shotgun_Shot.wav
 
+#begin Textures/Blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Blank.png
+
 #begin Textures/bullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
