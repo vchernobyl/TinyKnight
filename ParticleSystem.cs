@@ -10,9 +10,9 @@ namespace Gravity
         public const int AlphaBlendDrawOrder = 100;
         public const int AdditiveDrawOrder = 200;
 
-        private Game game;
+        private readonly Game game;
+        private readonly int howManyEffects;
         private Sprite sprite;
-        private int howManyEffects;
 
         private Particle[] particles;
         private Queue<Particle> freeParticles;

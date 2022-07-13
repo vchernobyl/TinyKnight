@@ -140,8 +140,9 @@ namespace Gravity
             }
         }
 
-        public void AddScreen(GameScreen screen)
+        public void AddScreen(GameScreen screen, PlayerIndex? controllingPlayer = null)
         {
+            screen.ControllingPlayer = controllingPlayer;
             screen.ScreenManager = this;
             screen.IsExiting = false;
 

@@ -28,6 +28,11 @@ namespace Gravity
         public SpriteBatch SpriteBatch { get; private set; }
         private bool updatingEntities = false;
 
+        #region Screen Manager
+        ScreenManager screenManager;
+        ScreenFactory screenFactory;
+        #endregion
+
         public Game()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -36,6 +41,16 @@ namespace Gravity
 
             smoke = new SmokeParticleSystem(this, 2);
             Components.Add(smoke);
+
+            screenFactory = new ScreenFactory();
+            Services.AddService(typeof(IScreenFactory), screenFactory);
+
+            screenManager = new ScreenManager(this);
+            Components.Add(screenManager);
+
+            // Add initial screens.
+            screenManager.AddScreen(new BackgroundScreen());
+            screenManager.AddScreen(new MainMenuScreen());
         }
 
         public void AddEntity(Entity entity)
@@ -80,37 +95,37 @@ namespace Gravity
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // Smoke.
-            timeTillPuff -= (float)gameTime.DeltaTime();
-            if (timeTillPuff < 0f)
-            {
-                var where = Vector2.Zero;
-                where.X = graphics.GraphicsDevice.Viewport.Width / 2;
-                where.Y = graphics.GraphicsDevice.Viewport.Height / 2;
-                smoke.AddParticles(where);
-                timeTillPuff = TimeBetweenSmokePuffs;
-            }
+            //// Smoke.
+            //timeTillPuff -= (float)gameTime.DeltaTime();
+            //if (timeTillPuff < 0f)
+            //{
+            //    var where = Vector2.Zero;
+            //    where.X = graphics.GraphicsDevice.Viewport.Width / 2;
+            //    where.Y = graphics.GraphicsDevice.Viewport.Height / 2;
+            //    smoke.AddParticles(where);
+            //    timeTillPuff = TimeBetweenSmokePuffs;
+            //}
 
-            updatingEntities = true;
-            foreach (var entity in Entities)
-                entity.EntityUpdate(gameTime);
-            updatingEntities = false;
+            //updatingEntities = true;
+            //foreach (var entity in Entities)
+            //    entity.EntityUpdate(gameTime);
+            //updatingEntities = false;
 
-            foreach (var entity in pendingEntities)
-                Entities.Add(entity);
-            pendingEntities.Clear();
+            //foreach (var entity in pendingEntities)
+            //    Entities.Add(entity);
+            //pendingEntities.Clear();
 
-            for (int i = Entities.Count - 1; i >= 0; i--)
-            {
-                if (!Entities[i].IsActive)
-                {
-                    Entities[i].OnDestroy();
-                    Entities.RemoveAt(i);
-                }
-            }
+            //for (int i = Entities.Count - 1; i >= 0; i--)
+            //{
+            //    if (!Entities[i].IsActive)
+            //    {
+            //        Entities[i].OnDestroy();
+            //        Entities.RemoveAt(i);
+            //    }
+            //}
 
-            WorldCamera.Update(gameTime);
-            UiCamera.Update(gameTime);
+            //WorldCamera.Update(gameTime);
+            //UiCamera.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -119,36 +134,36 @@ namespace Gravity
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Entities.
-            SpriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: WorldCamera.Transform);
-            {
-                Level.Draw(SpriteBatch);
+            //// Entities.
+            //SpriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: WorldCamera.Transform);
+            //{
+            //    Level.Draw(SpriteBatch);
 
-                foreach (var entity in Entities)
-                    entity.Draw(SpriteBatch);
-            }
-            SpriteBatch.End();
+            //    foreach (var entity in Entities)
+            //        entity.Draw(SpriteBatch);
+            //}
+            //SpriteBatch.End();
 
-            // Effects.
-            SpriteBatch.Begin(SpriteSortMode.BackToFront, effect: Effects.Flash, transformMatrix: WorldCamera.Transform);
-            {
-                foreach (var entity in Entities)
-                {
-                    if (entity.IsFlashing)
-                    {
-                        Effects.Flash.Parameters["flash_color"].SetValue(entity.FlashColor);
-                        entity.Draw(SpriteBatch);
-                    }
-                }
-            }
-            SpriteBatch.End();
+            //// Effects.
+            //SpriteBatch.Begin(SpriteSortMode.BackToFront, effect: Effects.Flash, transformMatrix: WorldCamera.Transform);
+            //{
+            //    foreach (var entity in Entities)
+            //    {
+            //        if (entity.IsFlashing)
+            //        {
+            //            Effects.Flash.Parameters["flash_color"].SetValue(entity.FlashColor);
+            //            entity.Draw(SpriteBatch);
+            //        }
+            //    }
+            //}
+            //SpriteBatch.End();
 
-            // UI.
-            SpriteBatch.Begin(transformMatrix: UiCamera.Transform);
-            {
-                Hud.Draw(SpriteBatch);
-            }
-            SpriteBatch.End();
+            //// UI.
+            //SpriteBatch.Begin(transformMatrix: UiCamera.Transform);
+            //{
+            //    Hud.Draw(SpriteBatch);
+            //}
+            //SpriteBatch.End();
 
             base.Draw(gameTime);
         }
