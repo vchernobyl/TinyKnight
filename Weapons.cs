@@ -6,11 +6,11 @@
         public Weapon Shotgun { get; init; }
         public Weapon Bazooka { get; init; }
 
-        public Weapons(Game game, Hero hero)
+        public Weapons(GameplayScreen gameplayScreen, Hero hero)
         {
-            Pistol = new Pistol(game, hero);
-            Shotgun = new Shotgun(game, hero);
-            Bazooka = new Bazooka(game, hero);
+            Pistol = new Pistol(gameplayScreen, hero);
+            Shotgun = new Shotgun(gameplayScreen, hero);
+            Bazooka = new Bazooka(gameplayScreen, hero);
         }
 
         public Weapon GetRandomWeapon(Weapon currentWeapon)

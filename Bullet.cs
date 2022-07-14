@@ -8,7 +8,7 @@ namespace Gravity
         public Vector2 Velocity { get; set; }
         public int Damage { get; set; }
 
-        public Bullet(Game game) : base(game, new Sprite(Textures.Bullet))
+        public Bullet(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Bullet))
         {
         }
 

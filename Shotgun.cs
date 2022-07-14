@@ -4,16 +4,16 @@ namespace Gravity
 {
     public class Shotgun : Weapon
     {
-        private readonly Game game;
+        private readonly GameplayScreen gameplayScreen;
         private readonly Hero hero;
         private readonly MuzzleFlash muzzleFlash;
 
-        public Shotgun(Game game, Hero hero) : base(fireRate: 1.3f)
+        public Shotgun(GameplayScreen gameplayScreen, Hero hero) : base(fireRate: 1.3f)
         {
-            this.game = game;
+            this.gameplayScreen = gameplayScreen;
             this.hero = hero;
-            this.muzzleFlash = new MuzzleFlash(game) { Enabled = false };
-            this.game.AddEntity(muzzleFlash);
+            this.muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };
+            this.gameplayScreen.AddEntity(muzzleFlash);
         }
 
         public override void Update(GameTime gameTime)
@@ -28,9 +28,9 @@ namespace Gravity
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing, -.35f);
-            var cluster = new Cluster(game, position, velocity, damage: 100);
-            game.AddEntity(cluster);
-            game.WorldCamera.Shake(trauma: .465f);
+            var cluster = new Cluster(gameplayScreen, position, velocity, damage: 100);
+            gameplayScreen.AddEntity(cluster);
+            gameplayScreen.WorldCamera.Shake(trauma: .465f);
             muzzleFlash.Enabled = true;
             SoundFX.ShotgunShot.Play();
         }

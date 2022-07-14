@@ -4,7 +4,7 @@ namespace Gravity
 {
     public class Pistol : Weapon
     {
-        private readonly Game game;
+        private readonly GameplayScreen game;
         private readonly Hero hero;
         private readonly MuzzleFlash muzzleFlash;
 
@@ -13,11 +13,11 @@ namespace Gravity
         private const float ProjectileSpeed = .95f;
         private const int Damage = 40;
 
-        public Pistol(Game game, Hero hero) : base(fireRate: 8f)
+        public Pistol(GameplayScreen gameplayScreen, Hero hero) : base(fireRate: 8f)
         {
-            this.game = game;
+            this.game = gameplayScreen;
             this.hero = hero;
-            this.muzzleFlash = new MuzzleFlash(game) { Enabled = false };
+            this.muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };
             this.game.AddEntity(muzzleFlash);
         }
 

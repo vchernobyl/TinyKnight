@@ -6,9 +6,9 @@ namespace Gravity
 {
     public class Entity
     {
-        protected readonly Game game;
+        protected readonly GameplayScreen gameplayScreen;
         protected readonly Sprite sprite;
-        public Level Level => game.Level;
+        public Level Level => gameplayScreen.Level;
 
         // Coordinates within the grid.
         public int CX = 0;
@@ -45,9 +45,9 @@ namespace Gravity
         private double flashDuration = .0;
         public Vector4 FlashColor = Vector4.One;
 
-        public Entity(Game game, Sprite sprite)
+        public Entity(GameplayScreen gameplayScreen, Sprite sprite)
         {
-            this.game = game;
+            this.gameplayScreen = gameplayScreen;
             this.sprite = sprite;
         }
 
@@ -100,7 +100,7 @@ namespace Gravity
             // Check for collisions with other entities.
             if (Collision)
             {
-                foreach (var other in game.Entities)
+                foreach (var other in gameplayScreen.Entities)
                 {
                     if (this != other && Overlaps(other))
                         OnEntityCollision(other);

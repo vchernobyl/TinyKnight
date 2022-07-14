@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 
 namespace Gravity
 {
@@ -24,7 +23,7 @@ namespace Gravity
         private readonly Texture2D cellTexture;
         private readonly bool showBounds = false;
 
-        public Level(Texture2D levelMap, Game game)
+        public Level(Texture2D levelMap, GameplayScreen gameplayScreen, ContentManager content)
         {
             // Get texture pixels into a one-dimensional array.
             var pixels = new Color[levelMap.Width * levelMap.Height];
@@ -40,7 +39,7 @@ namespace Gravity
                 }
             }
 
-            cellTexture = game.Content.Load<Texture2D>("Textures/tile_0009");
+            cellTexture = content.Load<Texture2D>("Textures/tile_0009");
 
             Columns = levelMap.Width;
             Rows = levelMap.Height;
@@ -64,13 +63,13 @@ namespace Gravity
                     
                     if (type == Cell.CellType.WalkerSpawn)
                     {
-                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Walker);
-                        game.AddEntity(spawner);
+                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), gameplayScreen, Portal.EnemyType.Walker);
+                        gameplayScreen.AddEntity(spawner);
                     }
                     if (type == Cell.CellType.FlyerSpawn)
                     {
-                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), game, Portal.EnemyType.Flyer);
-                        game.AddEntity(spawner);
+                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), gameplayScreen, Portal.EnemyType.Flyer);
+                        gameplayScreen.AddEntity(spawner);
                     }
 
                     var cell = new Cell(x, y, type, type == Cell.CellType.Wall);

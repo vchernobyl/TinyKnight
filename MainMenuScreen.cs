@@ -40,7 +40,7 @@ namespace Gravity
 
         void PlayGameMenuEntrySelected(object? sender, PlayerIndexEventArgs e)
         {
-            throw new NotImplementedException();
+            ScreenManager.AddScreen(new GameplayScreen());
         }
     }
 }

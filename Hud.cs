@@ -5,16 +5,18 @@ namespace Gravity
 {
     public class Hud
     {
-        private readonly Game game;
+        private readonly GameplayScreen gameplayScreen;
 
-        public Hud(Game game)
+        public Hud(GameplayScreen gameplayScreen)
         {
-            this.game = game;
+            this.gameplayScreen = gameplayScreen;
         }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.DrawString(Fonts.Default, $"Enemies destroyed: {game.Hero.EnemiesKilled}", new Vector2(10f, 5f), Color.White);
+            batch.DrawString(Fonts.Default,
+                $"Enemies destroyed: {gameplayScreen.Hero.EnemiesKilled}",
+                new Vector2(10f, 5f), Color.White);
         }
     }
 }

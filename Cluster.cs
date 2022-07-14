@@ -15,8 +15,8 @@ namespace Gravity
         private double muzzleTime = 0;
         private bool collided = false;
 
-        public Cluster(Game game, Vector2 position, Vector2 velocity, int damage)
-            : base(game, new Sprite(Textures.Bullet))
+        public Cluster(GameplayScreen  gameplayScreen, Vector2 position, Vector2 velocity, int damage)
+            : base(gameplayScreen, new Sprite(Textures.Bullet))
         {
             Position = position;
             Velocity = velocity;
@@ -57,7 +57,7 @@ namespace Gravity
                 {
                     var radians = Numerics.VectorToRadians(normal) + Random.FloatRange(-MathF.PI / 4f, MathF.PI / 4f);
                     var velocity = Numerics.RadiansToVector(radians);
-                    game.AddEntity(new Pellet(game, Position, velocity, damage: 90));
+                    gameplayScreen.AddEntity(new Pellet(gameplayScreen, Position, velocity, damage: 90));
                 }
             }
         }

@@ -9,8 +9,8 @@ namespace Gravity
         private int facing;
         private bool dead = false;
 
-        public Walker(Game game)
-            : base(game, new Sprite(Textures.Enemy), health: 100)
+        public Walker(GameplayScreen gameplayScreen)
+            : base(gameplayScreen, new Sprite(Textures.Enemy), health: 100)
         {
             facing = Numerics.PickOne(-1, 1);
         }
@@ -49,7 +49,7 @@ namespace Gravity
 
         public override void Die()
         {
-            game.Hero.EnemiesKilled++;
+            gameplayScreen.Hero.EnemiesKilled++;
 
             DY = Random.FloatRange(-.4f, -.5f);
             dead = true;

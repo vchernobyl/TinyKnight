@@ -15,7 +15,7 @@ namespace Gravity
         private int pointIndex = 0;
         private bool dead = false;
 
-        public Flyer(Game game) : base(game, new Sprite(Textures.Flyer), health: 100)
+        public Flyer(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Flyer), health: 100)
         {
             Gravity = 0f;
 
@@ -46,7 +46,7 @@ namespace Gravity
         private void RecalculatePath()
         {
             pointIndex = 0;
-            path = pathfinding.FindPath(Position, game.Hero.Position);
+            path = pathfinding.FindPath(Position, gameplayScreen.Hero.Position);
         }
 
         public override void OnLevelCollision(Vector2 normal)
@@ -108,7 +108,7 @@ namespace Gravity
 
         public override void Die()
         {
-            game.Hero.EnemiesKilled++;
+            gameplayScreen.Hero.EnemiesKilled++;
             dead = true;
             DY = -.5f;
             Gravity = .05f;

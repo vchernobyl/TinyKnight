@@ -10,8 +10,8 @@ namespace Gravity
 
         private uint collisions = 0;
 
-        public Pellet(Game game, Vector2 position, Vector2 velocity, int damage)
-            : base(game, new Sprite(Textures.Bullet))
+        public Pellet(GameplayScreen gameplayScreen, Vector2 position, Vector2 velocity, int damage)
+            : base(gameplayScreen, new Sprite(Textures.Bullet))
         {
             Position = position;
             Velocity = velocity;

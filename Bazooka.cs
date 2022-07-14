@@ -7,7 +7,7 @@ namespace Gravity
         private double time = 0;
         private const float ExplosionRadius = 5f;
 
-        public Explosion(Game game) : base(game, new Sprite(Textures.Circle))
+        public Explosion(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Circle))
         {
             sprite.Color = Color.Yellow;
             sprite.Scale *= 2f;
@@ -24,7 +24,7 @@ namespace Gravity
                 return;
             }
 
-            foreach (var entity in game.Entities)
+            foreach (var entity in gameplayScreen.Entities)
             {
                 if (Overlaps(entity) && entity is Damageable enemy && enemy.IsAlive)
                     enemy.ReceiveDamage(100);
@@ -36,7 +36,7 @@ namespace Gravity
     {
         public Vector2 Velocity { get; set; }
 
-        public Rocket(Game game) : base(game, new Sprite(Textures.Bullet))
+        public Rocket(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Bullet))
         {
             sprite.Color = Color.Red;
             Gravity = 0f;
@@ -45,8 +45,8 @@ namespace Gravity
         public void Explode()
         {
             IsActive = false;
-            game.AddEntity(new Explosion(game) { Position = Position });
-            game.WorldCamera.Shake(.765f);
+            gameplayScreen.AddEntity(new Explosion(gameplayScreen) { Position = Position });
+            gameplayScreen.WorldCamera.Shake(.765f);
             SoundFX.Explosion.Play();
         }
 
@@ -73,12 +73,12 @@ namespace Gravity
 
     public class Bazooka : Weapon
     {
-        private readonly Game game;
+        private readonly GameplayScreen gameplayScreen;
         private readonly Hero hero;
 
-        public Bazooka(Game game, Hero hero) : base(fireRate: 1f)
+        public Bazooka(GameplayScreen gameplayScreen, Hero hero) : base(fireRate: 1f)
         {
-            this.game = game;
+            this.gameplayScreen = gameplayScreen;
             this.hero = hero;
         }
 
@@ -86,7 +86,7 @@ namespace Gravity
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing * .75f, 0f);
-            game.AddEntity(new Rocket(game) { Position = position, Velocity = velocity });
+            gameplayScreen.AddEntity(new Rocket(gameplayScreen) { Position = position, Velocity = velocity });
             SoundFX.BazookaShot.Play();
         }
     }

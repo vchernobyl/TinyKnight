@@ -4,17 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
-    public static class Assets
-    {
-        public static void Load(ContentManager content)
-        {
-            Textures.Load(content);
-            SoundFX.Load(content);
-            Fonts.Load(content);
-            Effects.Load(content);
-        }
-    }
-
     public static class Textures
     {
         public static Texture2D Bullet { get; private set; }

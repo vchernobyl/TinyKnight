@@ -25,8 +25,8 @@ namespace Gravity
         private uint entitiesSpawned = 0;
         private bool activated = true;
 
-        public Portal(Vector2 position, Game game, EnemyType enemyType)
-            : base(game, GetSprite(enemyType), health: 100)
+        public Portal(Vector2 position, GameplayScreen gameplayScreen, EnemyType enemyType)
+            : base(gameplayScreen, GetSprite(enemyType), health: 100)
         {
             Position = position;
             Gravity = 0f;
@@ -52,14 +52,14 @@ namespace Gravity
             {
                 Damageable enemy = enemyType switch
                 {
-                    EnemyType.Flyer => new Flyer(game),
-                    EnemyType.Walker => new Walker(game),
+                    EnemyType.Flyer => new Flyer(gameplayScreen),
+                    EnemyType.Walker => new Walker(gameplayScreen),
                     _ => throw new ArgumentException($"Enemy type {enemyType} not supported!")
                 };
 
                 enemy.SetCoordinates(Position.X, Position.Y);
                 enemy.OnDie += (_) => entitiesSpawned--;
-                game.AddEntity(enemy);
+                gameplayScreen.AddEntity(enemy);
                 entitiesSpawned++;
             }
         }

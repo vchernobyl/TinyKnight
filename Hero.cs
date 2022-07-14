@@ -17,12 +17,12 @@ namespace Gravity
         private bool hurting = false;
         private double hurtTime = 0;
 
-        public Hero(Game game) : base(game, new Sprite(Textures.Hero))
+        public Hero(GameplayScreen gamplayScreen) : base(gamplayScreen, new Sprite(Textures.Hero))
         {
-            weapons = new Weapons(game, this);
+            weapons = new Weapons(gamplayScreen, this);
             weapon = weapons.Bazooka;
 
-            foreach (var entity in game.Entities)
+            foreach (var entity in gamplayScreen.Entities)
             {
                 if (entity is Portal and Damageable portal)
                     portal.OnDie += (portal) => { weapon = weapons.GetRandomWeapon(weapon); };

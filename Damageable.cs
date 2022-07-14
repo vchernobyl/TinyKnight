@@ -11,8 +11,8 @@ namespace Gravity
 
         public Action<Damageable>? OnDie;
 
-        public Damageable(Game game, Sprite sprite, int health)
-            : base(game, sprite)
+        public Damageable(GameplayScreen gameplayScreen, Sprite sprite, int health)
+            : base(gameplayScreen, sprite)
         {
             Health = health;
         }
@@ -30,7 +30,7 @@ namespace Gravity
             Thread.Sleep(millisecondsTimeout: 20);
 
             // TODO: Move this to the projectile/weapon itself.
-            game.WorldCamera.Shake(trauma: .48f);
+            gameplayScreen.WorldCamera.Shake(trauma: .48f);
 
             if (Health <= 0)
             {

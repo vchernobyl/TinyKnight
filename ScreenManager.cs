@@ -196,18 +196,5 @@ namespace Gravity
             SpriteBatch.Draw(BlankTexture, GraphicsDevice.Viewport.Bounds, Color.Black * alpha);
             SpriteBatch.End();
         }
-
-        /// <summary>
-        /// Informs the screen manager to serialize its state to disk.
-        /// </summary>
-        public void Deactivate()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Activate()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
