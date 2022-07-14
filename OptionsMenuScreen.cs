@@ -49,7 +49,7 @@
             ungulateMenuEntry.Text = $"Preferred ungulate: {currentUngulate}";
             languageMenuEntry.Text = $"Language: {languages[currentLanguage]}";
             frobnicateMenuEntry.Text = "Frobnicate: " + (frobnicate ? "on" : "off");
-            ungulateMenuEntry.Text = $"Elf: {elf}";
+            elfMenuEntry.Text = $"Elf: {elf}";
         }
 
         void UngulateMenuEntrySelected(object? sender, PlayerIndexEventArgs e)

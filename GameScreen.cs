@@ -152,7 +152,7 @@ namespace Gravity
 
         // Allows the screen to handle user input. Unlike Update, this method
         // is only called when the screen is active, and not when some other
-        // screen has take the focus.
+        // screen has taken the focus.
         public virtual void HandleInput(GameTime gameTime, InputState input) { }
 
         public virtual void Draw(GameTime gameTime) { }
