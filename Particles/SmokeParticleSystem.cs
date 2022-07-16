@@ -6,42 +6,25 @@ namespace Gravity
 {
     public class SmokePlumeParticleSystem : ParticleSystem
     {
+        private static readonly Properties properties = new(
+            TextureFilename: "Textures/smoke",
+            MinInitialSpeed: 20,
+            MaxInitialSpeed: 100,
+            MinAcceleration: 0,
+            MaxAcceleration: 0,
+            MinLifetime: 5f,
+            MaxLifetime: 7f,
+            MinScale: .5f,
+            MaxScale: 1f,
+            MinNumParticles: 7,
+            MaxNumParticles: 15,
+            MinRotationSpeed: -MathHelper.PiOver4 / 2f,
+            MaxRotationSpeed: MathHelper.PiOver4 / 2f,
+            BlendState: BlendState.AlphaBlend);
+
         public SmokePlumeParticleSystem(Game game, int howManyEffects)
-            : base(game, howManyEffects)
+            : base(game, properties, howManyEffects)
         {
-        }
-
-        protected override void InitializeConstants()
-        {
-            textureFilename = "Textures/smoke";
-
-            minInitialSpeed = 20;
-            maxInitialSpeed = 100;
-
-            // we don't want the particles to accelerate at all, aside from what we
-            // do in our overriden InitializeParticle.
-            minAcceleration = 0;
-            maxAcceleration = 0;
-
-            // long lifetime, this can be changed to create thinner or thicker smoke.
-            // tweak minNumParticles and maxNumParticles to complement the effect.
-            minLifetime = 5.0f;
-            maxLifetime = 7.0f;
-
-            minScale = .5f;
-            maxScale = 1.0f;
-
-            // we need to reduce the number of particles on Windows Phone in order to keep
-            // a good framerate
-            minNumParticles = 7;
-            maxNumParticles = 15;
-
-            // rotate slowly, we want a fairly relaxed effect
-            minRotationSpeed = -MathHelper.PiOver4 / 2.0f;
-            maxRotationSpeed = MathHelper.PiOver4 / 2.0f;
-
-            blendState = BlendState.AlphaBlend;
-
             DrawOrder = AlphaBlendDrawOrder;
         }
 

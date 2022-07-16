@@ -8,7 +8,7 @@ namespace Gravity
         private SmokePlumeParticleSystem? smokePlume;
         private ExplosionParticleSystem? explosion;
         private ExplosionSmokeParticleSystem? smoke;
-        
+
         private const float TimeBetweenSmokePlumePuffs = .5f;
         private float timeTillPuff = 0f;
 

@@ -12,6 +12,7 @@ namespace Gravity
 
         private readonly Game game;
         private readonly int howManyEffects;
+        private readonly Properties properties;
         private Sprite sprite;
 
         private Particle[] particles;
@@ -19,43 +20,41 @@ namespace Gravity
 
         public int FreeParticleCount => freeParticles.Count;
 
-        // TODO: Can we refactor this into ParticleProps or something similar instead?
-        #region Constants to be set by the subclasses
-        protected int minNumParticles;
-        protected int maxNumParticles;
+        public record Properties(
+            string TextureFilename,
 
-        protected string textureFilename;
+            int MinNumParticles,
+            int MaxNumParticles,
+            
+            float MinInitialSpeed,
+            float MaxInitialSpeed,
+            
+            float MinAcceleration,
+            float MaxAcceleration,
 
-        protected float minInitialSpeed;
-        protected float maxInitialSpeed;
+            float MinRotationSpeed,
+            float MaxRotationSpeed,
 
-        protected float minAcceleration;
-        protected float maxAcceleration;
+            float MinLifetime,
+            float MaxLifetime,
 
-        protected float minRotationSpeed;
-        protected float maxRotationSpeed;
+            float MinScale,
+            float MaxScale,
+            
+            BlendState BlendState);
 
-        protected float minLifetime;
-        protected float maxLifetime;
-
-        protected float minScale;
-        protected float maxScale;
-
-        protected BlendState blendState;
-        #endregion
-
-        protected ParticleSystem(Game game, int howManyEffects) : base(game)
+        protected ParticleSystem(Game game, Properties properties, int howManyEffects) : base(game)
         {
             this.game = game;
+            this.properties = properties;
             this.howManyEffects = howManyEffects;
         }
 
+        // TODO: Move to the constructor.
         public override void Initialize()
         {
-            InitializeConstants();
-
-            particles = new Particle[howManyEffects * maxNumParticles];
-            freeParticles = new Queue<Particle>(howManyEffects * maxNumParticles);
+            particles = new Particle[howManyEffects * properties.MaxNumParticles];
+            freeParticles = new Queue<Particle>(howManyEffects * properties.MaxNumParticles);
             for (int i = 0; i < particles.Length; i++)
             {
                 particles[i] = new Particle();
@@ -65,28 +64,24 @@ namespace Gravity
             base.Initialize();
         }
 
-        protected abstract void InitializeConstants();
-
         protected override void LoadContent()
         {
             // TODO: Maybe load default debug (purple) texture instead of failing?
             // Jason Gregory - GEA
-            if (string.IsNullOrEmpty(textureFilename))
+            if (string.IsNullOrEmpty(properties.TextureFilename))
             {
-                string message = @$"{nameof(textureFilename)} wasn't set properly,
-                    so the particle system doesn't know what texture to load. Make sure your particle system's
-                    {nameof(InitializeConstants)} function properly sets it.";
+                string message = $"{nameof(properties.TextureFilename)} wasn't set properly";
                 throw new InvalidOperationException(message);
             }
 
-            sprite = new Sprite(game.Content.Load<Texture2D>(textureFilename));
+            sprite = new Sprite(game.Content.Load<Texture2D>(properties.TextureFilename));
 
             base.LoadContent();
         }
 
         public void AddParticles(Vector2 where)
         {
-            var numParticles = Random.IntRange(minNumParticles, maxNumParticles);
+            var numParticles = Random.IntRange(properties.MinNumParticles, properties.MaxNumParticles);
             for (int i = 0; i < numParticles && FreeParticleCount > 0; i++)
             {
                 var p = freeParticles.Dequeue();
@@ -97,11 +92,11 @@ namespace Gravity
         protected virtual void InitializeParticle(Particle p, Vector2 where)
         {
             var direction = PickRandomDirection();
-            var velocity = Random.FloatRange(minInitialSpeed, maxInitialSpeed);
-            var acceleration = Random.FloatRange(minAcceleration, maxAcceleration);
-            var lifetime = Random.FloatRange(minLifetime, maxLifetime);
-            var scale = Random.FloatRange(minScale, maxScale);
-            var rotationSpeed = Random.FloatRange(minRotationSpeed, maxRotationSpeed);
+            var velocity = Random.FloatRange(properties.MinInitialSpeed, properties.MaxInitialSpeed);
+            var acceleration = Random.FloatRange(properties.MinAcceleration, properties.MaxAcceleration);
+            var lifetime = Random.FloatRange(properties.MinLifetime, properties.MaxLifetime);
+            var scale = Random.FloatRange(properties.MinScale, properties.MaxScale);
+            var rotationSpeed = Random.FloatRange(properties.MinRotationSpeed, properties.MaxRotationSpeed);
 
             p.Initialize(where, velocity * direction, acceleration * direction,
                 lifetime, scale, rotationSpeed);
@@ -135,7 +130,7 @@ namespace Gravity
 
         public override void Draw(GameTime gameTime)
         {
-            game.SpriteBatch.Begin(SpriteSortMode.Deferred, blendState);
+            game.SpriteBatch.Begin(SpriteSortMode.Deferred, properties.BlendState);
             foreach (var p in particles)
             {
                 // Skip inactive particles.
