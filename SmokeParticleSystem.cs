@@ -4,9 +4,9 @@ using System;
 
 namespace Gravity
 {
-    public class SmokeParticleSystem : ParticleSystem
+    public class SmokePlumeParticleSystem : ParticleSystem
     {
-        public SmokeParticleSystem(Game game, int howManyEffects)
+        public SmokePlumeParticleSystem(Game game, int howManyEffects)
             : base(game, howManyEffects)
         {
         }

@@ -50,13 +50,10 @@ namespace Gravity
                 newPressOnly: true);
         }
 
-        public override void Activate(bool instancePreserved)
+        public override void LoadContent()
         {
-            if (!instancePreserved)
-            {
-                var content = ScreenManager.Game.Content;
-                gradientTexture = content.Load<Texture2D>("Textures/gradient");
-            }
+            var content = ScreenManager.Game.Content;
+            gradientTexture = content.Load<Texture2D>("Textures/gradient");
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)

@@ -80,15 +80,9 @@ namespace Gravity
         /// screen is just being added or if the game was tombstoned.
         /// On Xbox and Windows this will always be false.
         /// </param>
-        public virtual void Activate(bool instancePreserved) { }
+        public virtual void LoadContent() { }
 
-        /// <summary>
-        /// Deactivates the screen. Called when the game is being deactivated
-        /// due to pausing or tombstoning.
-        /// </summary>
-        public virtual void Deactivate() { }
-
-        public virtual void Unload() { }
+        public virtual void UnloadContent() { }
 
         public virtual void Update(GameTime gameTime,
             bool otherScreenHasFocus, bool coveredByOtherScreen)

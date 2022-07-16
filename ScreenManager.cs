@@ -65,13 +65,13 @@ namespace Gravity
             BlankTexture = content.Load<Texture2D>("Textures/Blank");
 
             foreach (var screen in screens)
-                screen.Activate(instancePreserved: false);
+                screen.LoadContent();
         }
 
         protected override void UnloadContent()
         {
             foreach (var screen in screens)
-                screen.Unload();
+                screen.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -148,7 +148,7 @@ namespace Gravity
 
             // If we have a graphics device, tell the screen to load content.
             if (isInitialized)
-                screen.Activate(instancePreserved: false);
+                screen.LoadContent();
 
             screens.Add(screen);
 
@@ -169,7 +169,7 @@ namespace Gravity
         {
             // If we have a graphics device, tell the screen to unload content.
             if (isInitialized)
-                screen.Unload();
+                screen.UnloadContent();
 
             screens.Remove(screen);
             tempScreenList.Remove(screen);

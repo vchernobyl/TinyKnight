@@ -30,17 +30,14 @@ namespace Gravity
         /// ContentManager provided by the Game class, the content would
         /// remain loaded forever.
         /// </summary>
-        public override void Activate(bool instancePreserved)
+        public override void LoadContent()
         {
-            if (!instancePreserved)
-            {
-                if (content == null)
-                    content = new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
-                backgroundTexture = content.Load<Texture2D>("Textures/background");
-            }
+            if (content == null)
+                content = new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
+            backgroundTexture = content.Load<Texture2D>("Textures/background");
         }
 
-        public override void Unload()
+        public override void UnloadContent()
         {
             content.Unload();
         }
