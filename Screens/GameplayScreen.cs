@@ -12,11 +12,7 @@ namespace Gravity
     // they will only need GameplayScreen to be added to the game world.
     public class GameplayScreen : GameScreen
     {
-        #region Fields
         private ContentManager content;
-        private float pauseAlpha;
-        private InputAction pauseAction;
-        #endregion
 
         public Level Level { get; private set; }
         public Hud Hud { get; private set; }
@@ -33,11 +29,6 @@ namespace Gravity
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-
-            pauseAction = new InputAction(
-                new Buttons[] { Buttons.Start, Buttons.Back },
-                new Keys[] { Keys.P },
-                newPressOnly: true);
         }
 
         public void AddEntity(Entity entity)
@@ -73,14 +64,6 @@ namespace Gravity
         public override void UnloadContent()
         {
             content.Unload();
-        }
-
-        public override void HandleInput(GameTime gameTime, InputState input)
-        {
-            if (pauseAction.Evaluate(input, ControllingPlayer, out _))
-            {
-                ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
-            }
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -121,20 +104,27 @@ namespace Gravity
             Level.Draw(spriteBatch);
 
             foreach (var entity in Entities)
-                entity.Draw(spriteBatch);
+            {
+                if (!entity.IsFlashing)
+                    entity.Draw(spriteBatch);
+            }
 
+            spriteBatch.End();
+
+            spriteBatch.Begin(effect: Effects.Flash, transformMatrix: WorldCamera.Transform);
+            foreach (var entity in Entities)
+            {
+                if (entity.IsFlashing)
+                {
+                    Effects.Flash.Parameters["flash_color"].SetValue(entity.FlashColor);
+                    entity.Draw(spriteBatch);
+                }
+            }
             spriteBatch.End();
 
             spriteBatch.Begin(transformMatrix: UiCamera.Transform);
             Hud.Draw(spriteBatch);
             spriteBatch.End();
-
-            // If the game is transitioning on or off, fade it out to black.
-            if (TransitionPosition > 0 || pauseAlpha > 0)
-            {
-                var alpha = MathHelper.Lerp(1f - TransitionAlpha, 1f, pauseAlpha / 2f);
-                ScreenManager.FadeBackBufferToBlack(alpha);
-            }
         }
     }
 }
