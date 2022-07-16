@@ -11,12 +11,11 @@ namespace Gravity
         public const int AdditiveDrawOrder = 200;
 
         private readonly Game game;
-        private readonly int howManyEffects;
         private readonly Properties properties;
-        private Sprite sprite;
+        private readonly Particle[] particles;
+        private readonly Queue<Particle> freeParticles;
 
-        private Particle[] particles;
-        private Queue<Particle> freeParticles;
+        private Sprite sprite;
 
         public int FreeParticleCount => freeParticles.Count;
 
@@ -47,21 +46,14 @@ namespace Gravity
         {
             this.game = game;
             this.properties = properties;
-            this.howManyEffects = howManyEffects;
-        }
+            this.particles = new Particle[howManyEffects * properties.MaxNumParticles];
+            this.freeParticles = new Queue<Particle>(howManyEffects * properties.MaxNumParticles);
 
-        // TODO: Move to the constructor.
-        public override void Initialize()
-        {
-            particles = new Particle[howManyEffects * properties.MaxNumParticles];
-            freeParticles = new Queue<Particle>(howManyEffects * properties.MaxNumParticles);
             for (int i = 0; i < particles.Length; i++)
             {
                 particles[i] = new Particle();
                 freeParticles.Enqueue(particles[i]);
             }
-
-            base.Initialize();
         }
 
         protected override void LoadContent()
