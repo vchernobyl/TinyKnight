@@ -83,7 +83,7 @@ namespace Gravity
             var viewport = ScreenManager.GraphicsDevice.Viewport;
             var viewportSize = new Vector2(viewport.Width, viewport.Height);
             var textSize = font.MeasureString(message);
-            var textPosition = (viewportSize / textSize) / 2;
+            var textPosition = viewportSize / textSize / 2;
 
             // The background includes a border somehwat larget than the text itself.
             const int hPad = 32;

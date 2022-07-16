@@ -133,8 +133,8 @@ namespace Gravity
             TransitionPosition += transitionDelta * direction;
 
             // Did we reach the end of the transition?
-            if (((direction < 0) && (TransitionPosition <= 0)) ||
-                ((direction > 0) && (TransitionPosition >= 1)))
+            if (direction < 0 && TransitionPosition <= 0 ||
+                direction > 0 && TransitionPosition >= 1)
             {
                 TransitionPosition = MathHelper.Clamp(TransitionPosition, 0f, 1f);
                 return false;

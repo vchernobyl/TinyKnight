@@ -74,7 +74,7 @@ namespace Gravity
             // to OnSelectedEntry and OnCancel, so they can tell which player
             // triggered them.
             PlayerIndex playerIndex;
-            
+
             if (menuUp.Evaluate(input, ControllingPlayer, out playerIndex))
             {
                 selectedEntry--;
@@ -148,7 +148,7 @@ namespace Gravity
 
             for (int i = 0; i < menuEntries.Count; i++)
             {
-                var isSelected = IsActive && (i == selectedEntry);
+                var isSelected = IsActive && i == selectedEntry;
                 menuEntries[i].Update(this, isSelected, gameTime);
             }
         }
@@ -167,7 +167,7 @@ namespace Gravity
             for (int i = 0; i < menuEntries.Count; i++)
             {
                 var menuEntry = menuEntries[i];
-                var isSelected = IsActive && (i == selectedEntry);
+                var isSelected = IsActive && i == selectedEntry;
                 menuEntry.Draw(this, isSelected, gameTime);
             }
 

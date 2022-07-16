@@ -5,7 +5,7 @@ namespace Gravity
 {
     public class ExplosionParticleSystem : ParticleSystem
     {
-        public ExplosionParticleSystem(Game game, int howManyEffects) 
+        public ExplosionParticleSystem(Game game, int howManyEffects)
             : base(game, howManyEffects)
         {
         }

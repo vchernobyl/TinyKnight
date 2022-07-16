@@ -102,7 +102,7 @@ namespace Gravity
             var lifetime = Random.FloatRange(minLifetime, maxLifetime);
             var scale = Random.FloatRange(minScale, maxScale);
             var rotationSpeed = Random.FloatRange(minRotationSpeed, maxRotationSpeed);
-            
+
             p.Initialize(where, velocity * direction, acceleration * direction,
                 lifetime, scale, rotationSpeed);
         }
