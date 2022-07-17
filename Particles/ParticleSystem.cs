@@ -5,98 +5,152 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
-    public abstract class ParticleSystem : DrawableGameComponent
+    public class ParticleSystem : DrawableGameComponent
     {
+        // These two values control the order that particle systems
+        // are drawn in. Typically, particles that use additive blending
+        // should be drawn on top of particles that use regular alpha
+        // blending. ParticleSystems should therefore set their DrawOrder
+        // to the appropriate value in InitializeConstants, though it is
+        // possible to use other values for more advanced effects.
         public const int AlphaBlendDrawOrder = 100;
         public const int AdditiveDrawOrder = 200;
 
-        private readonly GravityGame game;
-        private readonly Properties properties;
-        private readonly Particle[] particles;
+        private SpriteBatch spriteBatch;
+        private Texture2D texture;
+        private Vector2 origin;
+
+        // The list of particles used by this system. These are reused, so that
+        // calling AddParticles will only cause allocations if we're trying
+        // to create more particles thatn we have available.
+        private readonly List<Particle> particles;
+
+        // The queue of free particles keeps track of particles that are not
+        // currently being used by an effect. When a new effect is requested,
+        // particles are taken from this queue. When particles are finished
+        // they are put onto this queue.
         private readonly Queue<Particle> freeParticles;
 
-        private Sprite sprite;
+        private readonly string settingsAssetName;
+        private ParticleSystemSettings settings;
+        private BlendState blendState;
 
         public int FreeParticleCount => freeParticles.Count;
 
-        public record Properties(
-            string TextureFilename,
-
-            int MinNumParticles,
-            int MaxNumParticles,
-            
-            float MinInitialSpeed,
-            float MaxInitialSpeed,
-            
-            float MinAcceleration,
-            float MaxAcceleration,
-
-            float MinRotationSpeed,
-            float MaxRotationSpeed,
-
-            float MinLifetime,
-            float MaxLifetime,
-
-            float MinScale,
-            float MaxScale,
-            
-            BlendState BlendState);
-
-        protected ParticleSystem(GravityGame game, Properties properties, int howManyEffects) : base(game)
+        public ParticleSystem(Game game, string settingsAssetName,
+            int initialParticleCount = 10) : base(game)
         {
-            this.game = game;
-            this.properties = properties;
-            this.particles = new Particle[howManyEffects * properties.MaxNumParticles];
-            this.freeParticles = new Queue<Particle>(howManyEffects * properties.MaxNumParticles);
-
-            for (int i = 0; i < particles.Length; i++)
+            this.settingsAssetName = settingsAssetName;
+            
+            // We create the particle list and queue with our initial count
+            // and create that many particles. If we picked a reasonable value,
+            // our system will not allocate any more objects after this point,
+            // however the AddParticles method will allocate more particles
+            // as needed.
+            this.particles = new List<Particle>(initialParticleCount);
+            this.freeParticles = new Queue<Particle>(initialParticleCount);
+            for (int i = 0; i < initialParticleCount; i++)
             {
-                particles[i] = new Particle();
+                particles.Add(new Particle());
                 freeParticles.Enqueue(particles[i]);
             }
         }
 
         protected override void LoadContent()
         {
-            // TODO: Maybe load default debug (purple) texture instead of failing?
-            // Jason Gregory - GEA
-            if (string.IsNullOrEmpty(properties.TextureFilename))
-            {
-                string message = $"{nameof(properties.TextureFilename)} wasn't set properly";
-                throw new InvalidOperationException(message);
-            }
+            settings = Game.Content.Load<ParticleSystemSettings>(settingsAssetName);
+            texture = Game.Content.Load<Texture2D>(settings.TextureFilename);
 
-            sprite = new Sprite(game.Content.Load<Texture2D>(properties.TextureFilename));
+            origin.X = texture.Width / 2f;
+            origin.Y = texture.Height / 2f;
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            blendState = new BlendState
+            {
+                AlphaSourceBlend = settings.SourceBlend,
+                ColorSourceBlend = settings.SourceBlend,
+                AlphaDestinationBlend = settings.DestinationBlend,
+                ColorDestinationBlend = settings.DestinationBlend,
+            };
 
             base.LoadContent();
         }
 
-        public void AddParticles(Vector2 where)
+        /// <summary>
+        /// AddParticles's job is to add an effect somewhere on the screen.
+        /// If there aren't enough particles in the freeParticles queue, it
+        /// will use as many as it can. This means that if there are not enough
+        /// particles available, calling AddParticles will have no effect.
+        /// </summary>
+        public void AddParticles(Vector2 where, Vector2 velocity)
         {
-            var numParticles = Random.IntRange(properties.MinNumParticles, properties.MaxNumParticles);
-            for (int i = 0; i < numParticles && FreeParticleCount > 0; i++)
+            var numParticles = Random.IntRange(settings.MinNumParticles, settings.MaxNumParticles);
+            
+            // Create that many particles, if you can.
+            for (int i = 0; i < numParticles; i++)
             {
+                // If we're out of free particles, we allocate anothe ten particles
+                // which should keep us going.
+                if (freeParticles.Count == 0)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        var newParticle = new Particle();
+                        particles.Add(newParticle);
+                        freeParticles.Enqueue(newParticle);
+                    }
+                }
+
+                // Grab a particle from the freeParticles queue, and initialize it.
                 var p = freeParticles.Dequeue();
-                InitializeParticle(p, where);
+                InitializeParticle(p, where, velocity);
             }
         }
 
-        protected virtual void InitializeParticle(Particle p, Vector2 where)
+        private void InitializeParticle(Particle p, Vector2 where, Vector2 velocity)
         {
+            // Adjust the input velocity based on how much
+            // this particle system wants to be affected by it.
+            velocity *= settings.EmitterVelocitySensitivity;
             var direction = PickRandomDirection();
-            var velocity = Random.FloatRange(properties.MinInitialSpeed, properties.MaxInitialSpeed);
-            var acceleration = Random.FloatRange(properties.MinAcceleration, properties.MaxAcceleration);
-            var lifetime = Random.FloatRange(properties.MinLifetime, properties.MaxLifetime);
-            var scale = Random.FloatRange(properties.MinScale, properties.MaxScale);
-            var rotationSpeed = Random.FloatRange(properties.MinRotationSpeed, properties.MaxRotationSpeed);
+            var speed = Random.FloatRange(settings.MinInitialSpeed, settings.MaxInitialSpeed);
+            velocity += direction * speed;
 
-            p.Initialize(where, velocity * direction, acceleration * direction,
-                lifetime, scale, rotationSpeed);
+            var lifetime = Random.FloatRange(settings.MinLifetime, settings.MaxLifetime);
+            var scale = Random.FloatRange(settings.MinSize, settings.MaxSize);
+            var rotationSpeed = Random.FloatRange(settings.MinRotationSpeed, settings.MaxRotationSpeed);
+
+            // Our settings angles are in degrees, so we must convert to radians.
+            rotationSpeed = MathHelper.ToRadians(rotationSpeed);
+
+            var acceleration = Vector2.Zero;
+            switch (settings.AccelerationMode)
+            {
+                case AccelerationMode.Scalar:
+                    var accelerationScale = Random.FloatRange(
+                        settings.MinAccelerationScale,
+                        settings.MaxAccelerationScale);
+                    acceleration = direction * accelerationScale;
+                    break;
+                case AccelerationMode.EndVelocity:
+                    acceleration = (velocity * (settings.EndVelocity - 1f)) / lifetime;
+                    break;
+                case AccelerationMode.Vector:
+                    acceleration = new Vector2(
+                        Random.FloatRange(settings.MinAccelerationVector.X, settings.MaxAccelerationVector.X),
+                        Random.FloatRange(settings.MinAccelerationVector.Y, settings.MaxAccelerationVector.Y));
+                    break;
+                default:
+                    break;
+            }
+
+            p.Initialize(where, velocity, acceleration, lifetime, scale, rotationSpeed);
         }
 
         protected virtual Vector2 PickRandomDirection()
         {
-            var angle = Random.FloatRange(0, MathHelper.TwoPi);
+            var angle = Random.FloatRange(settings.MinDirectionAngle, settings.MaxDirectionAngle);
+            angle = MathHelper.ToRadians(angle);
             return new Vector2(MathF.Cos(angle), MathF.Sin(angle));
         }
 
@@ -108,6 +162,7 @@ namespace Gravity
             {
                 if (p.Active)
                 {
+                    p.Acceleration += settings.Gravity * deltaTime;
                     p.Update(deltaTime);
 
                     // If that update finishes them, put them onto the free
@@ -122,7 +177,7 @@ namespace Gravity
 
         public override void Draw(GameTime gameTime)
         {
-            game.SpriteBatch.Begin(SpriteSortMode.Deferred, properties.BlendState,
+            spriteBatch.Begin(SpriteSortMode.Deferred, blendState,
                 transformMatrix: GravityGame.WorldCamera.Transform);
             
             foreach (var p in particles)
@@ -131,19 +186,34 @@ namespace Gravity
                 if (!p.Active)
                     continue;
 
-                // Is always between 0 and 1.
+                // Normalized lifetime is a value from 0 to 1 and represents
+                // how far a particle is through its life. 0 means it just
+                // started, .5 is half way through, and 1 means it's just about
+                // to be finished. This value will be used to calculate alpha
+                // and scale, to avoid having particles suddenly appear or disappear.
                 var normalizedLifetime = p.TimeSinceStart / p.Lifetime;
+
+                // We want particles to fade in and out, so we'll calculate alpha
+                // to be (normalizedLifetime) * (1 - normalizeLifetime). This way
+                // when normalizeLifetime is 0 or 1, alpha is 0. The maximum value
+                // is at normalizedLifetime .5, and is
+                // (normalizedLifetime) * (1 - normalizedLifetime)
+                // (.5) * (1 - .5)
+                // .25
+                // Since we want the maximum alpha to be 1, not .25, we'll scale
+                // the entire equation by 4.
                 var alpha = 4 * normalizedLifetime * (1 - normalizedLifetime);
                 var color = Color.White * alpha;
+
+                // Make particles grow as they age. They'll start at 75% of their
+                // size, and increase to 100% once they're finished.
                 var scale = p.Scale * (.75f + .25f * normalizedLifetime);
-                sprite.Position = p.Position;
-                sprite.Rotation = p.Rotation;
-                sprite.Color = color;
-                sprite.Scale = scale;
-                sprite.Draw(game.SpriteBatch);
+
+                spriteBatch.Draw(texture, p.Position, sourceRectangle: null, color,
+                    p.Rotation, origin, scale, SpriteEffects.None, 0f);
             }
             
-            game.SpriteBatch.End();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

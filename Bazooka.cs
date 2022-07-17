@@ -40,22 +40,16 @@ namespace Gravity
     {
         public Vector2 Velocity { get; set; }
 
-        private readonly RocketTrailParticles trailParticles;
-
         public Rocket(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Bullet))
         {
             sprite.Color = Color.Red;
             Gravity = 0f;
-            trailParticles = new RocketTrailParticles(
-                (GravityGame)gameplayScreen.ScreenManager.Game, 1);
-            gameplayScreen.ScreenManager.Game.Components.Add(trailParticles);
         }
 
         public void Explode()
         {
             IsActive = false;
             gameplayScreen.AddEntity(new Explosion(gameplayScreen) { Position = Position });
-            gameplayScreen.ScreenManager.Game.Components.Remove(trailParticles);
             GravityGame.WorldCamera.Shake(.85f);
             SoundFX.Explosion.Play();
         }
@@ -82,8 +76,6 @@ namespace Gravity
             var where = Vector2.Zero;
             where.X = XX;
             where.Y = YY;
-            trailParticles.Direction = -Vector2.Normalize(Velocity);
-            trailParticles.AddParticles(where);
         }
     }
 
