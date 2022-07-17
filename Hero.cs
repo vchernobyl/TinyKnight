@@ -42,7 +42,7 @@ namespace Gravity
                 hurting = true;
                 hurtTime = .2;
                 SoundFX.HeroHurt.Play();
-                Flash(duration: .15f, new Vector4(1f, 0f, 0f, 1f));
+                Flash(duration: .15f, Color.Red);
 
                 DY = -.3f;
                 DX = Math.Sign(XX - other.XX) * .3f;

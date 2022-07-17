@@ -43,7 +43,7 @@ namespace Gravity
         public bool IsFlashing => flashDuration > .0;
 
         private double flashDuration = .0;
-        public Vector4 FlashColor = Vector4.One;
+        public Color FlashColor { get; private set; }
 
         public Entity(GameplayScreen gameplayScreen, Sprite sprite)
         {
@@ -69,7 +69,7 @@ namespace Gravity
             return distSqr <= maxDist * maxDist;
         }
 
-        public void Flash(double duration, Vector4 color)
+        public void Flash(double duration, Color color)
         {
             flashDuration = duration;
             FlashColor = color;
@@ -77,7 +77,7 @@ namespace Gravity
 
         public void Flash(double duration)
         {
-            Flash(duration, Vector4.One);
+            Flash(duration, Color.White);
         }
 
         public virtual void OnEntityCollision(Entity other) { }

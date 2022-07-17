@@ -1,25 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Threading;
 
 namespace Gravity
 {
     public class Explosion : Entity
     {
         private double time = 0;
-        private const float ExplosionRadius = 5f;
 
         public Explosion(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Circle))
         {
-            sprite.Color = Color.Yellow;
-            sprite.Scale *= 2f;
             Gravity = 0f;
-            Radius = Level.CellSize / 2f * ExplosionRadius;
+            Radius = sprite.Size.X / 2;
+            sprite.Color = Color.Black;
         }
 
         public override void Update(GameTime gameTime)
         {
             time += gameTime.DeltaTime();
+            if (time >= .1f)
+            {
+                Flash(.1f, Color.White);
+            }
             if (time >= .2f)
             {
+                Thread.Sleep(millisecondsTimeout: 20);
                 IsActive = false;
                 return;
             }
@@ -52,7 +56,7 @@ namespace Gravity
             IsActive = false;
             gameplayScreen.AddEntity(new Explosion(gameplayScreen) { Position = Position });
             gameplayScreen.ScreenManager.Game.Components.Remove(trailParticles);
-            GravityGame.WorldCamera.Shake(.765f);
+            GravityGame.WorldCamera.Shake(.85f);
             SoundFX.Explosion.Play();
         }
 

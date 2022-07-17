@@ -111,7 +111,8 @@ namespace Gravity
             {
                 if (entity.IsFlashing)
                 {
-                    Effects.Flash.Parameters["flash_color"].SetValue(entity.FlashColor);
+                    var normalizedColor = entity.FlashColor.ToVector4();
+                    Effects.Flash.Parameters["flash_color"].SetValue(normalizedColor);
                     entity.Draw(spriteBatch);
                 }
             }

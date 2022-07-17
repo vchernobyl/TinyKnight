@@ -14,6 +14,8 @@ namespace Gravity
         public SpriteEffects Flip { get; set; }
         public Color Color { get; set; }
 
+        public Point Size => texture.Bounds.Size;
+
         private readonly Texture2D texture;
 
         public Sprite(Texture2D texture)
