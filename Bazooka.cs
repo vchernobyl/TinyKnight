@@ -51,6 +51,7 @@ namespace Gravity
         {
             IsActive = false;
             gameplayScreen.AddEntity(new Explosion(gameplayScreen) { Position = Position });
+            gameplayScreen.ScreenManager.Game.Components.Remove(trailParticles);
             GravityGame.WorldCamera.Shake(.765f);
             SoundFX.Explosion.Play();
         }
@@ -99,6 +100,7 @@ namespace Gravity
             var velocity = new Vector2(hero.Facing * .75f, 0f);
             gameplayScreen.AddEntity(new Rocket(gameplayScreen) { Position = position, Velocity = velocity });
             SoundFX.BazookaShot.Play();
+            GravityGame.WorldCamera.Shake(.6f);
         }
     }
 }
