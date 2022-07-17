@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
@@ -50,9 +49,8 @@ namespace Gravity
             Hero = new Hero(this) { Position = new Vector2(100f, 200f) };
             Entities.Add(Hero);
 
-            var graphics = (GraphicsDeviceManager)ScreenManager.Game.Services.GetService(typeof(IGraphicsDeviceManager));
-            var centerX = graphics.PreferredBackBufferWidth / 2 - Level.Width / 2;
-            var centerY = graphics.PreferredBackBufferHeight / 2 - Level.Height / 2;
+            var centerX = ScreenManager.GraphicsDevice.Viewport.Width / 2 - Level.Width / 2;
+            var centerY = ScreenManager.GraphicsDevice.Viewport.Height / 2 - Level.Height / 2;
             WorldCamera.Position = new Vector2(centerX, centerY);
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's

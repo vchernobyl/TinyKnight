@@ -135,6 +135,7 @@ namespace Gravity
                 var color = Color.White * alpha;
                 var scale = p.Scale * (.75f + .25f * normalizedLifetime);
                 sprite.Position = p.Position;
+                sprite.Rotation = p.Rotation;
                 sprite.Color = color;
                 sprite.Scale = scale;
                 sprite.Draw(game.SpriteBatch);
