@@ -17,9 +17,6 @@ namespace Gravity
         public Hud Hud { get; private set; }
         public Hero Hero { get; set; }
 
-        public readonly Camera WorldCamera = new();
-        public readonly Camera UiCamera = new();
-
         public readonly List<Entity> Entities = new();
         private readonly List<Entity> pendingEntities = new();
         private bool updatingEntities = false;
@@ -51,7 +48,7 @@ namespace Gravity
 
             var centerX = ScreenManager.GraphicsDevice.Viewport.Width / 2 - Level.Width / 2;
             var centerY = ScreenManager.GraphicsDevice.Viewport.Height / 2 - Level.Height / 2;
-            WorldCamera.Position = new Vector2(centerX, centerY);
+            GravityGame.WorldCamera.Position = new Vector2(centerX, centerY);
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and
@@ -86,8 +83,8 @@ namespace Gravity
                 }
             }
 
-            WorldCamera.Update(gameTime);
-            UiCamera.Update(gameTime);
+            GravityGame.WorldCamera.Update(gameTime);
+            GravityGame.UiCamera.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -97,7 +94,7 @@ namespace Gravity
 
             var spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: WorldCamera.Transform);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: GravityGame.WorldCamera.Transform);
 
             Level.Draw(spriteBatch);
 
@@ -109,7 +106,7 @@ namespace Gravity
 
             spriteBatch.End();
 
-            spriteBatch.Begin(effect: Effects.Flash, transformMatrix: WorldCamera.Transform);
+            spriteBatch.Begin(effect: Effects.Flash, transformMatrix: GravityGame.WorldCamera.Transform);
             foreach (var entity in Entities)
             {
                 if (entity.IsFlashing)
@@ -120,7 +117,7 @@ namespace Gravity
             }
             spriteBatch.End();
 
-            spriteBatch.Begin(transformMatrix: UiCamera.Transform);
+            spriteBatch.Begin(transformMatrix: GravityGame.UiCamera.Transform);
             Hud.Draw(spriteBatch);
             spriteBatch.End();
         }

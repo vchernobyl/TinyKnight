@@ -4,15 +4,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Gravity
 {
-    public class Game : Microsoft.Xna.Framework.Game
+    public class GravityGame : Game
     {
         private SpriteBatch? spriteBatch;
         public SpriteBatch SpriteBatch => spriteBatch!;
 
+        public static readonly Camera WorldCamera = new();
+        public static readonly Camera UiCamera = new();
+
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
 
-        public Game()
+        public GravityGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -22,9 +25,9 @@ namespace Gravity
             Components.Add(screenManager);
 
             // Add initial screens.
-            screenManager.AddScreen(new ParticlesScreen());
-            //screenManager.AddScreen(new BackgroundScreen());
-            //screenManager.AddScreen(new MainMenuScreen());
+            //screenManager.AddScreen(new ParticlesScreen());
+            screenManager.AddScreen(new BackgroundScreen());
+            screenManager.AddScreen(new MainMenuScreen());
         }
 
         protected override void Initialize()

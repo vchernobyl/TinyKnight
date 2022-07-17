@@ -21,7 +21,7 @@ namespace Gravity
             MaxRotationSpeed: MathHelper.PiOver4,
             BlendState: BlendState.AlphaBlend);
 
-        public ExplosionSmokeParticleSystem(Game game, int howManyEffects)
+        public ExplosionSmokeParticleSystem(GravityGame game, int howManyEffects)
             : base(game, properties, howManyEffects)
         {
             DrawOrder = AlphaBlendDrawOrder;

@@ -21,7 +21,7 @@ namespace Gravity
             MaxRotationSpeed: MathHelper.PiOver4,
             BlendState: BlendState.Additive);
 
-        public ExplosionParticleSystem(Game game, int howManyEffects)
+        public ExplosionParticleSystem(GravityGame game, int howManyEffects)
             : base(game, properties, howManyEffects)
         {
             DrawOrder = AdditiveDrawOrder;

@@ -30,7 +30,7 @@ namespace Gravity
             Thread.Sleep(millisecondsTimeout: 20);
 
             // TODO: Move this to the projectile/weapon itself.
-            gameplayScreen.WorldCamera.Shake(trauma: .48f);
+            GravityGame.WorldCamera.Shake(trauma: .48f);
 
             if (Health <= 0)
             {

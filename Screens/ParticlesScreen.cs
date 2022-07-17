@@ -1,29 +1,37 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Gravity
 {
-    public class RocketTrailParticleSystem : ParticleSystem
+    public class RocketTrailParticles : ParticleSystem
     {
+        public Vector2 Direction { get; set; }
+
         private static readonly Properties properties = new(
             TextureFilename: "Textures/Pixel",
-            MinInitialSpeed: 20,
+            MinInitialSpeed: 50,
             MaxInitialSpeed: 100,
             MinAcceleration: 0,
             MaxAcceleration: 0,
-            MinLifetime: 5f,
-            MaxLifetime: 7f,
+            MinLifetime: .05f,
+            MaxLifetime: .15f,
             MinScale: 5f,
             MaxScale: 10f,
-            MinNumParticles: 70,
-            MaxNumParticles: 150,
+            MinNumParticles: 10,
+            MaxNumParticles: 20,
             MinRotationSpeed: -MathHelper.PiOver4 / 2f,
             MaxRotationSpeed: MathHelper.PiOver4 / 2f,
             BlendState: BlendState.AlphaBlend);
 
-        public RocketTrailParticleSystem(Game game, int howManyEffects)
+        public RocketTrailParticles(GravityGame game, int howManyEffects)
             : base(game, properties, howManyEffects)
         {
+        }
+
+        protected override Vector2 PickRandomDirection()
+        {
+            return Direction;
         }
     }
 
@@ -33,7 +41,7 @@ namespace Gravity
 
         public override void LoadContent()
         {
-            trail = new RocketTrailParticleSystem((Game)ScreenManager.Game, 1);
+            trail = new RocketTrailParticles((GravityGame)ScreenManager.Game, 1);
             ScreenManager.Game.Components.Add(trail);
         }
 
@@ -41,9 +49,7 @@ namespace Gravity
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            var where = Vector2.Zero;
-            where.X = ScreenManager.GraphicsDevice.Viewport.Width / 2;
-            where.Y = ScreenManager.GraphicsDevice.Viewport.Height / 2;
+            var where = Mouse.GetState().Position.ToVector2();
             trail.AddParticles(where);
         }
     }

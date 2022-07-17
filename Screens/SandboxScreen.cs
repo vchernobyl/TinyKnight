@@ -22,7 +22,7 @@ namespace Gravity
         {
             graphics = (GraphicsDeviceManager)ScreenManager.Game.Services.GetService(typeof(IGraphicsDeviceManager));
 
-            var game = (Game)ScreenManager.Game;
+            var game = (GravityGame)ScreenManager.Game;
 
             smokePlume = new SmokePlumeParticleSystem(game, 2);
             game.Components.Add(smokePlume);

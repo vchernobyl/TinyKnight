@@ -30,7 +30,7 @@ namespace Gravity
             var velocity = new Vector2(hero.Facing, -.35f);
             var cluster = new Cluster(gameplayScreen, position, velocity, damage: 100);
             gameplayScreen.AddEntity(cluster);
-            gameplayScreen.WorldCamera.Shake(trauma: .465f);
+            GravityGame.WorldCamera.Shake(trauma: .465f);
             muzzleFlash.Enabled = true;
             SoundFX.ShotgunShot.Play();
         }

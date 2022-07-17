@@ -10,7 +10,7 @@ namespace Gravity
         public const int AlphaBlendDrawOrder = 100;
         public const int AdditiveDrawOrder = 200;
 
-        private readonly Game game;
+        private readonly GravityGame game;
         private readonly Properties properties;
         private readonly Particle[] particles;
         private readonly Queue<Particle> freeParticles;
@@ -42,7 +42,7 @@ namespace Gravity
             
             BlendState BlendState);
 
-        protected ParticleSystem(Game game, Properties properties, int howManyEffects) : base(game)
+        protected ParticleSystem(GravityGame game, Properties properties, int howManyEffects) : base(game)
         {
             this.game = game;
             this.properties = properties;
@@ -122,7 +122,9 @@ namespace Gravity
 
         public override void Draw(GameTime gameTime)
         {
-            game.SpriteBatch.Begin(SpriteSortMode.Deferred, properties.BlendState);
+            game.SpriteBatch.Begin(SpriteSortMode.Deferred, properties.BlendState,
+                transformMatrix: GravityGame.WorldCamera.Transform);
+            
             foreach (var p in particles)
             {
                 // Skip inactive particles.
@@ -140,6 +142,7 @@ namespace Gravity
                 sprite.Scale = scale;
                 sprite.Draw(game.SpriteBatch);
             }
+            
             game.SpriteBatch.End();
 
             base.Draw(gameTime);
