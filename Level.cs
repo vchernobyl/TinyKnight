@@ -15,7 +15,7 @@ namespace Gravity
 
         public int Width => Columns * CellSize;
         public int Height => Rows * CellSize;
-        public Point Size => new(Width, Height);
+        public Point Size => new Point(Width, Height);
 
         public readonly Cell[,] Cells;
         #endregion

@@ -23,7 +23,7 @@ namespace Gravity
 
         public TouchCollection TouchState;
 
-        public readonly List<GestureSample> Gestures = new();
+        public readonly List<GestureSample> Gestures = new List<GestureSample>();
 
         public InputState()
         {

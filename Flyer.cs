@@ -11,7 +11,7 @@ namespace Gravity
         private readonly Timer pathfindingTimer;
         private readonly bool showNavigation = false;
 
-        private List<Vector2> path = new();
+        private List<Vector2> path = new List<Vector2>();
         private int pointIndex = 0;
         private bool dead = false;
 

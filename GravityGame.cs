@@ -9,8 +9,8 @@ namespace Gravity
         private SpriteBatch? spriteBatch;
         public SpriteBatch SpriteBatch => spriteBatch!;
 
-        public static readonly Camera WorldCamera = new();
-        public static readonly Camera UiCamera = new();
+        public static readonly Camera WorldCamera = new Camera();
+        public static readonly Camera UiCamera = new Camera();
 
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
@@ -25,9 +25,9 @@ namespace Gravity
             Components.Add(screenManager);
 
             // Add initial screens.
-            screenManager.AddScreen(new SandboxScreen());
-            //screenManager.AddScreen(new BackgroundScreen());
-            //screenManager.AddScreen(new MainMenuScreen());
+            //screenManager.AddScreen(new SandboxScreen());
+            screenManager.AddScreen(new BackgroundScreen());
+            screenManager.AddScreen(new MainMenuScreen());
         }
 
         protected override void Initialize()

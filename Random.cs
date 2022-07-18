@@ -2,7 +2,7 @@
 {
     public static class Random
     {
-        private static readonly System.Random random = System.Random.Shared;
+        private static readonly System.Random random = new System.Random();
 
         public static int IntValue => random.Next();
 

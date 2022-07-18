@@ -24,7 +24,7 @@ namespace Gravity
 
             foreach (var entity in gamplayScreen.Entities)
             {
-                if (entity is Portal and Damageable portal)
+                if (entity is Portal &&  entity is Damageable portal)
                     portal.OnDie += (portal) => { weapon = weapons.GetRandomWeapon(weapon); };
             }
         }

@@ -36,7 +36,7 @@ namespace Gravity
 
         public Vector2 Position
         {
-            get => new(XX, YY);
+            get => new Vector2(XX, YY);
             set => SetCoordinates(value.X, value.Y);
         }
 

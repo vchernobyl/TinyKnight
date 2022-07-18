@@ -56,7 +56,7 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Damageable and IEnemy)
+            if (other is Damageable && other is IEnemy)
             {
                 Explode();
             }

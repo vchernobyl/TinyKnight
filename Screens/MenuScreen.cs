@@ -15,7 +15,7 @@ namespace Gravity
     {
         #region Fields
 
-        readonly List<MenuEntry> menuEntries = new();
+        readonly List<MenuEntry> menuEntries = new List<MenuEntry>();
         readonly string menuTitle;
 
         readonly InputAction menuUp;

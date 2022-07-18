@@ -2,9 +2,9 @@
 {
     public class Weapons
     {
-        public Weapon Pistol { get; init; }
-        public Weapon Shotgun { get; init; }
-        public Weapon Bazooka { get; init; }
+        public Weapon Pistol { get; set; }
+        public Weapon Shotgun { get; set; }
+        public Weapon Bazooka { get; set; }
 
         public Weapons(GameplayScreen gameplayScreen, Hero hero)
         {

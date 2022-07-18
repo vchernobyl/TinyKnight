@@ -87,9 +87,9 @@ namespace Gravity
 
     public class Pathfinding
     {
-        private readonly Dictionary<Point, Point> cameFrom = new();
-        private readonly Dictionary<Point, int> costSoFar = new();
-        private readonly List<Vector2> path = new();
+        private readonly Dictionary<Point, Point> cameFrom = new Dictionary<Point, Point>();
+        private readonly Dictionary<Point, int> costSoFar = new Dictionary<Point, int>();
+        private readonly List<Vector2> path = new List<Vector2>();
         private readonly IWeightedGraph<Point> graph;
 
         public Pathfinding(IWeightedGraph<Point> graph)
@@ -132,7 +132,7 @@ namespace Gravity
             var startNode = new Point((int)start.X / Level.CellSize, (int)start.Y / Level.CellSize);
             var goalNode = new Point((int)goal.X / Level.CellSize, (int)goal.Y / Level.CellSize);
 
-            var frontier = new PriorityQueue<Point, int>();
+            var frontier = new PriorityQueue<Point>();
             frontier.Enqueue(startNode, 0);
 
             cameFrom[startNode] = startNode;

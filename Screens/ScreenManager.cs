@@ -16,9 +16,9 @@ namespace Gravity
     public class ScreenManager : DrawableGameComponent
     {
         #region Fields
-        readonly List<GameScreen> screens = new();
-        readonly List<GameScreen> tempScreenList = new();
-        readonly InputState input = new();
+        readonly List<GameScreen> screens = new List<GameScreen>();
+        readonly List<GameScreen> tempScreenList = new List<GameScreen>();
+        readonly InputState input = new InputState();
 
         bool isInitialized;
         #endregion

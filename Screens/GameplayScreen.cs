@@ -17,8 +17,8 @@ namespace Gravity
         public Hud Hud { get; private set; }
         public Hero Hero { get; set; }
 
-        public readonly List<Entity> Entities = new();
-        private readonly List<Entity> pendingEntities = new();
+        public readonly List<Entity> Entities = new List<Entity>();
+        private readonly List<Entity> pendingEntities = new List<Entity>();
         private bool updatingEntities = false;
 
         public GameplayScreen()
