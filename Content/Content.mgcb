@@ -85,6 +85,11 @@
 /processor:PassThroughProcessor
 /build:Particles/ExplosionSmokeSettings.xml
 
+#begin Particles/RocketTrailSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/RocketTrailSettings.xml
+
 #begin Particles/SmokePlumeSettings.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor

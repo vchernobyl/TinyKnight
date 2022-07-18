@@ -40,8 +40,19 @@ namespace Gravity
     {
         public Vector2 Velocity { get; set; }
 
+        private readonly ParticleSystem trailParticles;
+        private readonly ParticleEmitter trailEmitter;
+        private readonly Game game;
+
         public Rocket(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Bullet))
         {
+            game = gameplayScreen.ScreenManager.Game;
+            trailParticles = new ParticleSystem(gameplayScreen.ScreenManager.Game,
+                "Particles/RocketTrailSettings");
+            game.Components.Add(trailParticles);
+
+            trailEmitter = new ParticleEmitter(trailParticles, 60, Position);
+
             sprite.Color = Color.Red;
             Gravity = 0f;
         }
@@ -52,6 +63,7 @@ namespace Gravity
             gameplayScreen.AddEntity(new Explosion(gameplayScreen) { Position = Position });
             GravityGame.WorldCamera.Shake(.85f);
             SoundFX.Explosion.Play();
+            game.Components.Remove(trailParticles);
         }
 
         public override void OnEntityCollision(Entity other)
@@ -72,10 +84,7 @@ namespace Gravity
         {
             DX = Velocity.X;
             DY = Velocity.Y;
-
-            var where = Vector2.Zero;
-            where.X = XX;
-            where.Y = YY;
+            trailEmitter.Update(gameTime, Position);
         }
     }
 
