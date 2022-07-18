@@ -50,16 +50,16 @@ namespace Gravity
             explosion = new ParticleSystem(game, "Particles/ExplosionSettings") { DrawOrder = ParticleSystem.AdditiveDrawOrder };
             game.Components.Add(explosion);
 
-            //smoke = new ParticleSystem(game, "Particles/ExplosionSmokeSettings") { DrawOrder = ParticleSystem.AlphaBlendDrawOrder };
-            //game.Components.Add(smoke);
+            smoke = new ParticleSystem(game, "Particles/ExplosionSmokeSettings") { DrawOrder = ParticleSystem.AlphaBlendDrawOrder };
+            game.Components.Add(smoke);
 
-            //smokePlume = new ParticleSystem(game, "Particles/EmitterSettings") { DrawOrder = ParticleSystem.AlphaBlendDrawOrder };
-            //game.Components.Add(smokePlume);
+            smokePlume = new ParticleSystem(game, "Particles/SmokePlumeSettings") { DrawOrder = ParticleSystem.AlphaBlendDrawOrder };
+            game.Components.Add(smokePlume);
 
-            //emitterSystem = new ParticleSystem(game, "Particles/EmitterSettings") { DrawOrder = ParticleSystem.AlphaBlendDrawOrder };
-            //game.Components.Add(emitterSystem);
+            emitterSystem = new ParticleSystem(game, "Particles/EmitterSettings") { DrawOrder = ParticleSystem.AlphaBlendDrawOrder };
+            game.Components.Add(emitterSystem);
 
-            //emitter = new ParticleEmitter(emitterSystem, 60, new Vector2(400, 240));
+            emitter = new ParticleEmitter(emitterSystem, 60, new Vector2(400, 240));
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)

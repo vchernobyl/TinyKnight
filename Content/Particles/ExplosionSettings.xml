@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XnaContent xmlns:ns="Microsoft.Xna.Framework">
-  <Asset Type="object">
+<XnaContent>
+  <Asset Type="Gravity.ParticleSystemSettings">
     <MinNumParticles>10</MinNumParticles>
     <MaxNumParticles>12</MaxNumParticles>
-    <TextureFilename>explosion</TextureFilename>
+    <TextureFilename>Textures/explosion</TextureFilename>
     <MinInitialSpeed>40</MinInitialSpeed>
     <MaxInitialSpeed>500</MaxInitialSpeed>
     <AccelerationMode>EndVelocity</AccelerationMode>

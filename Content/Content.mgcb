@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\bin\Debug\netcoreapp3.1\Gravity.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -68,6 +69,26 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Levels/Map3.png
+
+#begin Particles/EmitterSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/EmitterSettings.xml
+
+#begin Particles/ExplosionSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/ExplosionSettings.xml
+
+#begin Particles/ExplosionSmokeSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/ExplosionSmokeSettings.xml
+
+#begin Particles/SmokePlumeSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/SmokePlumeSettings.xml
 
 #begin SoundFX/Bazooka_Shot.wav
 /importer:WavImporter
