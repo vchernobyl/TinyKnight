@@ -5,21 +5,30 @@ namespace Gravity
 {
     public class Explosion : Entity
     {
-        private double time = 0;
+        private float time = 0;
+        private readonly Curve sizeOverTime;
 
         public Explosion(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Circle))
         {
             Gravity = 0f;
             Radius = sprite.Size.X / 2;
             sprite.Color = Color.Black;
+            sprite.Scale = .1f;
+
+            sizeOverTime = new Curve();
+            sizeOverTime.Keys.Add(new CurveKey(0f, .45f));
+            sizeOverTime.Keys.Add(new CurveKey(.1f, 1f));
         }
 
         public override void Update(GameTime gameTime)
         {
-            time += gameTime.DeltaTime();
-            if (time >= .1f)
+            time += gameTime.DeltaTimeF();
+
+            sprite.Scale = sizeOverTime.Evaluate(time);
+
+            if (time >= .14f)
             {
-                Flash(.1f, Color.White);
+                Flash(.06f, Color.White);
             }
             if (time >= .2f)
             {
@@ -93,7 +102,8 @@ namespace Gravity
         private readonly GameplayScreen gameplayScreen;
         private readonly Hero hero;
 
-        public Bazooka(GameplayScreen gameplayScreen, Hero hero) : base(fireRate: 1f)
+        public Bazooka(GameplayScreen gameplayScreen, Hero hero)
+            : base(gameplayScreen, fireRate: 1f, name: "Bazooka")
         {
             this.gameplayScreen = gameplayScreen;
             this.hero = hero;

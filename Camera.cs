@@ -12,7 +12,7 @@ namespace Gravity
         private Vector2 ShakyPosition => Position + shakeOffset;
 
         private const float MaxOffset = 35f;
-        private const float ShakeDecrease = 0.05f;
+        private const float ShakeDecrease = 0.03f;
 
         private float trauma = 0f;
 
@@ -30,8 +30,8 @@ namespace Gravity
 
         public void Shake(float trauma)
         {
-            // Make sure trauma is within range 0 to 1.
-            this.trauma = MathF.Min(this.trauma + trauma, 1f);
+            if (trauma > this.trauma)
+                this.trauma = trauma;
         }
     }
 }

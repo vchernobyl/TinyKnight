@@ -6,14 +6,13 @@ namespace Gravity
 {
     public class GravityGame : Game
     {
-        private SpriteBatch? spriteBatch;
-        public SpriteBatch SpriteBatch => spriteBatch!;
-
-        public static readonly Camera WorldCamera = new Camera();
-        public static readonly Camera UiCamera = new Camera();
+        public static Camera WorldCamera { get; } = new Camera();
+        public static Camera UiCamera { get; } = new Camera();
 
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
+
+        private bool paused = false;
 
         public GravityGame()
         {
@@ -47,14 +46,20 @@ namespace Gravity
             Fonts.Load(Content);
             Effects.Load(Content);
 
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            var spriteBatch = new SpriteBatch(GraphicsDevice);
+            Services.AddService(typeof(SpriteBatch), spriteBatch);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            base.Update(gameTime);
+
+            if (Input.WasKeyPressed(Keys.P))
+                paused = !paused;
+
+            if (!paused)
+                base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)

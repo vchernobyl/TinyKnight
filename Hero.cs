@@ -82,11 +82,20 @@ namespace Gravity
 
             // Weapon switching.
             if (Input.WasKeyPressed(Keys.D1))
+            {
                 weapon = weapons.Pistol;
+                weapon.Pickup(Position);
+            }
             if (Input.WasKeyPressed(Keys.D2))
+            {
                 weapon = weapons.Shotgun;
+                weapon.Pickup(Position);
+            }
             if (Input.WasKeyPressed(Keys.D3))
+            {
                 weapon = weapons.Bazooka;
+                weapon.Pickup(Position);
+            }
 
             onGround = Level.HasCollision(CX, CY + 1);
 

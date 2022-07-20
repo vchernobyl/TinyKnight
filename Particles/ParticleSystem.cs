@@ -214,8 +214,6 @@ namespace Gravity
             }
             
             spriteBatch.End();
-
-            base.Draw(gameTime);
         }
     }
 }
