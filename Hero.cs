@@ -84,23 +84,23 @@ namespace Gravity
             if (Input.WasKeyPressed(Keys.D1))
             {
                 weapon = weapons.Pistol;
-                weapon.Pickup(Position);
+                weapon.Pickup();
             }
             if (Input.WasKeyPressed(Keys.D2))
             {
                 weapon = weapons.Shotgun;
-                weapon.Pickup(Position);
+                weapon.Pickup();
             }
             if (Input.WasKeyPressed(Keys.D3))
             {
                 weapon = weapons.Bazooka;
-                weapon.Pickup(Position);
+                weapon.Pickup();
             }
 
             onGround = Level.HasCollision(CX, CY + 1);
 
             if (Input.IsKeyDown(Keys.Space))
-                weapon.Shoot();
+                weapon.PullTrigger();
 
             weapon.Update(gameTime);
         }

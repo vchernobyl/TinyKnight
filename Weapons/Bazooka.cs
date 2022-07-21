@@ -100,16 +100,14 @@ namespace Gravity
     public class Bazooka : Weapon
     {
         private readonly GameplayScreen gameplayScreen;
-        private readonly Hero hero;
 
         public Bazooka(GameplayScreen gameplayScreen, Hero hero)
-            : base(gameplayScreen, fireRate: 1f, name: "Bazooka")
+            : base(gameplayScreen, hero, fireRate: 1f, name: "Bazooka")
         {
             this.gameplayScreen = gameplayScreen;
-            this.hero = hero;
         }
 
-        public override void OnShoot()
+        public override void Shoot()
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing * .75f, 0f);

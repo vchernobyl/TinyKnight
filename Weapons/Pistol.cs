@@ -5,7 +5,6 @@ namespace Gravity
     public class Pistol : Weapon
     {
         private readonly GameplayScreen gamplayScreen;
-        private readonly Hero hero;
         private readonly MuzzleFlash muzzleFlash;
 
         private const float Knockback = .025f;
@@ -14,12 +13,11 @@ namespace Gravity
         private const int Damage = 40;
 
         public Pistol(GameplayScreen gameplayScreen, Hero hero)
-            : base(gameplayScreen, fireRate: 8f, name: "Pistol")
+            : base(gameplayScreen, hero, fireRate: 8f, name: "Pistol")
         {
-            this.gamplayScreen = gameplayScreen;
-            this.hero = hero;
-            this.muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };
-            this.gamplayScreen.AddEntity(muzzleFlash);
+            gamplayScreen = gameplayScreen;
+            muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };
+            gamplayScreen.AddEntity(muzzleFlash);
         }
 
         public override void Update(GameTime gameTime)
@@ -30,11 +28,11 @@ namespace Gravity
             base.Update(gameTime);
         }
 
-        public override void OnShoot()
+        public override void Shoot()
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing * ProjectileSpeed, Random.FloatRange(-Spread, Spread));
-            gamplayScreen.AddEntity(new Bullet(gamplayScreen) { Position = position, Velocity = velocity, Damage = Damage});
+            gamplayScreen.AddEntity(new Bullet(gamplayScreen) { Position = position, Velocity = velocity, Damage = Damage });
             muzzleFlash.Enabled = true;
             hero.Knockback(Knockback);
             SoundFX.PistolShot.Play();

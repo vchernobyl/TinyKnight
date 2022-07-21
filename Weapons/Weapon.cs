@@ -8,16 +8,20 @@ namespace Gravity
     // This will also allow us to implement visual weapon kick-back.
     public abstract class Weapon
     {
+        protected readonly Hero hero;
+
         private readonly GameplayScreen gameplayScreen;
         private readonly float fireRate;
         private readonly string name;
         private double fireTime;
 
-        public Weapon(GameplayScreen gameplayScreen, float fireRate, string name)
+        public Weapon(GameplayScreen gameplayScreen, Hero hero,
+            float fireRate, string name)
         {
             this.gameplayScreen = gameplayScreen;
+            this.hero = hero;
             this.fireRate = fireRate;
-            this.fireTime = 1f / fireRate;
+            fireTime = 1f / fireRate;
             this.name = name;
         }
 
@@ -26,21 +30,21 @@ namespace Gravity
             fireTime += gameTime.DeltaTime();
         }
 
-        public void Shoot()
+        public void PullTrigger()
         {
             if (fireTime >= 1f / fireRate)
             {
                 fireTime = .0;
-                OnShoot();
+                Shoot();
             }
         }
 
-        public virtual void OnShoot() { }
+        public virtual void Shoot() { }
 
-        public void Pickup(Vector2 position)
+        public void Pickup()
         {
             var game = gameplayScreen.ScreenManager.Game;
-            var weaponPickupText = new WeaponPickupText(game, name, position);
+            var weaponPickupText = new WeaponPickupText(game, name, hero.Position);
             game.Components.Add(weaponPickupText);
         }
     }

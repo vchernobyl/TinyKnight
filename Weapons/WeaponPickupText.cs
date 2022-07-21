@@ -18,16 +18,16 @@ namespace Gravity
             : base(game)
         {
             this.weaponText = weaponText;
-            this.spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
-            this.font = game.Content.Load<SpriteFont>("Fonts/font");
+            spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
+            font = game.Content.Load<SpriteFont>("Fonts/font");
             this.position = position - font.MeasureString(weaponText) / 2f;
             this.position.Y -= Level.CellSize / 2f;
 
-            this.alphaOverTime = new Curve();
-            this.alphaOverTime.Keys.Add(new CurveKey(0f, 1f));
-            this.alphaOverTime.Keys.Add(new CurveKey(.5f, .8f));
-            this.alphaOverTime.Keys.Add(new CurveKey(.75f, .5f));
-            this.alphaOverTime.Keys.Add(new CurveKey(1f, 0f));
+            alphaOverTime = new Curve();
+            alphaOverTime.Keys.Add(new CurveKey(0f, 1f));
+            alphaOverTime.Keys.Add(new CurveKey(.5f, .8f));
+            alphaOverTime.Keys.Add(new CurveKey(.75f, .5f));
+            alphaOverTime.Keys.Add(new CurveKey(1f, 0f));
         }
 
         public override void Update(GameTime gameTime)

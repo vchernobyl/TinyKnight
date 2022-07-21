@@ -5,14 +5,12 @@ namespace Gravity
     public class Shotgun : Weapon
     {
         private readonly GameplayScreen gameplayScreen;
-        private readonly Hero hero;
         private readonly MuzzleFlash muzzleFlash;
 
         public Shotgun(GameplayScreen gameplayScreen, Hero hero)
-            : base(gameplayScreen, fireRate: 1.3f, name: "Shotgun")
+            : base(gameplayScreen, hero, fireRate: 1.3f, name: "Shotgun")
         {
             this.gameplayScreen = gameplayScreen;
-            this.hero = hero;
             this.muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };
             this.gameplayScreen.AddEntity(muzzleFlash);
         }
@@ -25,7 +23,7 @@ namespace Gravity
             base.Update(gameTime);
         }
 
-        public override void OnShoot()
+        public override void Shoot()
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing, -.35f);
