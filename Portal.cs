@@ -11,7 +11,7 @@ namespace Gravity
             Walker, Flyer
         }
 
-        public uint MaxEntities { get; set; } = 3;
+        public uint MaxEntities { get; set; } = 2;
 
         private readonly EnemyType enemyType;
         private readonly bool showDebugInfo = false;

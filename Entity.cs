@@ -110,6 +110,9 @@ namespace Gravity
             XR += DX;
             DX *= FrictionX;
 
+            CX = Numerics.Mod(CX, Level.Columns);
+            CY = Numerics.Mod(CY, Level.Rows);
+
             // Right side collision.
             if (Level.HasCollision(CX + 1, CY) && XR >= .7f)
             {
@@ -154,6 +157,10 @@ namespace Gravity
 
             XX = (int)((CX + XR) * Level.CellSize);
             YY = (int)((CY + YR) * Level.CellSize);
+
+            XX = Numerics.Mod((int)XX, Level.Width);
+            YY = Numerics.Mod((int)YY, Level.Height);
+
             sprite.Position = Position;
         }
 

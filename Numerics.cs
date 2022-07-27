@@ -45,5 +45,10 @@ namespace Gravity
         {
             return Pick(Random.IntRange(0, 3), a, b, c);
         }
+
+        public static int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
+        }
     }
 }

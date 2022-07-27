@@ -102,7 +102,7 @@ namespace Gravity
                 weapon.Pickup();
             }
 
-            onGround = Level.HasCollision(CX, CY + 1);
+            onGround = Level.IsWithinBounds(CX, CY) && Level.HasCollision(CX, CY + 1);
 
             if (Input.IsKeyDown(Keys.Space))
                 weapon.PullTrigger();

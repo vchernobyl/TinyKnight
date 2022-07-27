@@ -86,7 +86,9 @@ namespace Gravity
 
         public bool HasCollision(int cx, int cy)
         {
-            return !IsWithinBounds(cx, cy) || Cells[cx, cy].Solid;
+            if (!IsWithinBounds(cx, cy))
+                return false;
+            return Cells[cx, cy].Solid;
         }
 
         public void Draw(SpriteBatch batch)
