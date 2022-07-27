@@ -96,6 +96,11 @@ namespace Gravity
                 weapon = weapons.Bazooka;
                 weapon.Pickup();
             }
+            if (Input.WasKeyPressed(Keys.D4))
+            {
+                weapon = weapons.Railgun;
+                weapon.Pickup();
+            }
 
             onGround = Level.HasCollision(CX, CY + 1);
 

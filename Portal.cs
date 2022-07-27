@@ -32,7 +32,7 @@ namespace Gravity
             Gravity = 0f;
             this.enemyType = enemyType;
             this.sprite.LayerDepth = 1f;
-            this.sprite.Scale = .75f;
+            this.sprite.Scale = Vector2.One * .75f;
             this.recoveryTimer = new Timer(RecoveryTime, Reactivate);
             this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true);
             this.spawnTimer.Start();

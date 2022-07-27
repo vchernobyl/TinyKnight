@@ -40,7 +40,7 @@ namespace Gravity
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
 
-            Level = new Level(content.Load<Texture2D>("Levels/Map1"), this, ScreenManager.Game.Content);
+            Level = new Level(content.Load<Texture2D>("Levels/Map1"), this);
             Hud = new Hud(this);
 
             Hero = new Hero(this) { Position = new Vector2(100f, 200f) };

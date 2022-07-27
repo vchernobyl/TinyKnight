@@ -8,12 +8,13 @@ namespace Gravity
         private float time = 0;
         private readonly Curve sizeOverTime;
 
-        public Explosion(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Circle))
+        public Explosion(GameplayScreen gameplayScreen) 
+            : base(gameplayScreen, new Sprite(Textures.Circle))
         {
             Gravity = 0f;
             Radius = sprite.Size.X / 2;
             sprite.Color = Color.Black;
-            sprite.Scale = .1f;
+            sprite.Scale = Vector2.One * .1f;
 
             sizeOverTime = new Curve();
             sizeOverTime.Keys.Add(new CurveKey(0f, .45f));
@@ -24,7 +25,7 @@ namespace Gravity
         {
             time += gameTime.DeltaTimeF();
 
-            sprite.Scale = sizeOverTime.Evaluate(time);
+            sprite.Scale = Vector2.One * sizeOverTime.Evaluate(time);
 
             if (time >= .14f)
             {
@@ -53,7 +54,8 @@ namespace Gravity
         private readonly ParticleEmitter trailEmitter;
         private readonly Game game;
 
-        public Rocket(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Bullet))
+        public Rocket(GameplayScreen gameplayScreen) 
+            : base(gameplayScreen, new Sprite(Textures.Bullet))
         {
             game = gameplayScreen.ScreenManager.Game;
             trailParticles = new ParticleSystem(gameplayScreen.ScreenManager.Game,

@@ -23,7 +23,7 @@ namespace Gravity
         private readonly Texture2D cellTexture;
         private readonly bool showBounds = false;
 
-        public Level(Texture2D levelMap, GameplayScreen gameplayScreen, ContentManager content)
+        public Level(Texture2D levelMap, GameplayScreen gameplayScreen)
         {
             // Get texture pixels into a one-dimensional array.
             var pixels = new Color[levelMap.Width * levelMap.Height];
@@ -39,6 +39,7 @@ namespace Gravity
                 }
             }
 
+            var content = gameplayScreen.ScreenManager.Game.Content;
             cellTexture = content.Load<Texture2D>("Textures/tile_0009");
 
             Columns = levelMap.Width;
