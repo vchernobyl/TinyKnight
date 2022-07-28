@@ -24,7 +24,7 @@ namespace Gravity
         private readonly Beam beam;
 
         public Railgun(GameplayScreen gameplayScreen, Hero hero)
-            : base(gameplayScreen, hero, fireRate: .3f, name: "Railgun")
+            : base(hero, fireRate: .3f, name: "Railgun")
         {
             beam = new Beam(gameplayScreen) { Enabled = false };
             gameplayScreen.AddEntity(beam);

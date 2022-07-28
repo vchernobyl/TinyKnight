@@ -13,7 +13,7 @@ namespace Gravity
         private const int Damage = 40;
 
         public Pistol(GameplayScreen gameplayScreen, Hero hero)
-            : base(gameplayScreen, hero, fireRate: 8f, name: "Pistol")
+            : base(hero, fireRate: 8f, name: "Pistol")
         {
             gamplayScreen = gameplayScreen;
             muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };

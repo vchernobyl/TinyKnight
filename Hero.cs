@@ -9,10 +9,9 @@ namespace Gravity
     {
         public uint EnemiesKilled { get; set; }
         public int Facing { get; private set; } = -1;
+        public Weapon CurrentWeapon { get; set; }
 
         private readonly Weapons weapons;
-        private Weapon weapon;
-
         private bool onGround = false;
         private bool hurting = false;
         private double hurtTime = 0;
@@ -20,13 +19,7 @@ namespace Gravity
         public Hero(GameplayScreen gamplayScreen) : base(gamplayScreen, new Sprite(Textures.Hero))
         {
             weapons = new Weapons(gamplayScreen, this);
-            weapon = weapons.Bazooka;
-
-            foreach (var entity in gamplayScreen.Entities)
-            {
-                if (entity is Portal &&  entity is Damageable portal)
-                    portal.OnDie += (portal) => { weapon = weapons.GetRandomWeapon(weapon); };
-            }
+            CurrentWeapon = weapons.Bazooka;
         }
 
         public void Knockback(float amount)
@@ -83,31 +76,27 @@ namespace Gravity
             // Weapon switching.
             if (Input.WasKeyPressed(Keys.D1))
             {
-                weapon = weapons.Pistol;
-                weapon.Pickup();
+                CurrentWeapon = weapons.Pistol;
             }
             if (Input.WasKeyPressed(Keys.D2))
             {
-                weapon = weapons.Shotgun;
-                weapon.Pickup();
+                CurrentWeapon = weapons.Shotgun;
             }
             if (Input.WasKeyPressed(Keys.D3))
             {
-                weapon = weapons.Bazooka;
-                weapon.Pickup();
+                CurrentWeapon = weapons.Bazooka;
             }
             if (Input.WasKeyPressed(Keys.D4))
             {
-                weapon = weapons.Railgun;
-                weapon.Pickup();
+                CurrentWeapon = weapons.Railgun;
             }
 
             onGround = Level.IsWithinBounds(CX, CY) && Level.HasCollision(CX, CY + 1);
 
             if (Input.IsKeyDown(Keys.Space))
-                weapon.PullTrigger();
+                CurrentWeapon.PullTrigger();
 
-            weapon.Update(gameTime);
+            CurrentWeapon.Update(gameTime);
         }
     }
 }

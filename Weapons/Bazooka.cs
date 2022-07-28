@@ -104,7 +104,7 @@ namespace Gravity
         private readonly GameplayScreen gameplayScreen;
 
         public Bazooka(GameplayScreen gameplayScreen, Hero hero)
-            : base(gameplayScreen, hero, fireRate: 1f, name: "Bazooka")
+            : base(hero, fireRate: 1f, name: "Bazooka")
         {
             this.gameplayScreen = gameplayScreen;
         }

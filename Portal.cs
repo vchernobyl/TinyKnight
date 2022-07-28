@@ -99,6 +99,10 @@ namespace Gravity
 
         public override void Die()
         {
+            // Spawn weapon box.
+            var box = new Box(gameplayScreen) { Position = Position };
+            gameplayScreen.AddEntity(box);
+
             activated = false;
             recoveryTimer.Start();
             sprite.Color = Color.Gray;

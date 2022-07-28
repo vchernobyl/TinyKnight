@@ -17,6 +17,7 @@ namespace Gravity
         public static Texture2D PortalYellow { get; private set; }
         public static Texture2D Pixel { get; private set; }
         public static Texture2D Circle { get; private set; }
+        public static Texture2D Box { get; private set; }
 
         public static void Load(ContentManager content)
         {
@@ -31,6 +32,7 @@ namespace Gravity
             PortalYellow = content.Load<Texture2D>("Textures/Portal_Yellow");
             Pixel = content.Load<Texture2D>("Textures/Pixel");
             Circle = content.Load<Texture2D>("Textures/Circle");
+            Box = content.Load<Texture2D>("Textures/Box");
         }
     }
 

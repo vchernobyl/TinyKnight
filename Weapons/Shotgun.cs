@@ -8,7 +8,7 @@ namespace Gravity
         private readonly MuzzleFlash muzzleFlash;
 
         public Shotgun(GameplayScreen gameplayScreen, Hero hero)
-            : base(gameplayScreen, hero, fireRate: 1.3f, name: "Shotgun")
+            : base(hero, fireRate: 1.3f, name: "Shotgun")
         {
             this.gameplayScreen = gameplayScreen;
             this.muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };

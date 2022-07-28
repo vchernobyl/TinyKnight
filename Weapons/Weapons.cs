@@ -20,8 +20,6 @@
             var newWeapon = Numerics.PickOne(Pistol, Shotgun, Bazooka);
             if (newWeapon == currentWeapon)
                 return GetRandomWeapon(currentWeapon);
-
-            newWeapon.Pickup();
             return newWeapon;
         }
     }
