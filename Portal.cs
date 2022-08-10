@@ -4,7 +4,7 @@ using System;
 
 namespace Gravity
 {
-    public class Portal : Damageable
+    public class Portal : Entity
     {
         public enum EnemyType
         {
@@ -16,39 +16,30 @@ namespace Gravity
         private readonly EnemyType enemyType;
         private readonly bool showDebugInfo = false;
 
-        private readonly Timer recoveryTimer;
         private readonly Timer spawnTimer;
+        private readonly Timer destructionTimer;
 
-        private const double RecoveryTime = 5.0;
-        private const double SpawnInterval = 2.0;
+        private const float SpawnInterval = 2f;
+        private const float DestructionDelay = 1f;
 
         private uint entitiesSpawned = 0;
-        private bool activated = true;
 
         public Portal(Vector2 position, GameplayScreen gameplayScreen, EnemyType enemyType)
-            : base(gameplayScreen, GetSprite(enemyType), health: 100)
+            : base(gameplayScreen, GetSprite(enemyType))
         {
             Position = position;
             Gravity = 0f;
             this.enemyType = enemyType;
             this.sprite.LayerDepth = 1f;
             this.sprite.Scale = Vector2.One * .75f;
-            this.recoveryTimer = new Timer(RecoveryTime, Reactivate);
-            this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true);
+            this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true, immediate: true);
             this.spawnTimer.Start();
-        }
-
-        private void Reactivate()
-        {
-            Heal(100);
-            activated = true;
-            sprite.Color = Color.White;
-            recoveryTimer.Reset();
+            this.destructionTimer = new Timer(DestructionDelay, onEnd: () => { IsActive = false; });
         }
 
         private void Spawn()
         {
-            if (entitiesSpawned < MaxEntities && activated)
+            if (entitiesSpawned < MaxEntities && !destructionTimer.Started)
             {
                 Damageable enemy = enemyType switch
                 {
@@ -77,8 +68,8 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            recoveryTimer.Update(gameTime);
             spawnTimer.Update(gameTime);
+            destructionTimer.Update(gameTime);
             sprite.Rotation -= .025f;
         }
 
@@ -97,15 +88,15 @@ namespace Gravity
             }
         }
 
-        public override void Die()
+        public override void OnEntityCollision(Entity other)
         {
-            // Spawn weapon box.
-            var box = new Box(gameplayScreen) { Position = Position };
-            gameplayScreen.AddEntity(box);
-
-            activated = false;
-            recoveryTimer.Start();
-            sprite.Color = Color.Gray;
+            if (other is Hero hero && !hero.IsLocked)
+            {
+                Collision = false;
+                hero.Lock(duration: DestructionDelay, this);
+                hero.Gravity = 0f;
+                destructionTimer.Start();
+            }
         }
     }
 }

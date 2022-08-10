@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
-    public class Flyer : Damageable, IEnemy
+    public class Flyer : Damageable
     {
         private readonly Pathfinding pathfinding;
         private readonly NavigationGrid navGrid;
@@ -19,7 +19,7 @@ namespace Gravity
         {
             Gravity = 0f;
 
-            pathfindingTimer = new Timer(duration: 1.5, RecalculatePath, repeating: true, immediate: true);
+            pathfindingTimer = new Timer(duration: 1.5f, RecalculatePath, repeating: true, immediate: true);
             pathfindingTimer.Start();
 
             navGrid = new NavigationGrid(Level.Columns, Level.Rows);

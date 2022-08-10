@@ -23,7 +23,7 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            time += gameTime.DeltaTimeF();
+            time += gameTime.DeltaTime();
 
             sprite.Scale = Vector2.One * sizeOverTime.Evaluate(time);
 
@@ -79,7 +79,7 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Damageable && other is IEnemy)
+            if (other is Damageable)
             {
                 Explode();
             }

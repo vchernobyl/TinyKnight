@@ -27,7 +27,7 @@ namespace Gravity
             FrictionX = .96f;
 
             muzzleSprite = new Sprite(Textures.MuzzleFlash) { LayerDepth = 0f };
-            deathTimer = new Timer(duration: .05, onEnd: () => { IsActive = false; });
+            deathTimer = new Timer(duration: .05f, onEnd: () => { IsActive = false; });
         }
 
         public override void OnEntityCollision(Entity other)

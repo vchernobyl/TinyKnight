@@ -5,16 +5,15 @@ namespace Gravity
 {
     public class Timer
     {
+        public bool Started { get; private set; } = false;
+
         private readonly Action onEnd;
         private readonly double duration;
         private readonly bool repeating;
 
         private double time = 0;
-        private bool started = false;
 
-        public bool IsRunning => time > 0;
-
-        public Timer(double duration, Action onEnd,
+        public Timer(float duration, Action onEnd,
             bool repeating = false, bool immediate = false)
         {
             this.duration = duration;
@@ -25,18 +24,18 @@ namespace Gravity
 
         public void Start()
         {
-            started = true;
+            Started = true;
         }
 
         public void Reset()
         {
-            started = false;
+            Started = false;
             time = duration;
         }
 
         public void Update(GameTime gameTime)
         {
-            if (started)
+            if (Started)
             {
                 time -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (time <= 0)

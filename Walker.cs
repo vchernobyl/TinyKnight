@@ -4,7 +4,7 @@ using System;
 
 namespace Gravity
 {
-    public class Walker : Damageable, IEnemy
+    public class Walker : Damageable
     {
         private int facing;
         private bool dead = false;

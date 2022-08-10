@@ -32,9 +32,9 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            time += gameTime.DeltaTimeF();
+            time += gameTime.DeltaTime();
             alpha = alphaOverTime.Evaluate(time);
-            position.Y -= gameTime.DeltaTimeF() * 100f;
+            position.Y -= gameTime.DeltaTime() * 100f;
         }
 
         public override void Draw(GameTime gameTime)

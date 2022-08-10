@@ -34,6 +34,8 @@ namespace Gravity
         public float FrictionY = .9f;
         public float Gravity = .05f;
 
+        public bool IsColliding { get; private set; } = false;
+
         public Vector2 Position
         {
             get => new Vector2(XX, YY);

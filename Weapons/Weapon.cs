@@ -13,7 +13,7 @@ namespace Gravity
         protected readonly Hero hero;
 
         private readonly float fireRate;
-        private double fireTime;
+        private float fireTime;
 
         public Weapon(Hero hero, float fireRate, string name)
         {
@@ -32,7 +32,7 @@ namespace Gravity
         {
             if (fireTime >= 1f / fireRate)
             {
-                fireTime = .0;
+                fireTime = 0f;
                 Shoot();
             }
         }

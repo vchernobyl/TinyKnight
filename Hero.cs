@@ -15,6 +15,11 @@ namespace Gravity
         private bool onGround = false;
         private bool hurting = false;
         private double hurtTime = 0;
+        private float lockDuration = 0f;
+        private float lockTime = 0f;
+        private Portal portal;
+
+        public bool IsLocked => lockDuration > 0f;
 
         public Hero(GameplayScreen gamplayScreen) : base(gamplayScreen, new Sprite(Textures.Hero))
         {
@@ -44,6 +49,22 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
+            if (lockDuration > 0f)
+            {
+                lockTime += gameTime.DeltaTime();
+                if (lockTime >= lockDuration)
+                {
+                    lockTime = 0f;
+                    lockDuration = 0f;
+                    Gravity = .05f;
+                }
+                else
+                {
+                    Position = Vector2.Lerp(Position, portal.Position, lockTime / lockDuration);
+                    return;
+                }
+            }
+
             var speed = .0175f;
             var jump = -1f;
 
@@ -86,10 +107,6 @@ namespace Gravity
             {
                 CurrentWeapon = weapons.Bazooka;
             }
-            if (Input.WasKeyPressed(Keys.D4))
-            {
-                CurrentWeapon = weapons.Railgun;
-            }
 
             onGround = Level.IsWithinBounds(CX, CY) && Level.HasCollision(CX, CY + 1);
 
@@ -97,6 +114,13 @@ namespace Gravity
                 CurrentWeapon.PullTrigger();
 
             CurrentWeapon.Update(gameTime);
+        }
+
+        public void Lock(float duration, Portal portal)
+        {
+            this.lockDuration = duration;
+            this.lockTime = 0f;
+            this.portal = portal;
         }
     }
 }
