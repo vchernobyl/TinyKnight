@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Gravity
 {
     public class Level
     {
-        #region Public
         public const int CellSize = 24;
 
         public readonly int Columns;
@@ -17,65 +15,16 @@ namespace Gravity
         public Point Size => new Point(Width, Height);
 
         public readonly Cell[,] Cells;
-        #endregion
 
         private readonly Texture2D cellTexture;
         private readonly bool showBounds = false;
 
-        public Level(Texture2D levelMap, GameplayScreen gameplayScreen)
+        public Level(int width, int height, Texture2D texture)
         {
-            // Get texture pixels into a one-dimensional array.
-            var pixels = new Color[levelMap.Width * levelMap.Height];
-            levelMap.GetData(pixels);
-
-            // Store pixels into a two-dimensional array.
-            var levelData = new Color[levelMap.Width, levelMap.Height];
-            for (int y = 0; y < levelMap.Height; y++)
-            {
-                for (int x = 0; x < levelMap.Width; x++)
-                {
-                    levelData[x, y] = pixels[x + y * levelMap.Width];
-                }
-            }
-
-            var content = gameplayScreen.ScreenManager.Game.Content;
-            cellTexture = content.Load<Texture2D>("Textures/tile_0009");
-
-            Columns = levelMap.Width;
-            Rows = levelMap.Height;
+            Columns = width;
+            Rows = height;
             Cells = new Cell[Columns, Rows];
-
-            // Generate level out of the image data.
-            for (int y = 0; y < Rows; y++)
-            {
-                for (int x = 0; x < Columns; x++)
-                {
-                    var pixel = levelData[x, y];
-                    var type = pixel switch
-                    {
-                        var _ when pixel == Color.Black => Cell.CellType.Empty,
-                        var _ when pixel == Color.White => Cell.CellType.Wall,
-                        var _ when pixel == Color.Red => Cell.CellType.WalkerSpawn,
-                        var _ when pixel == Color.Yellow  => Cell.CellType.FlyerSpawn,
-                        var _ when pixel == Color.Blue => Cell.CellType.Hero,
-                        _ => throw new ArgumentException($"Cell type with color {pixel} is not supported"),
-                    };
-                    
-                    if (type == Cell.CellType.WalkerSpawn)
-                    {
-                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), gameplayScreen, Portal.EnemyType.Walker);
-                        gameplayScreen.AddEntity(spawner);
-                    }
-                    if (type == Cell.CellType.FlyerSpawn)
-                    {
-                        var spawner = new Portal(new Vector2(x * CellSize, y * CellSize), gameplayScreen, Portal.EnemyType.Flyer);
-                        gameplayScreen.AddEntity(spawner);
-                    }
-
-                    var cell = new Cell(x, y, type, type == Cell.CellType.Wall);
-                    Cells[x, y] = cell;
-                }
-            }
+            cellTexture = texture;
         }
 
         public bool IsWithinBounds(int cx, int cy)
@@ -89,6 +38,8 @@ namespace Gravity
                 return false;
             return Cells[cx, cy].Solid;
         }
+
+        public Cell this[int col, int row] => Cells[col, row];
 
         public void Draw(SpriteBatch batch)
         {
@@ -106,7 +57,5 @@ namespace Gravity
                 }
             }
         }
-
-        public Cell this[int col, int row] => Cells[col, row];
     }
 }

@@ -46,7 +46,7 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Map1.png
 
-#begin Levels/Map2.png
+#begin Levels/Map1_Entities.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -56,19 +56,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Levels/Map2.png
-
-#begin Levels/Map3.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Levels/Map3.png
+/build:Levels/Map1_Entities.png
 
 #begin Particles/EmitterSettings.xml
 /importer:XmlImporter
