@@ -57,6 +57,12 @@ namespace Gravity
                     lockTime = 0f;
                     lockDuration = 0f;
                     Gravity = .05f;
+
+                    foreach (var e in gameplayScreen.Entities)
+                    {
+                        if (e != this && e != portal)
+                            e.EntityState = State.Active;
+                    }
                 }
                 else
                 {
@@ -121,6 +127,12 @@ namespace Gravity
             this.lockDuration = duration;
             this.lockTime = 0f;
             this.portal = portal;
+
+            foreach (var e in gameplayScreen.Entities)
+            {
+                if (e != this && e != portal)
+                    e.EntityState = State.Paused;
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Gravity
             if (time >= .2f)
             {
                 Thread.Sleep(millisecondsTimeout: 20);
-                IsActive = false;
+                ScheduleToDestroy();
                 return;
             }
 
@@ -70,7 +70,7 @@ namespace Gravity
 
         public void Explode()
         {
-            IsActive = false;
+            ScheduleToDestroy();
             gameplayScreen.AddEntity(new Explosion(gameplayScreen) { Position = Position });
             GravityGame.WorldCamera.Shake(.85f);
             SoundFX.Explosion.Play();

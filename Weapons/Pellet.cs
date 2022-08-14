@@ -24,7 +24,7 @@ namespace Gravity
             if (other is Damageable enemy && enemy.IsAlive)
             {
                 enemy.ReceiveDamage(Damage);
-                IsActive = false;
+                ScheduleToDestroy();
             }
         }
 
@@ -33,7 +33,7 @@ namespace Gravity
             Velocity = Vector2.Reflect(Velocity, normal);
 
             if (collisions++ == 4)
-                IsActive = false;
+                ScheduleToDestroy();
         }
 
         public override void Update(GameTime gameTime)

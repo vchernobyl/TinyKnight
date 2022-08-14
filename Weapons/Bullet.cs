@@ -17,14 +17,14 @@ namespace Gravity
             if (other is Damageable enemy && enemy.IsAlive)
             {
                 enemy.ReceiveDamage(Damage);
-                IsActive = false;
+                ScheduleToDestroy();
             }
         }
 
         public override void OnLevelCollision(Vector2 normal)
         {
             if (normal == Vector2.UnitX || normal == -Vector2.UnitX)
-                IsActive = false;
+                ScheduleToDestroy();
         }
 
         public override void Update(GameTime gameTime)

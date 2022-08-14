@@ -34,7 +34,7 @@ namespace Gravity
             this.sprite.Scale = Vector2.One * .75f;
             this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true, immediate: true);
             this.spawnTimer.Start();
-            this.destructionTimer = new Timer(DestructionDelay, onEnd: () => { IsActive = false; });
+            this.destructionTimer = new Timer(DestructionDelay, onEnd: ScheduleToDestroy);
         }
 
         private void Spawn()

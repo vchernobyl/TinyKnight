@@ -71,7 +71,10 @@ namespace Gravity
 
             updatingEntities = true;
             foreach (var entity in Entities)
-                entity.EntityUpdate(gameTime);
+            {
+                if (entity.EntityState == Entity.State.Active)
+                    entity.EntityUpdate(gameTime);
+            }
             updatingEntities = false;
 
             foreach (var pending in pendingEntities)
@@ -80,7 +83,7 @@ namespace Gravity
 
             for (int i = Entities.Count - 1; i >= 0; i--)
             {
-                if (!Entities[i].IsActive)
+                if (Entities[i].EntityState == Entity.State.Dead)
                 {
                     Entities[i].OnDestroy();
                     Entities.RemoveAt(i);

@@ -6,6 +6,13 @@ namespace Gravity
 {
     public class Entity
     {
+        public enum State
+        {
+            Active,
+            Paused,
+            Dead,
+        }
+
         protected readonly GameplayScreen gameplayScreen;
         protected readonly Sprite sprite;
         public Level Level => gameplayScreen.Level;
@@ -27,8 +34,9 @@ namespace Gravity
 
         public float Radius = Level.CellSize / 2;
 
-        public bool IsActive = true;
         public bool Collision = true;
+
+        public State EntityState = State.Active;
 
         public float FrictionX = .9f;
         public float FrictionY = .9f;
@@ -80,6 +88,11 @@ namespace Gravity
         public void Flash(double duration)
         {
             Flash(duration, Color.White);
+        }
+
+        public void ScheduleToDestroy()
+        {
+            EntityState = State.Dead;
         }
 
         public virtual void OnEntityCollision(Entity other) { }

@@ -18,7 +18,7 @@ namespace Gravity
         public override void OnLevelCollision(Vector2 normal)
         {
             if (dead && normal == -Vector2.UnitY)
-                IsActive = false;
+                ScheduleToDestroy();
         }
 
         public override void Update(GameTime gameTime)
