@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Gravity
 {
@@ -44,6 +45,11 @@ namespace Gravity
         public static T PickOne<T>(T a, T b, T c)
         {
             return Pick(Random.IntRange(0, 3), a, b, c);
+        }
+
+        public static T PickOne<T>(List<T> list)
+        {
+            return list[Random.IntRange(0, list.Count)];
         }
 
         public static int Mod(int x, int m)

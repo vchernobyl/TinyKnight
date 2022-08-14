@@ -19,7 +19,12 @@ namespace Gravity
 
         public readonly List<Entity> Entities = new List<Entity>();
         private readonly List<Entity> pendingEntities = new List<Entity>();
+
+        private PortalSpawner portalSpawner;
         private bool updatingEntities = false;
+
+        private const uint MaxActivePortals = 4;
+        private uint currentlyActivePortals = 0;
 
         public GameplayScreen()
         {
@@ -43,7 +48,8 @@ namespace Gravity
             Level = LevelLoader.Load(content.Load<Texture2D>("Levels/Map1"),
                 content.Load<Texture2D>("Textures/tile_0009"));
 
-            LevelLoader.Populate(this, content.Load<Texture2D>("Levels/Map1_Entities"));
+            var portals = LevelLoader.GetPortals(content.Load<Texture2D>("Levels/Map1_Entities"));
+            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 5, activePortalsOnStart: 7);
 
             Hud = new Hud(this);
 

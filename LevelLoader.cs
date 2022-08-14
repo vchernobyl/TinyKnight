@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Gravity
 {
@@ -36,7 +37,7 @@ namespace Gravity
         //
         // We could process the entityLayer texture, capture positions and types of all
         // entities present and add those to the gameplay screen.
-        public static void Populate(GameplayScreen gameplayScreen, Texture2D entityLayer)
+        public static void GetEntities(GameplayScreen gameplayScreen, Texture2D entityLayer)
         {
             var entityData = GetPixels(entityLayer);
 
@@ -59,6 +60,27 @@ namespace Gravity
                     }
                 }
             }
+        }
+
+        public static List<(Vector2, Portal.EnemyType)> GetPortals(Texture2D entityLayer)
+        {
+            var portals = new List<(Vector2, Portal.EnemyType)>();
+            var entityData = GetPixels(entityLayer);
+
+            for (int y = 0; y < entityLayer.Height; y++)
+            {
+                for (int x = 0; x < entityLayer.Width; x++)
+                {
+                    var pixel = entityData[x, y];
+                    var position = new Vector2(x * Level.CellSize, y * Level.CellSize);
+                    if (pixel == Color.Red)
+                        portals.Add((position, Portal.EnemyType.Flyer));
+                    if (pixel == Color.Yellow)
+                        portals.Add((position, Portal.EnemyType.Walker));
+                }
+            }
+
+            return portals;
         }
 
         private static Color[,] GetPixels(Texture2D levelLayer)
