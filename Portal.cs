@@ -23,6 +23,9 @@ namespace Gravity
         private const float DestructionDelay = 1f;
 
         private uint entitiesSpawned = 0;
+        private float time = 0f;
+
+        private readonly Curve sizeOverTime = new Curve();
 
         public Portal(Vector2 position, GameplayScreen gameplayScreen, EnemyType enemyType)
             : base(gameplayScreen, GetSprite(enemyType))
@@ -31,10 +34,15 @@ namespace Gravity
             Gravity = 0f;
             this.enemyType = enemyType;
             this.sprite.LayerDepth = 1f;
-            this.sprite.Scale = Vector2.One * .75f;
+            this.sprite.Scale = Vector2.Zero;
             this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true, immediate: true);
             this.spawnTimer.Start();
             this.destructionTimer = new Timer(DestructionDelay, onEnd: ScheduleToDestroy);
+
+            this.sizeOverTime.Keys.Add(new CurveKey());
+            this.sizeOverTime.Keys.Add(new CurveKey(.2f, .3f));
+            this.sizeOverTime.Keys.Add(new CurveKey(.3f, .7f));
+            this.sizeOverTime.Keys.Add(new CurveKey(.4f, 1f));
         }
 
         private void Spawn()
@@ -68,9 +76,11 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
+            time += gameTime.DeltaTime();
+            sprite.Rotation -= .025f;
             spawnTimer.Update(gameTime);
             destructionTimer.Update(gameTime);
-            sprite.Rotation -= .025f;
+            sprite.Scale = sizeOverTime.Evaluate(time) * new Vector2(.75f);
         }
 
         public override void Draw(SpriteBatch batch)

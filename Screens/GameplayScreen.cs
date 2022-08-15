@@ -23,9 +23,6 @@ namespace Gravity
         private PortalSpawner portalSpawner;
         private bool updatingEntities = false;
 
-        private const uint MaxActivePortals = 4;
-        private uint currentlyActivePortals = 0;
-
         public GameplayScreen()
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
@@ -48,13 +45,14 @@ namespace Gravity
             Level = LevelLoader.Load(content.Load<Texture2D>("Levels/Map1"),
                 content.Load<Texture2D>("Textures/tile_0009"));
 
+            Hero = new Hero(this) { Position = new Vector2(100f, 200f) };
+            Entities.Add(Hero);
+
             var portals = LevelLoader.GetPortals(content.Load<Texture2D>("Levels/Map1_Entities"));
-            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 5, activePortalsOnStart: 7);
+            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 3, activePortalsOnStart: 3);
 
             Hud = new Hud(this);
 
-            Hero = new Hero(this) { Position = new Vector2(100f, 200f) };
-            Entities.Add(Hero);
 
             var centerX = ScreenManager.GraphicsDevice.Viewport.Width / 2 - Level.Width / 2;
             var centerY = ScreenManager.GraphicsDevice.Viewport.Height / 2 - Level.Height / 2;
@@ -86,6 +84,8 @@ namespace Gravity
             foreach (var pending in pendingEntities)
                 Entities.Add(pending);
             pendingEntities.Clear();
+
+            portalSpawner.Update(gameTime);
 
             for (int i = Entities.Count - 1; i >= 0; i--)
             {
