@@ -6,9 +6,6 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
-    // TODO: GameplayScreen is basically a substitude of Game class.
-    // Now instead of entities having a dependency on the whole Game,
-    // they will only need GameplayScreen to be added to the game world.
     public class GameplayScreen : GameScreen
     {
         private ContentManager content;
@@ -49,10 +46,9 @@ namespace Gravity
             Entities.Add(Hero);
 
             var portals = LevelLoader.GetPortals(content.Load<Texture2D>("Levels/Map1_Entities"));
-            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 3, activePortalsOnStart: 3);
+            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 3);
 
             Hud = new Hud(this);
-
 
             var centerX = ScreenManager.GraphicsDevice.Viewport.Width / 2 - Level.Width / 2;
             var centerY = ScreenManager.GraphicsDevice.Viewport.Height / 2 - Level.Height / 2;

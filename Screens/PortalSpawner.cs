@@ -10,24 +10,16 @@ namespace Gravity
         private readonly List<(Vector2, Portal.EnemyType)> possiblePortalPlacements;
         private readonly GameplayScreen gameplayScreen;
 
-        private int CurrentlyActivePortals => gameplayScreen.Entities
-            .Count(e => e is Portal);
+        private float time = 0f;
+        private const float Delay = 2f;
 
         public PortalSpawner(GameplayScreen gameplayScreen,
             List<(Vector2, Portal.EnemyType)> possiblePortalPlacements,
-            uint maxActivePortals,
-            uint activePortalsOnStart)
+            uint maxActivePortals)
         {
             this.gameplayScreen = gameplayScreen;
             this.maxActivePortals = maxActivePortals;
             this.possiblePortalPlacements = possiblePortalPlacements;
-
-            for (int i = 0; i < activePortalsOnStart; i++)
-            {
-                var (position, enemyType) = PickPortalPlacement();
-                var portal = new Portal(position, gameplayScreen, enemyType);
-                gameplayScreen.AddEntity(portal);
-            }
         }
 
         public (Vector2, Portal.EnemyType) PickPortalPlacement()
@@ -37,11 +29,7 @@ namespace Gravity
                 .Where(e => e is Portal)
                 .Select(e => e.Position);
 
-            var position = randomPlacement.Item1;
-            var dist = Vector2.Distance(gameplayScreen.Hero.Position, position);
-            // TODO: Make sure the position of the new portal is not the same
-            // as the one that just got destroyed.
-            while (activePositions.Contains(position))
+            while (activePositions.Contains(randomPlacement.Item1))
                 randomPlacement = Numerics.PickOne(possiblePortalPlacements);
 
             return randomPlacement;
@@ -49,10 +37,15 @@ namespace Gravity
 
         public void Update(GameTime gameTime)
         {
-            var diff = maxActivePortals - CurrentlyActivePortals;
-            if (diff > 0)
+            time += gameTime.DeltaTime();
+            if (time >= Delay)
             {
-                for (int i = 0; i < diff; i++)
+                time = 0f;
+
+                // Spawn a single portal.
+                var activePortals = gameplayScreen.Entities.Count(e => e is Portal);
+                var diff = maxActivePortals - activePortals;
+                if (diff > 0)
                 {
                     var (position, type) = PickPortalPlacement();
                     var portal = new Portal(position, gameplayScreen, type);
