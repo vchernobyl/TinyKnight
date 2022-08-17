@@ -18,8 +18,8 @@ namespace Gravity
             : base(game)
         {
             this.weaponText = weaponText;
-            spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
-            font = game.Content.Load<SpriteFont>("Fonts/font");
+            this.spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
+            this.font = game.Content.Load<SpriteFont>("Fonts/font");
             this.position = position - font.MeasureString(weaponText) / 2f;
             this.position.Y -= Level.CellSize / 2f;
 

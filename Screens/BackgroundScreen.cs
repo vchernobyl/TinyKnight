@@ -32,8 +32,7 @@ namespace Gravity
         /// </summary>
         public override void LoadContent()
         {
-            if (content == null)
-                content = new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
+            content ??= new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
             backgroundTexture = content.Load<Texture2D>("Textures/background");
         }
 

@@ -58,6 +58,11 @@ namespace Gravity
                     lockDuration = 0f;
                     Gravity = .05f;
 
+                    // Get new weapon and spawn weapon text.
+                    CurrentWeapon = weapons.GetRandomWeapon(CurrentWeapon);
+                    var game = gameplayScreen.ScreenManager.Game;
+                    game.Components.Add(new WeaponPickupText(game, CurrentWeapon.Name, Position));
+
                     foreach (var e in gameplayScreen.Entities)
                     {
                         if (e != this && e != portal)

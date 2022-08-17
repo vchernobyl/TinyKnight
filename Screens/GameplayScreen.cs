@@ -36,8 +36,7 @@ namespace Gravity
 
         public override void LoadContent()
         {
-            if (content == null)
-                content = new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
+            content ??= new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
 
             Level = LevelLoader.Load(content.Load<Texture2D>("Levels/Map1"),
                 content.Load<Texture2D>("Textures/tile_0009"));

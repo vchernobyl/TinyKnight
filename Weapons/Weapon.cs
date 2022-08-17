@@ -19,7 +19,7 @@ namespace Gravity
         {
             this.hero = hero;
             this.fireRate = fireRate;
-            fireTime = 1f / fireRate;
+            this.fireTime = 1f / fireRate;
             this.Name = name;
         }
 
