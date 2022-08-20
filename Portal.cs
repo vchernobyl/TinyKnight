@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -26,6 +27,7 @@ namespace Gravity
         private float time = 0f;
 
         private readonly Curve sizeOverTime = new Curve();
+        private readonly SoundEffectInstance explosionWindup;
 
         public Portal(Vector2 position, GameplayScreen gameplayScreen, EnemyType enemyType)
             : base(gameplayScreen, GetSprite(enemyType))
@@ -37,12 +39,21 @@ namespace Gravity
             this.sprite.Scale = Vector2.Zero;
             this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true, immediate: true);
             this.spawnTimer.Start();
-            this.destructionTimer = new Timer(DestructionDelay, onEnd: ScheduleToDestroy);
+            this.destructionTimer = new Timer(DestructionDelay, onEnd: Explode);
 
             this.sizeOverTime.Keys.Add(new CurveKey());
             this.sizeOverTime.Keys.Add(new CurveKey(.2f, .3f));
             this.sizeOverTime.Keys.Add(new CurveKey(.3f, .7f));
             this.sizeOverTime.Keys.Add(new CurveKey(.4f, 1f));
+
+            this.explosionWindup = SoundFX.PortalExplosionWindup.CreateInstance();
+        }
+
+        private void Explode()
+        {
+            explosionWindup.Stop();
+            SoundFX.PortalExplosion.Play();
+            ScheduleToDestroy();
         }
 
         private void Spawn()
@@ -106,6 +117,7 @@ namespace Gravity
                 hero.Lock(duration: DestructionDelay, this);
                 hero.Gravity = 0f;
                 destructionTimer.Start();
+                explosionWindup.Play();
             }
         }
     }

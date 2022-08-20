@@ -125,6 +125,18 @@
 /processorParam:Quality=Best
 /build:SoundFX/Pistol_Shot.wav
 
+#begin SoundFX/Portal_Explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Portal_Explosion.wav
+
+#begin SoundFX/Portal_Explosion_Windup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Portal_Explosion_Windup.wav
+
 #begin SoundFX/Shotgun_Shot.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -214,6 +226,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/character_0000.png
+
+#begin Textures/character_0001.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/character_0001.png
 
 #begin Textures/character_0015.png
 /importer:TextureImporter

@@ -19,6 +19,7 @@ namespace Gravity
 
         private PortalSpawner portalSpawner;
         private bool updatingEntities = false;
+        private Animator animator;
 
         public GameplayScreen()
         {
@@ -53,6 +54,30 @@ namespace Gravity
             var centerY = ScreenManager.GraphicsDevice.Viewport.Height / 2 - Level.Height / 2;
             GravityGame.WorldCamera.Position = new Vector2(centerX, centerY);
 
+            // Loading animations.
+
+            var texture1 = content.Load<Texture2D>("Textures/character_0000");
+            var subtexture1 = new Subtexture(texture1, texture1.Bounds);
+
+            var texture2 = content.Load<Texture2D>("Textures/character_0001");
+            var subtexture2 = new Subtexture(texture2, texture2.Bounds);
+
+            var runFrames = new List<AnimatedSprite.Frame>
+            {
+                new AnimatedSprite.Frame(subtexture1, .2f),
+                new AnimatedSprite.Frame(subtexture2, .2f)
+            };
+            var heroAnimation = new AnimatedSprite.Animation("Hero_Run", runFrames);
+
+            var animations = new List<AnimatedSprite.Animation>
+            {
+                heroAnimation
+            };
+
+            var animatedSprite = new AnimatedSprite("Hero", animations);
+            animator = new Animator(animatedSprite);
+            animator.Play("Hero_Run");
+
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and
             // that it should not try to catch up.
@@ -74,6 +99,9 @@ namespace Gravity
                 if (entity.EntityState == Entity.State.Active)
                     entity.EntityUpdate(gameTime);
             }
+
+            animator.Update(gameTime);
+
             updatingEntities = false;
 
             foreach (var pending in pendingEntities)
@@ -111,6 +139,9 @@ namespace Gravity
                 if (!entity.IsFlashing)
                     entity.Draw(spriteBatch);
             }
+
+            animator.Play("Hero_Run");
+            animator.Draw(spriteBatch);
 
             spriteBatch.End();
 

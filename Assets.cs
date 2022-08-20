@@ -46,6 +46,9 @@ namespace Gravity
         public static SoundEffect HeroHurt { get; private set; }
         public static SoundEffect BazookaShot { get; private set; }
         public static SoundEffect Explosion { get; private set; }
+        public static SoundEffect PortalExplosionWindup { get; private set; }
+        public static SoundEffect PortalExplosion { get; private set; }
+
 
         public static void Load(ContentManager content)
         {
@@ -57,6 +60,8 @@ namespace Gravity
             HeroHurt = content.Load<SoundEffect>("SoundFX/Hero_Hurt");
             BazookaShot = content.Load<SoundEffect>("SoundFX/Bazooka_Shot");
             Explosion = content.Load<SoundEffect>("SoundFX/Explosion");
+            PortalExplosionWindup = content.Load<SoundEffect>("SoundFX/Portal_Explosion_Windup");
+            PortalExplosion = content.Load<SoundEffect>("SoundFX/Portal_Explosion");
         }
     }
 
