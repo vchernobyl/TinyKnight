@@ -56,27 +56,21 @@ namespace Gravity
 
             // Loading animations.
 
-            var texture1 = content.Load<Texture2D>("Textures/character_0000");
-            var subtexture1 = new Subtexture(texture1, texture1.Bounds);
+            var sprite1 = new Sprite(content.Load<Texture2D>("Textures/character_0000"));
+            var sprite2 = new Sprite(content.Load<Texture2D>("Textures/character_0001"));
 
-            var texture2 = content.Load<Texture2D>("Textures/character_0001");
-            var subtexture2 = new Subtexture(texture2, texture2.Bounds);
-
-            var runFrames = new List<AnimatedSprite.Frame>
+            var runFrames = new List<Animation.Frame>
             {
-                new AnimatedSprite.Frame(subtexture1, .2f),
-                new AnimatedSprite.Frame(subtexture2, .2f)
-            };
-            var heroAnimation = new AnimatedSprite.Animation("Hero_Run", runFrames);
-
-            var animations = new List<AnimatedSprite.Animation>
-            {
-                heroAnimation
+                new Animation.Frame(sprite1, .15f),
+                new Animation.Frame(sprite2, .15f)
             };
 
-            var animatedSprite = new AnimatedSprite("Hero", animations);
-            animator = new Animator(animatedSprite);
-            animator.Play("Hero_Run");
+            var animations = new List<Animation>
+            {
+                new Animation("Hero_Run", runFrames)
+            };
+
+            animator = new Animator(animations);
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and
