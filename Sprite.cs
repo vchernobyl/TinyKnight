@@ -33,6 +33,15 @@ namespace Gravity
 
         public void Draw(SpriteBatch batch)
         {
+            // TODO: We can use scale instead of separate field
+            // for slipping sprites.
+            // Finish this.
+            var flip = SpriteEffects.None;
+            if (Scale.X < 0)
+                flip |= SpriteEffects.FlipVertically;
+            if (Scale.Y < 0)
+                flip |= SpriteEffects.FlipHorizontally;
+
             batch.Draw(texture, Position, Source, Color, Rotation, Origin, Scale, Flip, LayerDepth);
         }
     }

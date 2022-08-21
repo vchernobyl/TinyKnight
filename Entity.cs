@@ -13,8 +13,6 @@ namespace Gravity
             Dead,
         }
 
-        protected readonly GameplayScreen gameplayScreen;
-        protected readonly Sprite sprite;
         public Level Level => gameplayScreen.Level;
 
         // Coordinates within the grid.
@@ -52,13 +50,24 @@ namespace Gravity
 
         public bool IsFlashing => flashDuration > .0;
 
-        private double flashDuration = .0;
         public Color FlashColor { get; private set; }
+
+        protected readonly GameplayScreen gameplayScreen;
+        protected readonly Sprite? sprite;
+        protected readonly Animator? animator;
+
+        private double flashDuration = .0;
 
         public Entity(GameplayScreen gameplayScreen, Sprite sprite)
         {
             this.gameplayScreen = gameplayScreen;
             this.sprite = sprite;
+        }
+
+        public Entity(GameplayScreen gameplayScreen, Animator animator)
+        {
+            this.gameplayScreen = gameplayScreen;
+            this.animator = animator;
         }
 
         public void SetCoordinates(float x, float y)
@@ -69,7 +78,11 @@ namespace Gravity
             CY = (int)(YY / Level.CellSize);
             XR = (XX - CX * Level.CellSize) / Level.CellSize;
             YR = (YY - CY * Level.CellSize) / Level.CellSize;
-            sprite.Position = Position;
+
+            if (sprite != null)
+                sprite.Position = Position;
+            if (animator != null)
+                animator.Position = Position;
         }
 
         public bool Overlaps(Entity other)
@@ -110,6 +123,7 @@ namespace Gravity
         {
             Update(gameTime);
 
+            animator?.Update(gameTime);
             flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.
@@ -176,12 +190,18 @@ namespace Gravity
             XX = Numerics.Mod((int)XX, Level.Width);
             YY = Numerics.Mod((int)YY, Level.Height);
 
-            sprite.Position = Position;
+            if (sprite != null)
+                sprite.Position = Position;
+            if (animator != null)
+                animator.Position = Position;
         }
 
         public virtual void Draw(SpriteBatch batch)
         {
-            sprite.Draw(batch);
+            if (sprite != null)
+                sprite.Draw(batch);
+            else if (animator != null)
+                animator.Draw(batch);
         }
     }
 }

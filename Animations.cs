@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Gravity
@@ -33,19 +34,34 @@ namespace Gravity
 
     public class Animator
     {
+        public Vector2 Position;
+
         private readonly List<Animation> animations;
 
         private int animationIndex = 0;
         private int frameIndex = 0;
         private float frameCounter = 0;
 
-        public Animation? Animation
+        public Animation Animation
         {
             get
             {
-                if (animationIndex >= 0 && animationIndex < animations.Count)
-                    return animations[animationIndex];
-                return null;
+                Debug.Assert(animationIndex >= 0 && animationIndex < animations.Count);
+                return animations[animationIndex];
+            }
+        }
+
+        public Animation.Frame Frame
+        {
+            get
+            {
+                Debug.Assert(animationIndex >= 0 && animationIndex < animations.Count);
+                var anim = animations[animationIndex];
+
+                Debug.Assert(frameIndex >= 0 && frameIndex < anim.Frames.Count);
+                var frame = anim.Frames[frameIndex];
+
+                return frame;
             }
         }
 
@@ -79,6 +95,7 @@ namespace Gravity
                         frameIndex = 0;
                         frameCounter = 0;
                     }
+                    break;
                 }
             }
         }
@@ -107,9 +124,8 @@ namespace Gravity
         {
             if (InValidState)
             {
-                var anim = animations[animationIndex];
-                var frame = anim.Frames[frameIndex];
-                var sprite = frame.Sprite;
+                var sprite = Frame.Sprite;
+                sprite.Position = Position;
                 sprite.Draw(spriteBatch);
             }
         }

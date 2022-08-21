@@ -5,12 +5,21 @@ using System;
 
 namespace Gravity
 {
+    public enum HeroState
+    {
+        Idle,
+        Running,
+        Jumping,
+    }
+
     public class Hero : Entity
     {
         public uint EnemiesKilled { get; set; }
         public int Facing { get; private set; } = -1;
         public Weapon CurrentWeapon { get; set; }
 
+        public bool IsLocked => lockDuration > 0f;
+        
         private readonly Weapons weapons;
         private bool onGround = false;
         private bool hurting = false;
@@ -18,10 +27,10 @@ namespace Gravity
         private float lockDuration = 0f;
         private float lockTime = 0f;
         private Portal portal;
+        private HeroState state = HeroState.Idle;
 
-        public bool IsLocked => lockDuration > 0f;
-
-        public Hero(GameplayScreen gamplayScreen) : base(gamplayScreen, new Sprite(Textures.Hero))
+        public Hero(GameplayScreen gamplayScreen, Animator animator)
+            : base(gamplayScreen, animator)
         {
             weapons = new Weapons(gamplayScreen, this);
             CurrentWeapon = weapons.Bazooka;
@@ -88,22 +97,35 @@ namespace Gravity
             {
                 if (Input.IsKeyDown(Keys.Left))
                 {
-                    sprite.Flip = SpriteEffects.None;
+                    animator.Frame.Sprite.Flip = SpriteEffects.None;
                     DX += -speed;
                     Facing = -1;
+                    state = HeroState.Running;
                 }
                 if (Input.IsKeyDown(Keys.Right))
                 {
-                    sprite.Flip = SpriteEffects.FlipHorizontally;
+                    animator.Frame.Sprite.Flip = SpriteEffects.FlipHorizontally;
                     DX += speed;
                     Facing = 1;
+                    state = HeroState.Running;
                 }
                 if (Input.WasKeyPressed(Keys.Up) && onGround)
                 {
                     DY = jump;
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
+                    state = HeroState.Jumping;
                 }
             }
+
+            if (MathF.Abs(DX) < .01f)
+                state = HeroState.Idle;
+            else
+                state = HeroState.Running;
+
+            if (state == HeroState.Idle)
+                animator?.Play("Hero_Idle");
+            else if (state == HeroState.Running)
+                animator?.Play("Hero_Run");
 
             // Weapon switching.
             if (Input.WasKeyPressed(Keys.D1))
