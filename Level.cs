@@ -5,7 +5,7 @@ namespace Gravity
 {
     public class Level
     {
-        public const int CellSize = 24;
+        public const int CellSize = 8;
 
         public readonly int Columns;
         public readonly int Rows;

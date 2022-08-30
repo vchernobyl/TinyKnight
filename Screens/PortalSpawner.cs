@@ -11,7 +11,7 @@ namespace Gravity
         private readonly GameplayScreen gameplayScreen;
 
         private float time = 0f;
-        private const float Delay = 2f;
+        private const float Delay = 3f;
 
         public PortalSpawner(GameplayScreen gameplayScreen,
             List<(Vector2, Portal.EnemyType)> possiblePortalPlacements,

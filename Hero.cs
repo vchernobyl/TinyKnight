@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Gravity
 {
@@ -29,11 +30,36 @@ namespace Gravity
         private Portal portal;
         private HeroState state = HeroState.Idle;
 
-        public Hero(GameplayScreen gamplayScreen, Animator animator)
-            : base(gamplayScreen, animator)
+        public Hero(GameplayScreen gameplayScreen)
+            : base(gameplayScreen)
         {
-            weapons = new Weapons(gamplayScreen, this);
+            weapons = new Weapons(gameplayScreen, this);
             CurrentWeapon = weapons.Bazooka;
+
+            var content = base.gameplayScreen.ScreenManager.Game.Content;
+
+
+            var sprite1 = new Sprite(content.Load<Texture2D>("Textures/Tiny_Knight"));
+            var sprite2 = new Sprite(content.Load<Texture2D>("Textures/Tiny_Knight"));
+
+            var runFrames = new List<Animation.Frame>
+            {
+                new Animation.Frame(sprite1, .15f),
+                new Animation.Frame(sprite2, .15f)
+            };
+
+            var idleFrames = new List<Animation.Frame>
+            {
+                new Animation.Frame(sprite1, .15f)
+            };
+
+            var animations = new List<Animation>
+            {
+                new Animation("Hero_Run", runFrames),
+                new Animation("Hero_Idle", idleFrames)
+            };
+
+            animator = new Animator(animations);
         }
 
         public void Knockback(float amount)

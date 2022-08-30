@@ -15,8 +15,25 @@ namespace Gravity
         private int pointIndex = 0;
         private bool dead = false;
 
-        public Flyer(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Flyer), health: 100)
+        public Flyer(GameplayScreen gameplayScreen) : base(gameplayScreen, health: 100)
         {
+            var content = gameplayScreen.ScreenManager.Game.Content;
+
+            var move = new Animation("Flyer_Move", new List<Animation.Frame>()
+            {
+                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0024")), .1f),
+                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0025")), .1f),
+                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0026")), .1f),
+                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0025")), .1f),
+            });
+
+            var dead = new Animation("Flyer_Dead", new List<Animation.Frame>()
+            {
+                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0026")), .1f),
+            });
+
+            animator = new Animator(new List<Animation>() { move, dead });
+
             Gravity = 0f;
 
             pathfindingTimer = new Timer(duration: 1.5f, RecalculatePath, repeating: true, immediate: true);
@@ -59,9 +76,12 @@ namespace Gravity
         {
             if (dead)
             {
-                sprite.Rotation += .3f;
+                animator?.Play("Flyer_Dead");
+                animator.Frame.Sprite.Rotation += .3f;
                 return;
             }
+
+            animator?.Play("Flyer_Move");
 
             pathfindingTimer.Update(gameTime);
 

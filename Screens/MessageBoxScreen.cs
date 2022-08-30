@@ -26,7 +26,7 @@ namespace Gravity
 
         public MessageBoxScreen(string message, bool includeUsageText)
         {
-            var usage = @"\nA button, Space, Enter = ok
+            const string usage = @"\nA button, Space, Enter = ok
                           \nB button, Esc = cancel";
 
             if (includeUsageText)
@@ -40,13 +40,13 @@ namespace Gravity
             TransitionOffTime = TimeSpan.FromSeconds(.2);
 
             menuSelect = new InputAction(
-                new Buttons[] { Buttons.A, Buttons.Start },
-                new Keys[] { Keys.Space, Keys.Enter },
+                new[] { Buttons.A, Buttons.Start },
+                new[] { Keys.Space, Keys.Enter },
                 newPressOnly: true);
 
             menuCancel = new InputAction(
-                new Buttons[] { Buttons.B, Buttons.Back },
-                new Keys[] { Keys.Escape, Keys.Back },
+                new[] { Buttons.B, Buttons.Back },
+                new[] { Keys.Escape, Keys.Back },
                 newPressOnly: true);
         }
 
@@ -58,9 +58,7 @@ namespace Gravity
 
         public override void HandleInput(GameTime gameTime, InputState input)
         {
-            PlayerIndex playerIndex;
-
-            if (menuSelect.Evaluate(input, ControllingPlayer, out playerIndex))
+            if (menuSelect.Evaluate(input, ControllingPlayer, out var playerIndex))
             {
                 Accepted?.Invoke(this, new PlayerIndexEventArgs(playerIndex));
                 ExitScreen();
@@ -85,7 +83,7 @@ namespace Gravity
             var textSize = font.MeasureString(message);
             var textPosition = viewportSize / textSize / 2;
 
-            // The background includes a border somehwat larget than the text itself.
+            // The background includes a border somewhat larger than the text itself.
             const int hPad = 32;
             const int vPad = 16;
 

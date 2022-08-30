@@ -39,42 +39,20 @@ namespace Gravity
             content ??= new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
 
             Level = LevelLoader.Load(content.Load<Texture2D>("Levels/Map1"),
-                content.Load<Texture2D>("Textures/tile_0009"));
+                content.Load<Texture2D>("Textures/Tile"));
 
             var portals = LevelLoader.GetPortals(content.Load<Texture2D>("Levels/Map1_Entities"));
-            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 3);
+            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 0);
 
             Hud = new Hud(this);
 
-            var centerX = ScreenManager.GraphicsDevice.Viewport.Width / 2 - Level.Width / 2;
-            var centerY = ScreenManager.GraphicsDevice.Viewport.Height / 2 - Level.Height / 2;
+            var centerX = Level.Width / 2;
+            var centerY = Level.Height / 2;
+
             GravityGame.WorldCamera.Position = new Vector2(centerX, centerY);
+            GravityGame.WorldCamera.Scale = 2f;
 
-            // Loading animations.
-
-            var sprite1 = new Sprite(content.Load<Texture2D>("Textures/character_0000"));
-            var sprite2 = new Sprite(content.Load<Texture2D>("Textures/character_0001"));
-
-            var runFrames = new List<Animation.Frame>
-            {
-                new Animation.Frame(sprite1, .15f),
-                new Animation.Frame(sprite2, .15f)
-            };
-
-            var idleFrames = new List<Animation.Frame>
-            {
-                new Animation.Frame(sprite1, .15f)
-            };
-
-            var animations = new List<Animation>
-            {
-                new Animation("Hero_Run", runFrames),
-                new Animation("Hero_Idle", idleFrames)
-            };
-
-            var animator = new Animator(animations);
-
-            Hero = new Hero(this, animator) { Position = new Vector2(100f, 200f) };
+            Hero = new Hero(this) { Position = new Vector2(80f, 200f) };
             Entities.Add(Hero);
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
@@ -123,11 +101,13 @@ namespace Gravity
         public override void Draw(GameTime gameTime)
         {
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                Color.CornflowerBlue, 0f, 0);
+                Color.Black, 0f, 0);
 
             var spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: GravityGame.WorldCamera.Transform);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, 
+                samplerState: SamplerState.PointClamp, 
+                transformMatrix: GravityGame.WorldCamera.Transform);
 
             Level.Draw(spriteBatch);
 
@@ -152,7 +132,7 @@ namespace Gravity
             spriteBatch.End();
 
             spriteBatch.Begin(transformMatrix: GravityGame.UiCamera.Transform);
-            Hud.Draw(spriteBatch);
+            //Hud.Draw(spriteBatch);
             spriteBatch.End();
         }
     }

@@ -53,10 +53,15 @@ namespace Gravity
         public Color FlashColor { get; private set; }
 
         protected readonly GameplayScreen gameplayScreen;
-        protected readonly Sprite? sprite;
-        protected readonly Animator? animator;
+        protected Sprite? sprite;
+        protected Animator? animator;
 
         private double flashDuration = .0;
+
+        public Entity(GameplayScreen gameplayScreen)
+        {
+            this.gameplayScreen = gameplayScreen;
+        }
 
         public Entity(GameplayScreen gameplayScreen, Sprite sprite)
         {

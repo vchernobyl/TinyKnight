@@ -2,36 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Gravity
 {
-    public class Animation
-    {
-        public class Frame
-        {
-            public readonly Sprite Sprite;
-            public readonly float Duration;
-
-            public Frame(Sprite sprite, float duration)
-            {
-                Sprite = sprite;
-                Duration = duration;
-            }
-        }
-
-        public readonly string Name;
-        public readonly List<Frame> Frames;
-
-        public float Duration => Frames.Sum(f => f.Duration);
-
-        public Animation(string name, List<Frame> frames)
-        {
-            Name = name;
-            Frames = frames;
-        }
-    }
-
     public class Animator
     {
         public Vector2 Position;
@@ -114,6 +87,9 @@ namespace Gravity
                     frameCounter -= frame.Duration;
                     frameIndex++;
 
+                    // Later on if we decide that we also want non-looping animations,
+                    // we can add an additional flag to check whether the animation should
+                    // be reset or not.
                     if (frameIndex >= anim.Frames.Count)
                         frameIndex = 0;
                 }

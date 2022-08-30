@@ -1,20 +1,31 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
     public class Camera
     {
         public Vector2 Position;
-        public Matrix Transform => Matrix.CreateTranslation(ShakyPosition.X, ShakyPosition.Y, 0f);
+        public float Scale = 1f;
+
+        public Matrix Transform => Matrix.CreateTranslation(-Position.X + shakeOffset.X, -Position.Y + shakeOffset.Y, 0f) *
+                                   Matrix.CreateScale(new Vector3(Scale, Scale, 1f)) *
+                                   Matrix.CreateTranslation(bounds.Center.X, bounds.Center.Y, 0f);
 
         private Vector2 shakeOffset;
-        private Vector2 ShakyPosition => Position + shakeOffset;
 
         private const float MaxOffset = 35f;
         private const float ShakeDecrease = 0.03f;
 
-        private float trauma = 0f;
+        private readonly Rectangle bounds;
+
+        private float trauma;
+
+        public Camera(Viewport viewport)
+        {
+            bounds = viewport.Bounds;
+        }
 
         public void Update(GameTime _)
         {

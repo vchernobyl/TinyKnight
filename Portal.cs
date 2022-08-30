@@ -12,15 +12,16 @@ namespace Gravity
             Walker, Flyer
         }
 
-        public uint MaxEntities { get; set; } = 2;
+        public uint MaxEntities { get; set; } = 0;
 
         private readonly EnemyType enemyType;
         private readonly bool showDebugInfo = false;
 
         private readonly Timer spawnTimer;
         private readonly Timer destructionTimer;
+        private readonly Timer firstTimeDelayTimer;
 
-        private const float SpawnInterval = 2f;
+        private const float SpawnInterval = 10f;
         private const float DestructionDelay = 1f;
 
         private uint entitiesSpawned = 0;
@@ -34,11 +35,17 @@ namespace Gravity
         {
             Position = position;
             Gravity = 0f;
+            
             this.enemyType = enemyType;
+            
             this.sprite.LayerDepth = 1f;
             this.sprite.Scale = Vector2.Zero;
+            
             this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true, immediate: true);
-            this.spawnTimer.Start();
+
+            this.firstTimeDelayTimer = new Timer(1f, onEnd: spawnTimer.Start);
+            this.firstTimeDelayTimer.Start();
+
             this.destructionTimer = new Timer(DestructionDelay, onEnd: Explode);
 
             this.sizeOverTime.Keys.Add(new CurveKey());
@@ -89,6 +96,7 @@ namespace Gravity
         {
             time += gameTime.DeltaTime();
             sprite.Rotation -= .025f;
+            firstTimeDelayTimer.Update(gameTime);
             spawnTimer.Update(gameTime);
             destructionTimer.Update(gameTime);
             sprite.Scale = sizeOverTime.Evaluate(time) * new Vector2(.75f);
@@ -111,7 +119,7 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Hero hero && !hero.IsLocked)
+            if (other is Hero { IsLocked: false } hero)
             {
                 Collision = false;
                 hero.Lock(duration: DestructionDelay, this);

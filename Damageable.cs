@@ -11,8 +11,8 @@ namespace Gravity
 
         public Action<Damageable>? OnDie;
 
-        public Damageable(GameplayScreen gameplayScreen, Sprite sprite, int health)
-            : base(gameplayScreen, sprite)
+        public Damageable(GameplayScreen gameplayScreen, int health)
+            : base(gameplayScreen)
         {
             Health = health;
         }

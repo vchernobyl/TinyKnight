@@ -6,8 +6,8 @@ namespace Gravity
 {
     public class GravityGame : Game
     {
-        public static Camera WorldCamera { get; } = new Camera();
-        public static Camera UiCamera { get; } = new Camera();
+        public static Camera WorldCamera { get; private set; }
+        public static Camera UiCamera { get; private set; }
 
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
@@ -29,6 +29,9 @@ namespace Gravity
             graphics.PreferredBackBufferWidth = 1500;
             graphics.PreferredBackBufferHeight = 900;
             graphics.ApplyChanges();
+
+            WorldCamera = new Camera(GraphicsDevice.Viewport);
+            UiCamera = new Camera(GraphicsDevice.Viewport);
 
             base.Initialize();
         }
