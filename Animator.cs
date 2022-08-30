@@ -5,10 +5,8 @@ using System.Diagnostics;
 
 namespace Gravity
 {
-    public class Animator
+    public class Animator : Drawable
     {
-        public Vector2 Position;
-
         private readonly List<Animation> animations;
 
         private int animationIndex = 0;
@@ -52,6 +50,13 @@ namespace Gravity
         public Animator(List<Animation> animations)
         {
             this.animations = animations;
+
+            Origin = new Vector2(4, 4);
+            Scale = Vector2.One;
+            Rotation = 0f;
+            Flip = SpriteEffects.None;
+            LayerDepth = .5f;
+            Color = Color.White;
         }
 
         public void Play(string animation)
@@ -75,34 +80,32 @@ namespace Gravity
 
         public void Update(GameTime gameTime)
         {
-            if (InValidState)
+            Debug.Assert(InValidState);
+
+            var anim = animations[animationIndex];
+            var frame = anim.Frames[frameIndex];
+
+            frameCounter += gameTime.DeltaTime();
+
+            while (frameCounter >= frame.Duration)
             {
-                var anim = animations[animationIndex];
-                var frame = anim.Frames[frameIndex];
+                frameCounter -= frame.Duration;
+                frameIndex++;
 
-                frameCounter += gameTime.DeltaTime();
-
-                while (frameCounter >= frame.Duration)
-                {
-                    frameCounter -= frame.Duration;
-                    frameIndex++;
-
-                    // Later on if we decide that we also want non-looping animations,
-                    // we can add an additional flag to check whether the animation should
-                    // be reset or not.
-                    if (frameIndex >= anim.Frames.Count)
-                        frameIndex = 0;
-                }
+                // Later on if we decide that we also want non-looping animations,
+                // we can add an additional flag to check whether the animation should
+                // be reset or not.
+                if (frameIndex >= anim.Frames.Count)
+                    frameIndex = 0;
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            if (InValidState)
-            {
-                spriteBatch.Draw(Frame.Image.Texture, Position, Frame.Image.Source,
-                    Color.White, 0f, new Vector2(4, 4), 1f, SpriteEffects.None, 1f);
-            }
+            Debug.Assert(InValidState);
+
+            spriteBatch.Draw(Frame.Image.Texture, Position, Frame.Image.Source,
+                Color, Rotation, Origin, Scale, Flip, LayerDepth);
         }
     }
 }

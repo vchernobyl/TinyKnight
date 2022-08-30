@@ -3,17 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
-    public class Sprite
+    public class Sprite : Drawable
     {
-        public Vector2 Position { get; set; }
-        public Vector2 Origin { get; set; }
-        public Vector2 Scale { get; set; }
-        public float Rotation { get; set; }
-        public float LayerDepth { get; set; }
-        public Rectangle Source { get; set; }
-        public SpriteEffects Flip { get; set; }
-        public Color Color { get; set; }
-
         public Point Size => texture.Bounds.Size;
 
         private readonly Texture2D texture;
@@ -31,7 +22,7 @@ namespace Gravity
             Color = Color.White;
         }
 
-        public void Draw(SpriteBatch batch)
+        public override void Draw(SpriteBatch batch)
         {
             // TODO: We can use scale instead of separate field
             // for slipping sprites.

@@ -111,14 +111,14 @@ namespace Gravity
             {
                 if (Input.IsKeyDown(Keys.Left))
                 {
-                    //animator.Frame.Image.Flip = SpriteEffects.None;
+                    animator.Flip = SpriteEffects.FlipHorizontally;
                     DX += -speed;
                     Facing = -1;
                     state = HeroState.Running;
                 }
                 if (Input.IsKeyDown(Keys.Right))
                 {
-                    //animator.Frame.Image.Flip = SpriteEffects.FlipHorizontally;
+                    animator.Flip = SpriteEffects.None;
                     DX += speed;
                     Facing = 1;
                     state = HeroState.Running;
