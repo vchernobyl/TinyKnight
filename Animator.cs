@@ -100,9 +100,8 @@ namespace Gravity
         {
             if (InValidState)
             {
-                var sprite = Frame.Sprite;
-                sprite.Position = Position;
-                sprite.Draw(spriteBatch);
+                spriteBatch.Draw(Frame.Image.Texture, Position, Frame.Image.Source,
+                    Color.White, 0f, new Vector2(4, 4), 1f, SpriteEffects.None, 1f);
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Gravity
@@ -7,12 +9,12 @@ namespace Gravity
     {
         public class Frame
         {
-            public readonly Sprite Sprite;
+            public readonly Subtexture Image;
             public readonly float Duration;
 
-            public Frame(Sprite sprite, float duration = .1f)
+            public Frame(Subtexture image, float duration)
             {
-                Sprite = sprite;
+                Image = image;
                 Duration = duration;
             }
         }
@@ -22,10 +24,21 @@ namespace Gravity
 
         public float Duration => Frames.Sum(f => f.Duration);
 
-        public Animation(string name, List<Frame> frames)
+        public Animation(string name, Texture2D animSheet, Point frameSize)
         {
             Name = name;
-            Frames = frames;
+            
+            Frames = new List<Frame>();
+
+            var frameCount = animSheet.Width / frameSize.X;
+            for (var i = 0; i < frameCount; i++)
+            {
+                var source = new Rectangle(i * frameSize.X, 0, frameSize.X, frameSize.Y);
+                var subtexture = new Subtexture(animSheet, source);
+                
+                // Frame duration hardcoded for now.
+                Frames.Add(new Frame(subtexture, duration: .1f));
+            }
         }
     }
 }

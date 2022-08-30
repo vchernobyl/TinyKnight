@@ -50,7 +50,7 @@ namespace Gravity
             var centerY = Level.Height / 2;
 
             GravityGame.WorldCamera.Position = new Vector2(centerX, centerY);
-            GravityGame.WorldCamera.Scale = 2f;
+            GravityGame.WorldCamera.Scale = 3f;
 
             Hero = new Hero(this) { Position = new Vector2(80f, 200f) };
             Entities.Add(Hero);

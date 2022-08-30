@@ -14,18 +14,9 @@ namespace Gravity
             : base(gameplayScreen, health: 100)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
-            var move = new Animation("Walker_Move", new List<Animation.Frame>()
-            {
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0015")), .1f),
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0016")), .1f),
-            });
+            
 
-            var dead = new Animation("Walker_Dead", new List<Animation.Frame>()
-            {
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0017")), .1f),
-            });
-
-            animator = new Animator(new List<Animation>() { move, dead });
+            animator = new Animator(new List<Animation> { });
 
             facing = Numerics.PickOne(-1, 1);
         }
@@ -51,17 +42,17 @@ namespace Gravity
                 DX = Math.Sign(facing) * speed;
             }
 
-            if (facing > 0)
-                animator.Frame.Sprite.Flip = SpriteEffects.FlipHorizontally;
-            else
-                animator.Frame.Sprite.Flip = SpriteEffects.None;
+            //if (facing > 0)
+            //    //animator.Frame.Image.Flip = SpriteEffects.FlipHorizontally;
+            //else
+            //    //animator.Frame.Image.Flip = SpriteEffects.None;
 
             if (dead)
             {
                 animator.Play("Walker_Dead");
-                animator.Frame.Sprite.Rotation += Random.FloatRange(
-                    MathHelper.PiOver4,
-                    MathHelper.PiOver2) * DX;
+                //animator.Frame.Image.Rotation += Random.FloatRange(
+                //    MathHelper.PiOver4,
+                //    MathHelper.PiOver2) * DX;
             }
         }
 

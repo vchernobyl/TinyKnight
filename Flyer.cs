@@ -19,20 +19,7 @@ namespace Gravity
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
 
-            var move = new Animation("Flyer_Move", new List<Animation.Frame>()
-            {
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0024")), .1f),
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0025")), .1f),
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0026")), .1f),
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0025")), .1f),
-            });
-
-            var dead = new Animation("Flyer_Dead", new List<Animation.Frame>()
-            {
-                new Animation.Frame(new Sprite(content.Load<Texture2D>("Textures/character_0026")), .1f),
-            });
-
-            animator = new Animator(new List<Animation>() { move, dead });
+            animator = new Animator(new List<Animation> { });
 
             Gravity = 0f;
 
@@ -76,8 +63,8 @@ namespace Gravity
         {
             if (dead)
             {
-                animator?.Play("Flyer_Dead");
-                animator.Frame.Sprite.Rotation += .3f;
+                //animator?.Play("Flyer_Dead");
+                //animator.Frame.Image.Rotation += .3f;
                 return;
             }
 

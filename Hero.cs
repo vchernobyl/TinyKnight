@@ -20,7 +20,7 @@ namespace Gravity
         public Weapon CurrentWeapon { get; set; }
 
         public bool IsLocked => lockDuration > 0f;
-        
+
         private readonly Weapons weapons;
         private bool onGround = false;
         private bool hurting = false;
@@ -38,25 +38,13 @@ namespace Gravity
 
             var content = base.gameplayScreen.ScreenManager.Game.Content;
 
-
-            var sprite1 = new Sprite(content.Load<Texture2D>("Textures/Tiny_Knight"));
-            var sprite2 = new Sprite(content.Load<Texture2D>("Textures/Tiny_Knight"));
-
-            var runFrames = new List<Animation.Frame>
-            {
-                new Animation.Frame(sprite1, .15f),
-                new Animation.Frame(sprite2, .15f)
-            };
-
-            var idleFrames = new List<Animation.Frame>
-            {
-                new Animation.Frame(sprite1, .15f)
-            };
-
+            var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
+            var runSheet = content.Load<Texture2D>("Textures/Hero_Run");
+            var frameSize = new Point(8, 8);
             var animations = new List<Animation>
             {
-                new Animation("Hero_Run", runFrames),
-                new Animation("Hero_Idle", idleFrames)
+                new Animation("Hero_Idle", idleSheet, frameSize),
+                new Animation("Hero_Run", runSheet, frameSize),
             };
 
             animator = new Animator(animations);
@@ -123,14 +111,14 @@ namespace Gravity
             {
                 if (Input.IsKeyDown(Keys.Left))
                 {
-                    animator.Frame.Sprite.Flip = SpriteEffects.None;
+                    //animator.Frame.Image.Flip = SpriteEffects.None;
                     DX += -speed;
                     Facing = -1;
                     state = HeroState.Running;
                 }
                 if (Input.IsKeyDown(Keys.Right))
                 {
-                    animator.Frame.Sprite.Flip = SpriteEffects.FlipHorizontally;
+                    //animator.Frame.Image.Flip = SpriteEffects.FlipHorizontally;
                     DX += speed;
                     Facing = 1;
                     state = HeroState.Running;
