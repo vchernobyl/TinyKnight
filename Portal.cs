@@ -27,7 +27,6 @@ namespace Gravity
         private uint entitiesSpawned = 0;
         private float time = 0f;
 
-        private readonly Curve sizeOverTime = new Curve();
         private readonly SoundEffectInstance explosionWindup;
 
         public Portal(Vector2 position, GameplayScreen gameplayScreen, EnemyType enemyType)
@@ -39,7 +38,6 @@ namespace Gravity
             this.enemyType = enemyType;
             
             this.sprite.LayerDepth = 1f;
-            this.sprite.Scale = Vector2.Zero;
             
             this.spawnTimer = new Timer(SpawnInterval, Spawn, repeating: true, immediate: true);
 
@@ -47,12 +45,6 @@ namespace Gravity
             this.firstTimeDelayTimer.Start();
 
             this.destructionTimer = new Timer(DestructionDelay, onEnd: Explode);
-
-            this.sizeOverTime.Keys.Add(new CurveKey());
-            this.sizeOverTime.Keys.Add(new CurveKey(.2f, .3f));
-            this.sizeOverTime.Keys.Add(new CurveKey(.3f, .7f));
-            this.sizeOverTime.Keys.Add(new CurveKey(.4f, 1f));
-
             this.explosionWindup = SoundFX.PortalExplosionWindup.CreateInstance();
         }
 
@@ -95,11 +87,9 @@ namespace Gravity
         public override void Update(GameTime gameTime)
         {
             time += gameTime.DeltaTime();
-            sprite.Rotation -= .025f;
             firstTimeDelayTimer.Update(gameTime);
             spawnTimer.Update(gameTime);
             destructionTimer.Update(gameTime);
-            sprite.Scale = sizeOverTime.Evaluate(time) * new Vector2(.75f);
         }
 
         public override void Draw(SpriteBatch batch)

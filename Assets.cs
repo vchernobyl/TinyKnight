@@ -28,8 +28,8 @@ namespace Gravity
             Hero = content.Load<Texture2D>("Textures/character_0000");
             Enemy = content.Load<Texture2D>("Textures/character_0015");
             Flyer = content.Load<Texture2D>("Textures/Flyer");
-            PortalOrange = content.Load<Texture2D>("Textures/Portal_Orange");
-            PortalYellow = content.Load<Texture2D>("Textures/Portal_Yellow");
+            PortalOrange = content.Load<Texture2D>("Textures/Portal");
+            PortalYellow = content.Load<Texture2D>("Textures/Portal");
             Pixel = content.Load<Texture2D>("Textures/Pixel");
             Circle = content.Load<Texture2D>("Textures/Circle");
             Box = content.Load<Texture2D>("Textures/Box");
