@@ -13,15 +13,6 @@ namespace Gravity
         private int frameIndex = 0;
         private float frameCounter = 0;
 
-        public Animation Animation
-        {
-            get
-            {
-                Debug.Assert(animationIndex >= 0 && animationIndex < animations.Count);
-                return animations[animationIndex];
-            }
-        }
-
         public Animation.Frame Frame
         {
             get

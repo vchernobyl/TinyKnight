@@ -42,7 +42,7 @@ namespace Gravity
                 content.Load<Texture2D>("Textures/Tile"));
 
             var portals = LevelLoader.GetPortals(content.Load<Texture2D>("Levels/Map1_Entities"));
-            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 0);
+            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 3);
 
             Hud = new Hud(this);
 

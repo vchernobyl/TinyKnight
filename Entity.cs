@@ -54,7 +54,7 @@ namespace Gravity
 
         protected readonly GameplayScreen gameplayScreen;
         protected Sprite? sprite;
-        protected Animator? animator;
+        protected Animator animator;
 
         private double flashDuration = .0;
 

@@ -12,7 +12,7 @@ namespace Gravity
             Walker, Flyer
         }
 
-        public uint MaxEntities { get; set; } = 0;
+        public uint MaxEntities { get; set; } = 99;
 
         private readonly EnemyType enemyType;
         private readonly bool showDebugInfo = false;
@@ -69,8 +69,8 @@ namespace Gravity
             {
                 Damageable enemy = enemyType switch
                 {
-                    EnemyType.Flyer => new Flyer(gameplayScreen),
-                    EnemyType.Walker => new Walker(gameplayScreen),
+                    EnemyType.Flyer => new Bat(gameplayScreen),
+                    EnemyType.Walker => new Bat(gameplayScreen),
                     _ => throw new ArgumentException($"Enemy type {enemyType} not supported!")
                 };
 

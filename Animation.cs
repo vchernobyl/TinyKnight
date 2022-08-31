@@ -19,21 +19,25 @@ namespace Gravity
             }
         }
 
+        // For this game we will just hardcode the frame size for
+        // convenience, since all of the sprites will be of the same size.
+        private const int FrameSize = 8;
+
         public readonly string Name;
         public readonly List<Frame> Frames;
 
         public float Duration => Frames.Sum(f => f.Duration);
 
-        public Animation(string name, Texture2D animSheet, Point frameSize)
+        public Animation(string name, Texture2D animSheet)
         {
             Name = name;
             
             Frames = new List<Frame>();
 
-            var frameCount = animSheet.Width / frameSize.X;
+            var frameCount = animSheet.Width / FrameSize;
             for (var i = 0; i < frameCount; i++)
             {
-                var source = new Rectangle(i * frameSize.X, 0, frameSize.X, frameSize.Y);
+                var source = new Rectangle(i * FrameSize, 0, FrameSize, FrameSize);
                 var subtexture = new Subtexture(animSheet, source);
                 
                 // Frame duration hardcoded for now.

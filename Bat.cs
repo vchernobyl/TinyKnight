@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
-    public class Flyer : Damageable
+    public class Bat : Damageable
     {
         private readonly Pathfinding pathfinding;
         private readonly NavigationGrid navGrid;
@@ -15,11 +15,14 @@ namespace Gravity
         private int pointIndex = 0;
         private bool dead = false;
 
-        public Flyer(GameplayScreen gameplayScreen) : base(gameplayScreen, health: 100)
+        public Bat(GameplayScreen gameplayScreen) : base(gameplayScreen, health: 100)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
 
-            animator = new Animator(new List<Animation> { });
+            animator = new Animator(new List<Animation>
+            {
+                new Animation("Bat", content.Load<Texture2D>("Textures/Bat"))
+            });
 
             Gravity = 0f;
 
@@ -61,15 +64,6 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            if (dead)
-            {
-                //animator?.Play("Flyer_Dead");
-                //animator.Frame.Image.Rotation += .3f;
-                return;
-            }
-
-            animator?.Play("Flyer_Move");
-
             pathfindingTimer.Update(gameTime);
 
             if (path.Count > 0 && pointIndex < path.Count)
@@ -86,6 +80,11 @@ namespace Gravity
 
                 DX += movement.X * .005f;
                 DY += movement.Y * .005f;
+
+                if (DX >= 0)
+                    animator.Flip = SpriteEffects.None;
+                else
+                    animator.Flip = SpriteEffects.FlipHorizontally;
             }
         }
 

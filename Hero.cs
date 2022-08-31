@@ -36,15 +36,13 @@ namespace Gravity
             weapons = new Weapons(gameplayScreen, this);
             CurrentWeapon = weapons.Bazooka;
 
-            var content = base.gameplayScreen.ScreenManager.Game.Content;
-
+            var content = gameplayScreen.ScreenManager.Game.Content;
             var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
             var runSheet = content.Load<Texture2D>("Textures/Hero_Run");
-            var frameSize = new Point(8, 8);
             var animations = new List<Animation>
             {
-                new Animation("Hero_Idle", idleSheet, frameSize),
-                new Animation("Hero_Run", runSheet, frameSize),
+                new Animation("Hero_Idle", idleSheet),
+                new Animation("Hero_Run", runSheet),
             };
 
             animator = new Animator(animations);
