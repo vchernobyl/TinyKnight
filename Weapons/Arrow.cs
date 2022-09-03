@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
 {
-    public class Bullet : Entity
+    public class Arrow : Entity
     {
         public Vector2 Velocity { get; set; }
         public int Damage { get; set; }
 
-        public Bullet(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Bullet))
+        public Arrow(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Arrow))
         {
         }
 

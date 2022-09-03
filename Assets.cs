@@ -18,6 +18,7 @@ namespace Gravity
         public static Texture2D Pixel { get; private set; }
         public static Texture2D Circle { get; private set; }
         public static Texture2D Box { get; private set; }
+        public static Texture2D Arrow { get; private set; }
 
         public static void Load(ContentManager content)
         {
@@ -33,6 +34,7 @@ namespace Gravity
             Pixel = content.Load<Texture2D>("Textures/Pixel");
             Circle = content.Load<Texture2D>("Textures/Circle");
             Box = content.Load<Texture2D>("Textures/Box");
+            Arrow = content.Load<Texture2D>("Textures/Arrow");
         }
     }
 

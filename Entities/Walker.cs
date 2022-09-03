@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Gravity
+namespace Gravity.Entities
 {
     public class Walker : Damageable
     {
@@ -15,7 +15,7 @@ namespace Gravity
             : base(gameplayScreen, health: 100)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
-            
+
 
             animator = new Animator(new List<Animation> { });
 
@@ -36,8 +36,8 @@ namespace Gravity
                 DX = Math.Sign(facing) * speed;
 
             if (!dead &&
-                ((Level.HasCollision(CX + 1, CY) && XR >= .7f) ||
-                (Level.HasCollision(CX - 1, CY) && XR <= .3f)))
+                (Level.HasCollision(CX + 1, CY) && XR >= .7f ||
+                Level.HasCollision(CX - 1, CY) && XR <= .3f))
             {
                 facing = -facing;
                 DX = Math.Sign(facing) * speed;

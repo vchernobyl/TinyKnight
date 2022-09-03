@@ -1,4 +1,5 @@
 ﻿using Gravity.Animations;
+using Gravity.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -29,7 +30,6 @@ namespace Gravity
         private double hurtTime = 0;
         private float lockDuration = 0f;
         private float lockTime = 0f;
-        private Portal portal;
         private HeroState state = HeroState.Idle;
 
 
@@ -78,35 +78,8 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            if (lockDuration > 0f)
-            {
-                lockTime += gameTime.DeltaTime();
-                if (lockTime >= lockDuration)
-                {
-                    lockTime = 0f;
-                    lockDuration = 0f;
-                    Gravity = .05f;
-
-                    // Get new weapon and spawn weapon text.
-                    CurrentWeapon = weapons.GetRandomWeapon(CurrentWeapon);
-                    var game = gameplayScreen.ScreenManager.Game;
-                    game.Components.Add(new WeaponPickupText(game, CurrentWeapon.Name, Position));
-
-                    foreach (var e in gameplayScreen.Entities)
-                    {
-                        if (e != this && e != portal)
-                            e.EntityState = State.Active;
-                    }
-                }
-                else
-                {
-                    Position = Vector2.Lerp(Position, portal.Position, lockTime / lockDuration);
-                    return;
-                }
-            }
-
             var speed = .0175f;
-            var jump = -1f;
+            var jump = -1.25f;
 
             hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
             if (hurtTime == 0)
@@ -167,19 +140,6 @@ namespace Gravity
                 CurrentWeapon.PullTrigger();
 
             CurrentWeapon.Update(gameTime);
-        }
-
-        public void Lock(float duration, Portal portal)
-        {
-            this.lockDuration = duration;
-            this.lockTime = 0f;
-            this.portal = portal;
-
-            foreach (var e in gameplayScreen.Entities)
-            {
-                if (e != this && e != portal)
-                    e.EntityState = State.Paused;
-            }
         }
     }
 }

@@ -9,3 +9,35 @@ Limitations:
 - One life
 - Score chaser
 - Very simple enemies, no attack animation
+
+Design:
+-------
+- Enemies fall from the top, and try to reach the bottom of the level
+- Once they reach "The Pit", we have multiple possibilities:
+  * Game over
+  * Enemy respawns stronger
+  * Enemies start spawning more frequently
+  * Maybe you get some powerup when killing respawned enemy?
+  * Maybe you can jump yourself in the pit for risk/reward type of situation?
+  * Maybe you collect the coins and throw them into pit to get something?
+- Need to think about how to earn the power-ups
+
+Power-ups:
+----------
+- Twisted Mirror (makes a copy of the player, shoots/moves in the opposite direction)
+   * Maybe, if one of the clone days, you keep playing as the other one and don't die right away?
+   * Or your mirror clone would be just "transparent" to attacks for some period of time?
+- Invisibility Cloak (you can pass through enemies and keep shooting)
+- Berserk (like in Doom, you punch poor fucks with a single hit to death with fists)
+   * Would be cool to make the player completely red with glowing yellow eyes and smoke coming out of his ears or something
+- Ice Boots (leave a trail of icecyles damaging/slowing enemies)
+   * Don't seem to be very useful compared to other power-ups
+
+Weapons:
+--------
+- Repeater crossbow (rapid fire, but lower damage)
+- Throwing knives/axe (slower, but higher damage)
+- Magic Wand (shooting fireballs, explosion AOE)
+- Hammer? (high damage to enemies in front, others are stunned/slowed down)
+- Fire bomb (AOE, low damage and enemies are slowed down)
+- Spike trap (like a mine, shoots spikes up, kills a single enemy, up to N times before destruction)

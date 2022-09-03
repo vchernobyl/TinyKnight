@@ -8,7 +8,7 @@
 
         public Weapons(GameplayScreen gameplayScreen, Hero hero)
         {
-            Pistol = new Pistol(gameplayScreen, hero);
+            Pistol = new Crossbow(gameplayScreen, hero);
             Shotgun = new Shotgun(gameplayScreen, hero);
             Bazooka = new Bazooka(gameplayScreen, hero);
         }

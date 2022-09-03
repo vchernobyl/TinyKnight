@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Gravity.Entities;
 
 namespace Gravity
 {
@@ -17,7 +18,6 @@ namespace Gravity
         public readonly List<Entity> Entities = new List<Entity>();
         private readonly List<Entity> pendingEntities = new List<Entity>();
 
-        private PortalSpawner portalSpawner;
         private bool updatingEntities = false;
 
         public GameplayScreen()
@@ -40,10 +40,6 @@ namespace Gravity
 
             Level = LevelLoader.Load(content.Load<Texture2D>("Levels/Map1"),
                 content.Load<Texture2D>("Textures/Tile"));
-
-            var portals = LevelLoader.GetPortals(content.Load<Texture2D>("Levels/Map1_Entities"));
-            portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 3);
-
 
             var zoom = 3f;
             GravityGame.UiCamera.Scale = zoom;
@@ -85,8 +81,6 @@ namespace Gravity
             foreach (var pending in pendingEntities)
                 Entities.Add(pending);
             pendingEntities.Clear();
-
-            portalSpawner.Update(gameTime);
 
             for (int i = Entities.Count - 1; i >= 0; i--)
             {

@@ -2,7 +2,7 @@
 
 namespace Gravity
 {
-    public class Pistol : Weapon
+    public class Crossbow : Weapon
     {
         private readonly GameplayScreen gamplayScreen;
         private readonly MuzzleFlash muzzleFlash;
@@ -12,8 +12,8 @@ namespace Gravity
         private const float ProjectileSpeed = .95f;
         private const int Damage = 40;
 
-        public Pistol(GameplayScreen gameplayScreen, Hero hero)
-            : base(hero, fireRate: 8f, name: "Pistol")
+        public Crossbow(GameplayScreen gameplayScreen, Hero hero)
+            : base(hero, fireRate: 8f, name: nameof(Crossbow))
         {
             gamplayScreen = gameplayScreen;
             muzzleFlash = new MuzzleFlash(gameplayScreen) { Enabled = false };
@@ -32,7 +32,7 @@ namespace Gravity
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing * ProjectileSpeed, Random.FloatRange(-Spread, Spread));
-            gamplayScreen.AddEntity(new Bullet(gamplayScreen) { Position = position, Velocity = velocity, Damage = Damage });
+            gamplayScreen.AddEntity(new Arrow(gamplayScreen) { Position = position, Velocity = velocity, Damage = Damage });
             muzzleFlash.Enabled = true;
             hero.Knockback(Knockback);
             SoundFX.PistolShot.Play();
