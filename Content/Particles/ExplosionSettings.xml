@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent>
-  <Asset Type="Gravity.ParticleSystemSettings">
+  <Asset Type="Gravity.Particles.ParticleSystemSettings">
     <MinNumParticles>10</MinNumParticles>
     <MaxNumParticles>12</MaxNumParticles>
     <TextureFilename>Textures/explosion</TextureFilename>

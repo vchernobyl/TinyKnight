@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity
+namespace Gravity.Particles
 {
     public enum AccelerationMode
     {

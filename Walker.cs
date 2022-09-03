@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Animations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -58,8 +59,6 @@ namespace Gravity
 
         public override void Die()
         {
-            gameplayScreen.Hero.EnemiesKilled++;
-
             DY = Random.FloatRange(-.4f, -.5f);
             dead = true;
         }

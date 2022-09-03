@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gravity
+namespace Gravity.Animations
 {
     public class Animation
     {
@@ -31,7 +31,7 @@ namespace Gravity
         public Animation(string name, Texture2D animSheet)
         {
             Name = name;
-            
+
             Frames = new List<Frame>();
 
             var frameCount = animSheet.Width / FrameSize;
@@ -39,7 +39,7 @@ namespace Gravity
             {
                 var source = new Rectangle(i * FrameSize, 0, FrameSize, FrameSize);
                 var subtexture = new Subtexture(animSheet, source);
-                
+
                 // Frame duration hardcoded for now.
                 Frames.Add(new Frame(subtexture, duration: .1f));
             }

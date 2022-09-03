@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent>
-  <Asset Type="Gravity.ParticleSystemSettings">
+  <Asset Type="Gravity.Particles.ParticleSystemSettings">
     <MinNumParticles>10</MinNumParticles>
     <MaxNumParticles>15</MaxNumParticles>
     <TextureFilename>Textures/Pixel</TextureFilename>
@@ -13,7 +13,7 @@
     <MaxRotationSpeed>45</MaxRotationSpeed>
     <MinLifetime>.035</MinLifetime>
     <MaxLifetime>.075</MaxLifetime>
-    <MinSize>4</MinSize>
-    <MaxSize>6</MaxSize>
+    <MinSize>1</MinSize>
+    <MaxSize>2</MaxSize>
   </Asset>
 </XnaContent>

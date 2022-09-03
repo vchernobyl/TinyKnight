@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Gravity
+namespace Gravity.Particles
 {
     /// <summary>
     /// Helper for objects that want to leave particles behind them
@@ -27,7 +27,7 @@ namespace Gravity
     public class ParticleEmitter
     {
         public Vector2 Position { get; private set; }
-        
+
         private ParticleSystem particleSystem;
         private float timeBetweenParticles;
         private float timeLeftOver;

@@ -16,11 +16,11 @@ namespace Gravity
     public class ScreenManager : DrawableGameComponent
     {
         #region Fields
-        readonly List<GameScreen> screens = new List<GameScreen>();
-        readonly List<GameScreen> tempScreenList = new List<GameScreen>();
-        readonly InputState input = new InputState();
+        private readonly List<GameScreen> screens = new List<GameScreen>();
+        private readonly List<GameScreen> tempScreenList = new List<GameScreen>();
+        private readonly InputState input = new InputState();
 
-        bool isInitialized;
+        private bool isInitialized;
         #endregion
 
         #region Properties
@@ -120,7 +120,7 @@ namespace Gravity
                 TraceScreens();
         }
 
-        void TraceScreens()
+        private void TraceScreens()
         {
             var screenNames = new List<string>();
             foreach (var screen in screens)

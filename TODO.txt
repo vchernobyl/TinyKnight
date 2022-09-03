@@ -1,0 +1,11 @@
+Main inspirations:
+------------------
+- Geometry Wars
+- Super Crate Box
+
+Limitations:
+------------
+- Single screen
+- One life
+- Score chaser
+- Very simple enemies, no attack animation

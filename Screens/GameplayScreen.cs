@@ -44,16 +44,19 @@ namespace Gravity
             var portals = LevelLoader.GetPortals(content.Load<Texture2D>("Levels/Map1_Entities"));
             portalSpawner = new PortalSpawner(this, portals, maxActivePortals: 3);
 
-            Hud = new Hud(this);
 
-            var centerX = Level.Width / 2;
-            var centerY = Level.Height / 2;
+            var zoom = 3f;
+            GravityGame.UiCamera.Scale = zoom;
 
-            GravityGame.WorldCamera.Position = new Vector2(centerX, centerY);
-            GravityGame.WorldCamera.Scale = 3f;
+            GravityGame.WorldCamera.Position = new Vector2(Level.Width / 2f, Level.Height / 2f);
+            GravityGame.WorldCamera.Scale = zoom;
 
             Hero = new Hero(this) { Position = new Vector2(80f, 200f) };
             Entities.Add(Hero);
+
+            Entities.Add(new Bat(this) { Position = new Vector2(50, 50) });
+
+            Hud = new Hud(this, Hero);
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and
@@ -105,8 +108,8 @@ namespace Gravity
 
             var spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, 
-                samplerState: SamplerState.PointClamp, 
+            spriteBatch.Begin(SpriteSortMode.BackToFront,
+                samplerState: SamplerState.PointClamp,
                 transformMatrix: GravityGame.WorldCamera.Transform);
 
             Level.Draw(spriteBatch);
@@ -131,8 +134,9 @@ namespace Gravity
             }
             spriteBatch.End();
 
-            spriteBatch.Begin(transformMatrix: GravityGame.UiCamera.Transform);
-            //Hud.Draw(spriteBatch);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp,
+                transformMatrix: GravityGame.UiCamera.Transform);
+            Hud.Draw(spriteBatch);
             spriteBatch.End();
         }
     }

@@ -31,7 +31,7 @@ namespace Gravity
             graphics.ApplyChanges();
 
             WorldCamera = new Camera(GraphicsDevice.Viewport);
-            UiCamera = new Camera(GraphicsDevice.Viewport);
+            UiCamera = new Camera(new Viewport());
 
             base.Initialize();
         }

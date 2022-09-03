@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Animations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -15,9 +16,10 @@ namespace Gravity
 
     public class Hero : Entity
     {
-        public uint EnemiesKilled { get; set; }
-        public int Facing { get; private set; } = -1;
+        public int Facing { get; private set; }
         public Weapon CurrentWeapon { get; set; }
+        public int Health { get; private set; }
+        public const int MaxHealth = 3;
 
         public bool IsLocked => lockDuration > 0f;
 
@@ -30,11 +32,13 @@ namespace Gravity
         private Portal portal;
         private HeroState state = HeroState.Idle;
 
+
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
             weapons = new Weapons(gameplayScreen, this);
             CurrentWeapon = weapons.Bazooka;
+            Health = 3;
 
             var content = gameplayScreen.ScreenManager.Game.Content;
             var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
@@ -58,6 +62,10 @@ namespace Gravity
             // TODO: Player death state.
             if (other is Damageable enemy && enemy.IsAlive && !hurting)
             {
+                Health--;
+                if (Health <= 0)
+                    gameplayScreen.ScreenManager.RemoveScreen(gameplayScreen);
+
                 hurting = true;
                 hurtTime = .2;
                 SoundFX.HeroHurt.Play();

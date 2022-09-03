@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Gravity
+namespace Gravity.Particles
 {
     public class ParticleSystem : DrawableGameComponent
     {
@@ -41,14 +41,14 @@ namespace Gravity
             int initialParticleCount = 10) : base(game)
         {
             this.settingsAssetName = settingsAssetName;
-            
+
             // We create the particle list and queue with our initial count
             // and create that many particles. If we picked a reasonable value,
             // our system will not allocate any more objects after this point,
             // however the AddParticles method will allocate more particles
             // as needed.
-            this.particles = new List<Particle>(initialParticleCount);
-            this.freeParticles = new Queue<Particle>(initialParticleCount);
+            particles = new List<Particle>(initialParticleCount);
+            freeParticles = new Queue<Particle>(initialParticleCount);
             for (int i = 0; i < initialParticleCount; i++)
             {
                 particles.Add(new Particle());
@@ -85,7 +85,7 @@ namespace Gravity
         public void AddParticles(Vector2 where, Vector2 velocity)
         {
             var numParticles = Random.IntRange(settings.MinNumParticles, settings.MaxNumParticles);
-            
+
             // Create that many particles, if you can.
             for (int i = 0; i < numParticles; i++)
             {
@@ -133,7 +133,7 @@ namespace Gravity
                     acceleration = direction * accelerationScale;
                     break;
                 case AccelerationMode.EndVelocity:
-                    acceleration = (velocity * (settings.EndVelocity - 1f)) / lifetime;
+                    acceleration = velocity * (settings.EndVelocity - 1f) / lifetime;
                     break;
                 case AccelerationMode.Vector:
                     acceleration = new Vector2(
@@ -179,7 +179,7 @@ namespace Gravity
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, blendState,
                 transformMatrix: GravityGame.WorldCamera.Transform);
-            
+
             foreach (var p in particles)
             {
                 // Skip inactive particles.
@@ -212,7 +212,7 @@ namespace Gravity
                 spriteBatch.Draw(texture, p.Position, sourceRectangle: null, color,
                     p.Rotation, origin, scale, SpriteEffects.None, 0f);
             }
-            
+
             spriteBatch.End();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Particles;
+using Microsoft.Xna.Framework;
 using System.Threading;
 
 namespace Gravity
