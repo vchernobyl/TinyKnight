@@ -11,6 +11,7 @@
 #-------------------------------- References --------------------------------#
 
 /reference:..\bin\Debug\netcoreapp3.1\Gravity.dll
+/reference:..\bin\Debug\netcoreapp3.1\MonoGame.Framework.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -72,6 +73,16 @@
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Particles/ExplosionSmokeSettings.xml
+
+#begin Particles/HeroJumpParticleSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/HeroJumpParticleSettings.xml
+
+#begin Particles/HeroRunTrailParticleSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/HeroRunTrailParticleSettings.xml
 
 #begin Particles/RocketTrailSettings.xml
 /importer:XmlImporter

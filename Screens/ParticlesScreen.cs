@@ -7,12 +7,13 @@ namespace Gravity
     public class ParticlesScreen : GameScreen
     {
         private ParticleEmitter emitter;
+        private ParticleSystem particles;
 
         public override void LoadContent()
         {
-            var particles = new ParticleSystem(ScreenManager.Game, "Particles/RocketTrailSettings");
+            particles = new ParticleSystem(ScreenManager.Game, "Particles/RocketTrailSettings");
             ScreenManager.Game.Components.Add(particles);
-            emitter = new ParticleEmitter(particles, 60, new Vector2(400, 250));
+            //emitter = new ParticleEmitter(particles, 60, new Vector2(400, 250));
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -23,7 +24,14 @@ namespace Gravity
                 LoadContent();
 
             var position = Mouse.GetState().Position.ToVector2();
-            emitter.Update(gameTime, position);
+            var worldPoint = GravityGame.WorldCamera.ScreenToWorldSpace(position);
+
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                particles.AddParticles(worldPoint, Vector2.Zero);
+            }
+
+            //emitter.Update(gameTime, worldPoint);
         }
     }
 }

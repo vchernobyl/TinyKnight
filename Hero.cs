@@ -1,5 +1,6 @@
 ﻿using Gravity.Animations;
 using Gravity.Entities;
+using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -32,6 +33,8 @@ namespace Gravity
         private float lockTime = 0f;
         private HeroState state = HeroState.Idle;
 
+        private readonly ParticleSystem jumpParticles;
+        private readonly ParticleSystem runTrailParticles;
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
@@ -40,7 +43,8 @@ namespace Gravity
             CurrentWeapon = weapons.Bazooka;
             Health = 3;
 
-            var content = gameplayScreen.ScreenManager.Game.Content;
+            var game = gameplayScreen.ScreenManager.Game;
+            var content = game.Content;
             var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
             var runSheet = content.Load<Texture2D>("Textures/Hero_Run");
             var animations = new List<Animation>
@@ -50,6 +54,9 @@ namespace Gravity
             };
 
             animator = new Animator(animations);
+
+            jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
+            game.Components.Add(jumpParticles);
         }
 
         public void Knockback(float amount)
@@ -105,8 +112,10 @@ namespace Gravity
                 if (Input.WasKeyPressed(Keys.Up) && onGround)
                 {
                     DY = jump;
-                    SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
                     state = HeroState.Jumping;
+
+                    SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
+                    jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
                 }
             }
 

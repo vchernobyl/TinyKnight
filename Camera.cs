@@ -44,5 +44,11 @@ namespace Gravity
             if (trauma > this.trauma)
                 this.trauma = trauma;
         }
+
+        public Vector2 ScreenToWorldSpace(in Vector2 point)
+        {
+            var inverted = Matrix.Invert(Transform);
+            return Vector2.Transform(point, inverted);
+        }
     }
 }

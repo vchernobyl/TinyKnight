@@ -28,8 +28,8 @@ namespace Gravity.Particles
     {
         public Vector2 Position { get; private set; }
 
-        private ParticleSystem particleSystem;
-        private float timeBetweenParticles;
+        private readonly ParticleSystem particleSystem;
+        private readonly float timeBetweenParticles;
         private float timeLeftOver;
 
         public ParticleEmitter(ParticleSystem particleSystem,

@@ -22,6 +22,12 @@ namespace Gravity
 
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
+
+            // Add initial screens.
+            //screenManager.AddScreen(new SandboxScreen());
+            //screenManager.AddScreen(new ParticlesScreen());
+            screenManager.AddScreen(new BackgroundScreen());
+            screenManager.AddScreen(new MainMenuScreen());
         }
 
         protected override void Initialize()
@@ -45,12 +51,6 @@ namespace Gravity
 
             var spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
-
-            // Add initial screens.
-            //screenManager.AddScreen(new SandboxScreen());
-            //screenManager.AddScreen(new ParticlesScreen());
-            screenManager.AddScreen(new BackgroundScreen());
-            screenManager.AddScreen(new MainMenuScreen());
         }
 
         protected override void Update(GameTime gameTime)

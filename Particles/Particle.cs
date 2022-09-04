@@ -26,7 +26,7 @@ namespace Gravity.Particles
             Scale = scale;
             RotationSpeed = rotationSpeed;
             TimeSinceStart = 0f;
-            Rotation = Random.FloatRange(0, MathHelper.TwoPi);
+            Rotation = rotationSpeed != 0 ? Random.FloatRange(0, MathHelper.TwoPi) : 0f;
         }
 
         public void Update(float deltaTime)
