@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent>
   <Asset Type="Gravity.Particles.ParticleSystemSettings">
-    <MinNumParticles>8</MinNumParticles>
-    <MaxNumParticles>15</MaxNumParticles>
+    <MinNumParticles>6</MinNumParticles>
+    <MaxNumParticles>12</MaxNumParticles>
     <TextureFilename>Textures/Pixel</TextureFilename>
     <MinDirectionAngle>-180</MinDirectionAngle>
     <MaxDirectionAngle>0</MaxDirectionAngle>

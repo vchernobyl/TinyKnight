@@ -1,20 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent>
   <Asset Type="Gravity.Particles.ParticleSystemSettings">
-    <MinNumParticles>3</MinNumParticles>
-    <MaxNumParticles>5</MaxNumParticles>
+    <MinNumParticles>1</MinNumParticles>
+    <MaxNumParticles>1</MaxNumParticles>
     <TextureFilename>Textures/Pixel</TextureFilename>
     <MinDirectionAngle>180</MinDirectionAngle>
     <MaxDirectionAngle>360</MaxDirectionAngle>
     <MinInitialSpeed>10</MinInitialSpeed>
-    <MaxInitialSpeed>25</MaxInitialSpeed>
+    <MaxInitialSpeed>10</MaxInitialSpeed>
     <AccelerationMode>EndVelocity</AccelerationMode>
     <EndVelocity>0</EndVelocity>
     <MinRotationSpeed>0</MinRotationSpeed>
     <MaxRotationSpeed>0</MaxRotationSpeed>
     <MinLifetime>.25</MinLifetime>
-    <MaxLifetime>.75</MaxLifetime>
+    <MaxLifetime>.45</MaxLifetime>
     <MinSize>1</MinSize>
     <MaxSize>2</MaxSize>
+    <Gravity>0 -175</Gravity>
   </Asset>
 </XnaContent>

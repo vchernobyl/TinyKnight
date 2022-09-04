@@ -23,18 +23,17 @@ namespace Gravity
         public int Health { get; private set; }
         public const int MaxHealth = 3;
 
-        public bool IsLocked => lockDuration > 0f;
-
         private readonly Weapons weapons;
         private bool onGround = false;
         private bool hurting = false;
         private double hurtTime = 0;
-        private float lockDuration = 0f;
-        private float lockTime = 0f;
         private HeroState state = HeroState.Idle;
 
         private readonly ParticleSystem jumpParticles;
         private readonly ParticleSystem runTrailParticles;
+
+        private const float TrailParticleInterval = .25f;
+        private float trailParticleTime = 0f;
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
@@ -57,6 +56,9 @@ namespace Gravity
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
+
+            runTrailParticles = new ParticleSystem(game, "Particles/HeroRunTrailParticleSettings");
+            game.Components.Add(runTrailParticles);
         }
 
         public void Knockback(float amount)
@@ -88,6 +90,8 @@ namespace Gravity
             var speed = .0175f;
             var jump = -1.25f;
 
+            trailParticleTime += gameTime.DeltaTime();
+
             hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
             if (hurtTime == 0)
                 hurting = false;
@@ -113,7 +117,6 @@ namespace Gravity
                 {
                     DY = jump;
                     state = HeroState.Jumping;
-
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
                 }
@@ -125,9 +128,20 @@ namespace Gravity
                 state = HeroState.Running;
 
             if (state == HeroState.Idle)
+            {
                 animator?.Play("Hero_Idle");
+            }
             else if (state == HeroState.Running)
+            {
                 animator?.Play("Hero_Run");
+                var feet = Position + new Vector2(0f, Level.CellSize / 2f);
+
+                if (trailParticleTime >= .145f)
+                {
+                    trailParticleTime = 0f;
+                    runTrailParticles.AddParticles(feet, new Vector2(DX, DY));
+                }
+            }
 
             // Weapon switching.
             if (Input.WasKeyPressed(Keys.D1))
