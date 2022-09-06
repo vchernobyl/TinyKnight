@@ -11,6 +11,20 @@ namespace Gravity
             return MathF.Atan2(v.Y, v.X);
         }
 
+        public static float Approach(float value, float target, float delta)
+        {
+            return value < target
+                ? MathF.Min(value + delta, target)
+                : MathF.Max(value - delta, target);
+        }
+
+        public static Vector2 Approach(Vector2 value, Vector2 target, float delta)
+        {
+            var x = Approach(value.X, target.X, delta);
+            var y = Approach(value.Y, target.Y, delta);
+            return new Vector2(x, y);
+        }
+
         public static Vector2 RadiansToVector(float radians)
         {
             return new Vector2(MathF.Cos(radians), MathF.Sin(radians));
@@ -25,7 +39,7 @@ namespace Gravity
                 _ => throw new ArgumentException("Index is out of range"),
             };
         }
-        
+
         public static T Pick<T>(int index, T a, T b, T c)
         {
             return index switch

@@ -34,7 +34,6 @@ namespace Gravity
 
         private const float TrailParticleInterval = .145f;
         private float trailParticleTime = 0f;
-        private float squashTime = 0f;
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
@@ -101,36 +100,6 @@ namespace Gravity
             if (hurtTime == 0)
                 hurting = false;
 
-            // Squash.
-            // TODO: This type of functionality might be quite common for entities in general,
-            // for example when falling or being hit. In the future it will probably makes sense
-            // to move it up to the Entity once other entities will have a need for it.
-            {
-                squashTime += gameTime.DeltaTime();
-
-                if (Input.WasKeyPressed(Keys.L))
-                    squashTime = 0f;
-
-                // TODO: When chosing the curve values we need to make sure that the squashing stops
-                // slightly before the peak of the jump has been reached. Currently jump height and
-                // curve are synced to achive this, but maybe we can come up with an equation to
-                // not have to tweak it by hand.
-                var squashXCurve = new Curve();
-                squashXCurve.Keys.Add(new CurveKey(0f, .5f));
-                squashXCurve.Keys.Add(new CurveKey(.35f, 1f));
-
-                var squashYCurve = new Curve();
-                squashYCurve.Keys.Add(new CurveKey(0f, 1.25f));
-                squashYCurve.Keys.Add(new CurveKey(.35f, 1f));
-
-                var squashX = squashXCurve.Evaluate(squashTime);
-                var squashY = squashYCurve.Evaluate(squashTime);
-
-                // TODO: When squashing and stretching we probably want to change the origin,
-                // so that the sprite bottom part (feet) does not go through the solids .
-                animator.Scale = new Vector2(squashX, squashY);
-            }
-
             // Movement.
             if (!hurting)
             {
@@ -154,9 +123,18 @@ namespace Gravity
                     state = HeroState.Jumping;
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
-                    squashTime = 0f;
+
+                    animator.Scale = new Vector2(.4f, 1.35f);
                 }
             }
+
+            if (Input.WasKeyPressed(Keys.L))
+                animator.Scale = new Vector2(.4f, 1.35f);
+
+            if (Input.WasKeyPressed(Keys.K))
+                animator.Scale = new Vector2(1.5f, .45f);
+
+            animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
 
             if (MathF.Abs(DX) < .01f)
                 state = HeroState.Idle;

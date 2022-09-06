@@ -7,7 +7,7 @@ namespace Gravity
     {
         public Vector2 Position { get; set; }
         public Vector2 Origin { get; set; }
-        public Vector2 Scale { get; set; }
+        public Vector2 Scale;
         public float Rotation { get; set; }
         public float LayerDepth { get; set; }
         public Rectangle Source { get; set; }
