@@ -50,8 +50,6 @@ namespace Gravity
             Hero = new Hero(this) { Position = new Vector2(80f, 200f) };
             Entities.Add(Hero);
 
-            Entities.Add(new Bat(this) { Position = new Vector2(50, 50) });
-
             Hud = new Hud(this, Hero);
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's

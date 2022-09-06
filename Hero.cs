@@ -1,5 +1,4 @@
-﻿using Gravity.Animations;
-using Gravity.Entities;
+﻿using Gravity.Animation;
 using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,10 +29,12 @@ namespace Gravity
         private HeroState state = HeroState.Idle;
 
         private readonly ParticleSystem jumpParticles;
+        private readonly ParticleSystem landingParticles;
         private readonly ParticleSystem runTrailParticles;
 
-        private const float TrailParticleInterval = .25f;
+        private const float TrailParticleInterval = .145f;
         private float trailParticleTime = 0f;
+        private float squashTime = 0f;
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
@@ -46,10 +47,10 @@ namespace Gravity
             var content = game.Content;
             var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
             var runSheet = content.Load<Texture2D>("Textures/Hero_Run");
-            var animations = new List<Animation>
+            var animations = new List<Animation.Animation>
             {
-                new Animation("Hero_Idle", idleSheet),
-                new Animation("Hero_Run", runSheet),
+                new Animation.Animation("Hero_Idle", idleSheet),
+                new Animation.Animation("Hero_Run", runSheet),
             };
 
             animator = new Animator(animations);
@@ -57,10 +58,14 @@ namespace Gravity
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
 
+            landingParticles = new ParticleSystem(game, "Particles/HeroLandingParticleSettings");
+            game.Components.Add(landingParticles);
+
             runTrailParticles = new ParticleSystem(game, "Particles/HeroRunTrailParticleSettings");
             game.Components.Add(runTrailParticles);
         }
 
+        // TODO: Will be useful for other entities as well, for example enemies.
         public void Knockback(float amount)
         {
             DX += -Facing * amount;
@@ -96,6 +101,36 @@ namespace Gravity
             if (hurtTime == 0)
                 hurting = false;
 
+            // Squash.
+            // TODO: This type of functionality might be quite common for entities in general,
+            // for example when falling or being hit. In the future it will probably makes sense
+            // to move it up to the Entity once other entities will have a need for it.
+            {
+                squashTime += gameTime.DeltaTime();
+
+                if (Input.WasKeyPressed(Keys.L))
+                    squashTime = 0f;
+
+                // TODO: When chosing the curve values we need to make sure that the squashing stops
+                // slightly before the peak of the jump has been reached. Currently jump height and
+                // curve are synced to achive this, but maybe we can come up with an equation to
+                // not have to tweak it by hand.
+                var squashXCurve = new Curve();
+                squashXCurve.Keys.Add(new CurveKey(0f, .5f));
+                squashXCurve.Keys.Add(new CurveKey(.35f, 1f));
+
+                var squashYCurve = new Curve();
+                squashYCurve.Keys.Add(new CurveKey(0f, 1.25f));
+                squashYCurve.Keys.Add(new CurveKey(.35f, 1f));
+
+                var squashX = squashXCurve.Evaluate(squashTime);
+                var squashY = squashYCurve.Evaluate(squashTime);
+
+                // TODO: When squashing and stretching we probably want to change the origin,
+                // so that the sprite bottom part (feet) does not go through the solids .
+                animator.Scale = new Vector2(squashX, squashY);
+            }
+
             // Movement.
             if (!hurting)
             {
@@ -119,6 +154,7 @@ namespace Gravity
                     state = HeroState.Jumping;
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
+                    squashTime = 0f;
                 }
             }
 
@@ -136,10 +172,10 @@ namespace Gravity
                 animator?.Play("Hero_Run");
                 var feet = Position + new Vector2(0f, Level.CellSize / 2f);
 
-                if (trailParticleTime >= .145f)
+                if (trailParticleTime >= TrailParticleInterval)
                 {
                     trailParticleTime = 0f;
-                    runTrailParticles.AddParticles(feet, new Vector2(DX, DY));
+                    //runTrailParticles.AddParticles(feet, new Vector2(DX, DY));
                 }
             }
 
@@ -157,7 +193,16 @@ namespace Gravity
                 CurrentWeapon = weapons.Bazooka;
             }
 
+            var wasOnGround = onGround;
             onGround = Level.IsWithinBounds(CX, CY) && Level.HasCollision(CX, CY + 1);
+
+            // Landing.
+            if (!wasOnGround && onGround)
+            {
+                // TODO: Need to come up with a way to spawn particles only sideways left and right without
+                // them traveling upwards.
+                //landingParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), Vector2.Zero);
+            }
 
             if (Input.IsKeyDown(Keys.Space))
                 CurrentWeapon.PullTrigger();

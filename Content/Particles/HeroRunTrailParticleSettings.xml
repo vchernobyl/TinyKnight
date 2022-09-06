@@ -17,5 +17,7 @@
     <MinSize>1</MinSize>
     <MaxSize>2</MaxSize>
     <Gravity>0 -175</Gravity>
+    <SourceBlend>SourceAlpha</SourceBlend>
+    <DestinationBlend>Zero</DestinationBlend>
   </Asset>
 </XnaContent>

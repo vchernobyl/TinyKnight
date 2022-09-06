@@ -1,4 +1,4 @@
-﻿using Gravity.Animations;
+﻿using Gravity.Animation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -20,9 +20,9 @@ namespace Gravity.Entities
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
 
-            animator = new Animator(new List<Animation>
+            animator = new Animator(new List<Animation.Animation>
             {
-                new Animation("Bat", content.Load<Texture2D>("Textures/Bat"))
+                new Animation.Animation("Bat", content.Load<Texture2D>("Textures/Bat"))
             });
 
             Gravity = 0f;

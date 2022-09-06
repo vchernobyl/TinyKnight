@@ -11,7 +11,7 @@ namespace Gravity
 
         public override void LoadContent()
         {
-            particles = new ParticleSystem(ScreenManager.Game, "Particles/RocketTrailSettings");
+            particles = new ParticleSystem(ScreenManager.Game, "Particles/HeroLandingParticleSettings");
             ScreenManager.Game.Components.Add(particles);
             //emitter = new ParticleEmitter(particles, 60, new Vector2(400, 250));
         }

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gravity.Animations
+namespace Gravity.Animation
 {
     public class Animation
     {

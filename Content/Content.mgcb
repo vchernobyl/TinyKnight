@@ -79,6 +79,11 @@
 /processor:PassThroughProcessor
 /build:Particles/HeroJumpParticleSettings.xml
 
+#begin Particles/HeroLandingParticleSettings.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Particles/HeroLandingParticleSettings.xml
+
 #begin Particles/HeroRunTrailParticleSettings.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
@@ -358,6 +363,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Circle.png
 
+#begin Textures/Circle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Circle.png
+
 #begin Textures/Coin.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -441,18 +458,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Hero_Run.png
-
-#begin Textures/Muzzle_Flash.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/Muzzle_Flash.png
 
 #begin Textures/Pellet.png
 /importer:TextureImporter

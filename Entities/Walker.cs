@@ -1,4 +1,4 @@
-﻿using Gravity.Animations;
+﻿using Gravity.Animation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,7 +17,7 @@ namespace Gravity.Entities
             var content = gameplayScreen.ScreenManager.Game.Content;
 
 
-            animator = new Animator(new List<Animation> { });
+            animator = new Animator(new List<Animation.Animation> { });
 
             facing = Numerics.PickOne(-1, 1);
         }
