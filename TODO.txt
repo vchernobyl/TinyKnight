@@ -32,6 +32,7 @@ Power-ups:
    * Would be cool to make the player completely red with glowing yellow eyes and smoke coming out of his ears or something
 - Ice Boots (leave a trail of icecyles damaging/slowing enemies)
    * Don't seem to be very useful compared to other power-ups
+- Stomp Boots
 
 Weapons:
 --------

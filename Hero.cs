@@ -132,9 +132,13 @@ namespace Gravity
                 animator.Scale = new Vector2(.4f, 1.35f);
 
             if (Input.WasKeyPressed(Keys.K))
+            {
+                animator.Origin = new Vector2(4f, -.25f);
                 animator.Scale = new Vector2(1.5f, .45f);
+            }
 
             animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
+            animator.Origin = Numerics.Approach(animator.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
 
             if (MathF.Abs(DX) < .01f)
                 state = HeroState.Idle;
@@ -143,11 +147,11 @@ namespace Gravity
 
             if (state == HeroState.Idle)
             {
-                animator?.Play("Hero_Idle");
+                animator.Play("Hero_Idle");
             }
             else if (state == HeroState.Running)
             {
-                animator?.Play("Hero_Run");
+                animator.Play("Hero_Run");
                 var feet = Position + new Vector2(0f, Level.CellSize / 2f);
 
                 if (trailParticleTime >= TrailParticleInterval)
@@ -177,9 +181,8 @@ namespace Gravity
             // Landing.
             if (!wasOnGround && onGround)
             {
-                // TODO: Need to come up with a way to spawn particles only sideways left and right without
-                // them traveling upwards.
-                //landingParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), Vector2.Zero);
+                animator.Origin = new Vector2(4f, -.25f);
+                animator.Scale = new Vector2(1.5f, .45f);
             }
 
             if (Input.IsKeyDown(Keys.Space))
