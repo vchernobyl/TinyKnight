@@ -29,8 +29,6 @@ namespace Gravity
         private HeroState state = HeroState.Idle;
 
         private readonly ParticleSystem jumpParticles;
-        private readonly ParticleSystem landingParticles;
-        private readonly ParticleSystem runTrailParticles;
 
         private const float TrailParticleInterval = .145f;
         private float trailParticleTime = 0f;
@@ -52,16 +50,13 @@ namespace Gravity
                 new Animation.Animation("Hero_Run", runSheet),
             };
 
-            animator = new Animator(animations);
+            animator = new Animator(animations)
+            {
+                //Origin = new Vector2(4f, 8f)
+            };
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
-
-            landingParticles = new ParticleSystem(game, "Particles/HeroLandingParticleSettings");
-            game.Components.Add(landingParticles);
-
-            runTrailParticles = new ParticleSystem(game, "Particles/HeroRunTrailParticleSettings");
-            game.Components.Add(runTrailParticles);
         }
 
         // TODO: Will be useful for other entities as well, for example enemies.
@@ -129,12 +124,11 @@ namespace Gravity
             }
 
             if (Input.WasKeyPressed(Keys.L))
-                animator.Scale = new Vector2(.4f, 1.35f);
+                SquashX(.5f);
 
             if (Input.WasKeyPressed(Keys.K))
             {
-                animator.Origin = new Vector2(4f, -.25f);
-                animator.Scale = new Vector2(1.5f, .45f);
+                SquashY(.5f);
             }
 
             animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
@@ -153,12 +147,6 @@ namespace Gravity
             {
                 animator.Play("Hero_Run");
                 var feet = Position + new Vector2(0f, Level.CellSize / 2f);
-
-                if (trailParticleTime >= TrailParticleInterval)
-                {
-                    trailParticleTime = 0f;
-                    //runTrailParticles.AddParticles(feet, new Vector2(DX, DY));
-                }
             }
 
             // Weapon switching.
@@ -181,14 +169,27 @@ namespace Gravity
             // Landing.
             if (!wasOnGround && onGround)
             {
-                animator.Origin = new Vector2(4f, -.25f);
-                animator.Scale = new Vector2(1.5f, .45f);
+                SquashY(.5f);
             }
 
             if (Input.IsKeyDown(Keys.Space))
                 CurrentWeapon.PullTrigger();
 
             CurrentWeapon.Update(gameTime);
+        }
+
+        // TODO: These currently assume that every sprite/animator "normal"
+        // scale is 1, which is not always the case. We need to multiply the
+        // squash vector with the original scale.
+        public void SquashX(float squash)
+        {
+            animator.Scale = new Vector2(squash, 2f - squash);
+        }
+
+        public void SquashY(float squash)
+        {
+            animator.Scale = new Vector2(2f - squash, squash);
+            animator.Origin.Y = 0f;
         }
     }
 }

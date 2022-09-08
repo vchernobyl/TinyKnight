@@ -202,12 +202,12 @@ namespace Gravity
                 animator.Position = Position;
         }
 
-        public virtual void Draw(SpriteBatch batch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (sprite != null)
-                sprite.Draw(batch);
+                sprite.Draw(spriteBatch);
             else if (animator != null)
-                animator.Draw(batch);
+                animator.Draw(spriteBatch);
         }
     }
 }
