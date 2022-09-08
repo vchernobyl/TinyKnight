@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Gravity.Entities
 {
-    public class Walker : Damageable
+    public class Walker : Enemy
     {
         private int facing;
         private bool dead = false;

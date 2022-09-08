@@ -1,4 +1,5 @@
-﻿using Gravity.Particles;
+﻿using Gravity.Entities;
+using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using System.Threading;
 
@@ -41,8 +42,8 @@ namespace Gravity
 
             foreach (var entity in gameplayScreen.Entities)
             {
-                if (Overlaps(entity) && entity is Damageable enemy && enemy.IsAlive)
-                    enemy.ReceiveDamage(100);
+                if (Overlaps(entity) && entity is Enemy enemy && enemy.IsAlive)
+                    enemy.Damage(100);
             }
         }
     }
@@ -80,7 +81,7 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Damageable)
+            if (other is Enemy)
             {
                 Explode();
             }

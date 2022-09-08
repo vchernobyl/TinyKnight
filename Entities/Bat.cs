@@ -1,11 +1,12 @@
-﻿using Gravity.Animation;
+﻿using Gravity.AI;
+using Gravity.Animation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace Gravity.Entities
 {
-    public class Bat : Damageable
+    public class Bat : Enemy
     {
         private readonly Pathfinding pathfinding;
         private readonly NavigationGrid navGrid;
@@ -66,6 +67,8 @@ namespace Gravity.Entities
         public override void Update(GameTime gameTime)
         {
             pathfindingTimer.Update(gameTime);
+
+            animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime());
 
             if (path.Count > 0 && pointIndex < path.Count)
             {

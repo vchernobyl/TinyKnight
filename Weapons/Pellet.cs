@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
@@ -21,9 +22,9 @@ namespace Gravity
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Damageable enemy && enemy.IsAlive)
+            if (other is Enemy enemy && enemy.IsAlive)
             {
-                enemy.ReceiveDamage(Damage);
+                enemy.Damage(Damage);
                 ScheduleToDestroy();
             }
         }

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using Gravity.Entities;
 
 namespace Gravity
 {
@@ -19,6 +19,8 @@ namespace Gravity
         private readonly List<Entity> pendingEntities = new List<Entity>();
 
         private bool updatingEntities = false;
+
+        private Spawner spawner;
 
         public GameplayScreen()
         {
@@ -49,8 +51,12 @@ namespace Gravity
 
             Hero = new Hero(this) { Position = new Vector2(80f, 200f) };
             Entities.Add(Hero);
+            Entities.Add(new Bat(this) { Position = new Vector2(100, 100) });
+
 
             Hud = new Hud(this, Hero);
+
+            spawner = new Spawner(new Vector2(Level.Width / 2f, 0f), this);
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and
@@ -88,6 +94,8 @@ namespace Gravity
                     Entities.RemoveAt(i);
                 }
             }
+
+            spawner.Update(gameTime);
 
             GravityGame.WorldCamera.Update(gameTime);
             GravityGame.UiCamera.Update(gameTime);

@@ -1,4 +1,5 @@
 ﻿using Gravity.Animation;
+using Gravity.Entities;
 using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,9 +30,6 @@ namespace Gravity
         private HeroState state = HeroState.Idle;
 
         private readonly ParticleSystem jumpParticles;
-
-        private const float TrailParticleInterval = .145f;
-        private float trailParticleTime = 0f;
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
@@ -68,7 +66,7 @@ namespace Gravity
         public override void OnEntityCollision(Entity other)
         {
             // TODO: Player death state.
-            if (other is Damageable enemy && enemy.IsAlive && !hurting)
+            if (other is Enemy enemy && enemy.IsAlive && !hurting)
             {
                 Health--;
                 if (Health <= 0)
@@ -88,8 +86,6 @@ namespace Gravity
         {
             var speed = .0175f;
             var jump = -1.25f;
-
-            trailParticleTime += gameTime.DeltaTime();
 
             hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
             if (hurtTime == 0)
@@ -146,7 +142,6 @@ namespace Gravity
             else if (state == HeroState.Running)
             {
                 animator.Play("Hero_Run");
-                var feet = Position + new Vector2(0f, Level.CellSize / 2f);
             }
 
             // Weapon switching.
@@ -168,9 +163,7 @@ namespace Gravity
 
             // Landing.
             if (!wasOnGround && onGround)
-            {
                 SquashY(.5f);
-            }
 
             if (Input.IsKeyDown(Keys.Space))
                 CurrentWeapon.PullTrigger();

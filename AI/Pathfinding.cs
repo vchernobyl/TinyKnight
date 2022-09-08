@@ -1,99 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gravity
+namespace Gravity.AI
 {
-    public interface IWeightedGraph<T>
-    {
-        int Cost(Point a, Point b);
-        IEnumerable<Point> Neighbours(Point p);
-    }
-
-    public class NavigationGrid : IWeightedGraph<Point>
-    {
-        public static readonly Point[] Directions =
-        {
-            new Point(1, 0),
-            new Point(0, -1),
-            new Point(-1, 0),
-            new Point(0, 1),
-        };
-
-        public readonly int Width;
-        public readonly int Height;
-        public readonly ISet<Point> Solids;
-        public readonly ISet<Point> NearSolids;
-
-        public NavigationGrid(int width, int height)
-        {
-            Width = width;
-            Height = height;
-            Solids = new HashSet<Point>();
-            NearSolids = new HashSet<Point>();
-        }
-
-        public bool InBounds(Point p)
-        {
-            return 0 <= p.X && p.X < Width &&
-                0 <= p.Y && p.Y < Height;
-        }
-
-        public bool Passable(Point p)
-        {
-            return !Solids.Contains(p);
-        }
-
-        public int Cost(Point a, Point b)
-        {
-            return NearSolids.Contains(a) ? 5 : 1;
-        }
-
-        public IEnumerable<Point> Neighbours(Point p)
-        {
-            foreach (var direction in Directions)
-            {
-                var next = new Point(p.X + direction.X, p.Y + direction.Y);
-                if (InBounds(next) && Passable(next))
-                    yield return next;
-            }
-        }
-
-        public void Draw(SpriteBatch batch)
-        {
-            foreach (var node in Solids)
-            {
-                var rect = new Rectangle(
-                    node.X * Level.CellSize,
-                    node.Y * Level.CellSize,
-                    Level.CellSize,
-                    Level.CellSize);
-                batch.DrawRectangleOutline(rect, Color.Red, 2f);
-            }
-
-            foreach (var node in NearSolids)
-            {
-                var rect = new Rectangle(
-                    node.X * Level.CellSize,
-                    node.Y * Level.CellSize,
-                    Level.CellSize,
-                    Level.CellSize);
-                batch.DrawRectangleOutline(rect, Color.Green, 2f);
-            }
-        }
-    }
-
     public class Pathfinding
     {
-        private readonly Dictionary<Point, Point> cameFrom = new Dictionary<Point, Point>();
-        private readonly Dictionary<Point, int> costSoFar = new Dictionary<Point, int>();
-        private readonly List<Vector2> path = new List<Vector2>();
+        private readonly Dictionary<Point, Point> cameFrom;
+        private readonly Dictionary<Point, int> costSoFar;
+        private readonly List<Vector2> path;
         private readonly IWeightedGraph<Point> graph;
 
         public Pathfinding(IWeightedGraph<Point> graph)
         {
+            this.cameFrom = new Dictionary<Point, Point>();
+            this.costSoFar = new Dictionary<Point, int>();
+            this.path = new List<Vector2>();
             this.graph = graph;
         }
 
