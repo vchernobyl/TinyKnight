@@ -13,7 +13,7 @@ namespace Gravity.Animation
         private int frameIndex = 0;
         private float frameCounter = 0;
 
-        public Animation.Frame Frame
+        public Frame Frame
         {
             get
             {

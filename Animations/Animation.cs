@@ -7,17 +7,6 @@ namespace Gravity.Animation
 {
     public class Animation
     {
-        public class Frame
-        {
-            public readonly Subtexture Image;
-            public readonly float Duration;
-
-            public Frame(Subtexture image, float duration)
-            {
-                Image = image;
-                Duration = duration;
-            }
-        }
 
         // For this game we will just hardcode the frame size for
         // convenience, since all of the sprites will be of the same size.
