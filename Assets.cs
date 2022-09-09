@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Gravity
 {
+    [Obsolete("Load content directly from ContentManager")]
     public static class Textures
     {
         public static Texture2D Bullet { get; private set; }
@@ -38,6 +40,7 @@ namespace Gravity
         }
     }
 
+    [Obsolete("Load content directly from ContentManager")]
     public static class SoundFX
     {
         public static SoundEffect PistolShot { get; private set; }
@@ -67,6 +70,7 @@ namespace Gravity
         }
     }
 
+    [Obsolete("Load content directly from ContentManager")]
     public static class Fonts
     {
         public static SpriteFont Default { get; private set; }
@@ -77,6 +81,7 @@ namespace Gravity
         }
     }
 
+    [Obsolete("Load content directly from ContentManager")]
     public static class Effects
     {
         public static Effect Flash { get; private set; }

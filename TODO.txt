@@ -21,6 +21,9 @@ Design:
   * Maybe you can jump yourself in the pit for risk/reward type of situation?
   * Maybe you collect the coins and throw them into pit to get something?
 - Need to think about how to earn the power-ups
+  * Randomly on enemy kill
+  * Spawned at some location at certain interval? (like in Unreal Tournament)
+
 
 Power-ups:
 ----------
@@ -47,3 +50,9 @@ Enemies:
 --------
 - Bouncing enemy which goes up and down?
 - Ghost which flies through solids?
+- Skeleton which rushes at you? (very brittle, but very fast)
+- Spider?
+
+TODO:
+-----
+- Flash effect does not color individual pixels correctly, it looks weird.

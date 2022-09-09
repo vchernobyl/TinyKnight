@@ -68,8 +68,6 @@ namespace Gravity.Entities
         {
             pathfindingTimer.Update(gameTime);
 
-            animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime());
-
             if (path.Count > 0 && pointIndex < path.Count)
             {
                 var currentPoint = path[pointIndex];

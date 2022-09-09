@@ -24,8 +24,11 @@ namespace Gravity
             {
                 time = 0f;
 
-                if (Random.FloatValue < .5f)
+                var roll = Random.FloatValue;
+                if (roll <= .33f)
                     gameplayScreen.AddEntity(new Zombie(gameplayScreen) { Position = position });
+                else if (roll <= .66f)
+                    gameplayScreen.AddEntity(new Skeleton(gameplayScreen) { Position = position });
                 else
                     gameplayScreen.AddEntity(new Bat(gameplayScreen) { Position = position });
             }
