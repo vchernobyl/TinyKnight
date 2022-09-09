@@ -1,4 +1,4 @@
-﻿using Gravity.Animation;
+﻿using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -6,18 +6,20 @@ using System.Collections.Generic;
 
 namespace Gravity.Entities
 {
-    public class Walker : Enemy
+    public class Zombie : Enemy
     {
         private int facing;
         private bool dead = false;
 
-        public Walker(GameplayScreen gameplayScreen)
+        public Zombie(GameplayScreen gameplayScreen)
             : base(gameplayScreen, health: 100)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
 
-
-            animator = new Animator(new List<Animation.Animation> { });
+            animator = new Animator(new List<Animation>
+            {
+                new Animation("Zombie", content.Load<Texture2D>("Textures/Zombie"))
+            });
 
             facing = Numerics.PickOne(-1, 1);
         }
@@ -43,18 +45,10 @@ namespace Gravity.Entities
                 DX = Math.Sign(facing) * speed;
             }
 
-            //if (facing > 0)
-            //    //animator.Frame.Image.Flip = SpriteEffects.FlipHorizontally;
-            //else
-            //    //animator.Frame.Image.Flip = SpriteEffects.None;
-
-            if (dead)
-            {
-                animator.Play("Walker_Dead");
-                //animator.Frame.Image.Rotation += Random.FloatRange(
-                //    MathHelper.PiOver4,
-                //    MathHelper.PiOver2) * DX;
-            }
+            if (facing > 0)
+                animator.Flip = SpriteEffects.None;
+            else
+                animator.Flip = SpriteEffects.FlipHorizontally;
         }
 
         public override void Die()

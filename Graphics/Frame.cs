@@ -1,4 +1,4 @@
-﻿namespace Gravity.Animation
+﻿namespace Gravity.Graphics
 {
     public class Frame
     {

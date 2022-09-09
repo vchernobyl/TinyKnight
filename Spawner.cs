@@ -5,7 +5,6 @@ namespace Gravity
 {
     public class Spawner
     {
-
         private readonly Vector2 position;
         private readonly GameplayScreen gameplayScreen;
 
@@ -24,7 +23,11 @@ namespace Gravity
             if (time >= SpawnInterval)
             {
                 time = 0f;
-                gameplayScreen.AddEntity(new Bat(gameplayScreen) { Position = position });
+
+                if (Random.FloatValue < .5f)
+                    gameplayScreen.AddEntity(new Zombie(gameplayScreen) { Position = position });
+                else
+                    gameplayScreen.AddEntity(new Bat(gameplayScreen) { Position = position });
             }
         }
     }

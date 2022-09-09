@@ -42,3 +42,8 @@ Weapons:
 - Hammer? (high damage to enemies in front, others are stunned/slowed down)
 - Fire bomb (AOE, low damage and enemies are slowed down)
 - Spike trap (like a mine, shoots spikes up, kills a single enemy, up to N times before destruction)
+
+Enemies:
+--------
+- Bouncing enemy which goes up and down?
+- Ghost which flies through solids?

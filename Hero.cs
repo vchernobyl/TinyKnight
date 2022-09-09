@@ -1,4 +1,4 @@
-﻿using Gravity.Animation;
+﻿using Gravity.Graphics;
 using Gravity.Entities;
 using Gravity.Particles;
 using Microsoft.Xna.Framework;
@@ -42,10 +42,10 @@ namespace Gravity
             var content = game.Content;
             var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
             var runSheet = content.Load<Texture2D>("Textures/Hero_Run");
-            var animations = new List<Animation.Animation>
+            var animations = new List<Graphics.Animation>
             {
-                new Animation.Animation("Hero_Idle", idleSheet),
-                new Animation.Animation("Hero_Run", runSheet),
+                new Graphics.Animation("Hero_Idle", idleSheet),
+                new Graphics.Animation("Hero_Run", runSheet),
             };
 
             animator = new Animator(animations)

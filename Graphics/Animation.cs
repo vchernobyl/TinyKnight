@@ -3,11 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gravity.Animation
+namespace Gravity.Graphics
 {
     public class Animation
     {
-
         // For this game we will just hardcode the frame size for
         // convenience, since all of the sprites will be of the same size.
         private const int FrameSize = 8;
