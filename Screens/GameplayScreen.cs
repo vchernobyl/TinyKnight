@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Gravity
@@ -19,8 +20,6 @@ namespace Gravity
         private readonly List<Entity> pendingEntities = new List<Entity>();
 
         private bool updatingEntities = false;
-
-        private Spawner spawner;
 
         public GameplayScreen()
         {
@@ -54,7 +53,26 @@ namespace Gravity
 
             Hud = new Hud(this, Hero);
 
-            spawner = new Spawner(new Vector2(Level.Width / 2f, 0f), this);
+            var position = new Vector2(Level.Width / 2f, 0f);
+            const float spawnInterval = 2f;
+
+            IEnumerator Spawn()
+            {
+                while (true)
+                {
+                    var roll = Random.FloatValue;
+                    if (roll <= .33f)
+                        AddEntity(new Bat(this) { Position = position });
+                    else if (roll <= .66f)
+                        AddEntity(new Zombie(this) { Position = position });
+                    else
+                        AddEntity(new Skeleton(this) { Position = position });
+
+                    yield return spawnInterval;
+                }
+            }
+
+            GravityGame.Runner.Run(Spawn());
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and
@@ -92,8 +110,6 @@ namespace Gravity
                     Entities.RemoveAt(i);
                 }
             }
-
-            spawner.Update(gameTime);
 
             GravityGame.WorldCamera.Update(gameTime);
             GravityGame.UiCamera.Update(gameTime);

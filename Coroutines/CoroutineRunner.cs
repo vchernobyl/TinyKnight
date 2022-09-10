@@ -52,10 +52,14 @@ namespace Gravity.Coroutines
                 {
                     if (delays[i] > 0f)
                         delays[i] -= deltaTime;
-                    else if (running[i] == null || !MoveNext(running[i], i))
+                    else
                     {
-                        running.RemoveAt(i);
-                        delays.RemoveAt(i--);
+                        var current = running[i];
+                        if (current == null || !MoveNext(current, i))
+                        {
+                            running.RemoveAt(i);
+                            delays.RemoveAt(i--);
+                        }
                     }
                 }
             }

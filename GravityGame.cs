@@ -65,7 +65,10 @@ namespace Gravity
                 paused = !paused;
 
             if (!paused)
+            {
+                Runner.Update(gameTime.DeltaTime());
                 base.Update(gameTime);
+            }
         }
 
         protected override void Draw(GameTime gameTime)

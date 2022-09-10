@@ -23,7 +23,6 @@ namespace Gravity
         public int Health { get; private set; }
         public const int MaxHealth = 3;
 
-        private readonly Weapons weapons;
         private bool onGround = false;
         private bool hurting = false;
         private double hurtTime = 0;
@@ -31,12 +30,14 @@ namespace Gravity
 
         private readonly ParticleSystem jumpParticles;
 
+        public bool IsAlive { get { return Health > 0; } }
+
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
-            weapons = new Weapons(gameplayScreen, this);
-            CurrentWeapon = weapons.Bazooka;
+            CurrentWeapon = new Crossbow(gameplayScreen, this);
             Health = 3;
+            Facing = 1;
 
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
@@ -142,20 +143,6 @@ namespace Gravity
             else if (state == HeroState.Running)
             {
                 animator.Play("Hero_Run");
-            }
-
-            // Weapon switching.
-            if (Input.WasKeyPressed(Keys.D1))
-            {
-                CurrentWeapon = weapons.Pistol;
-            }
-            if (Input.WasKeyPressed(Keys.D2))
-            {
-                CurrentWeapon = weapons.Shotgun;
-            }
-            if (Input.WasKeyPressed(Keys.D3))
-            {
-                CurrentWeapon = weapons.Bazooka;
             }
 
             var wasOnGround = onGround;

@@ -62,7 +62,7 @@ namespace Gravity.AI
                     node.Y * Level.CellSize,
                     Level.CellSize,
                     Level.CellSize);
-                batch.DrawRectangleOutline(rect, Color.Red, 2f);
+                batch.DrawRectangleOutline(rect, Color.Red, 1f);
             }
 
             foreach (var node in NearSolids)
@@ -72,7 +72,7 @@ namespace Gravity.AI
                     node.Y * Level.CellSize,
                     Level.CellSize,
                     Level.CellSize);
-                batch.DrawRectangleOutline(rect, Color.Green, 2f);
+                batch.DrawRectangleOutline(rect, Color.Green, 1f);
             }
         }
     }
