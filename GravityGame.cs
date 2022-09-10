@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Coroutines;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,6 +12,8 @@ namespace Gravity
 
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
+
+        public static readonly CoroutineRunner Runner = new CoroutineRunner();
 
         private bool paused = false;
 

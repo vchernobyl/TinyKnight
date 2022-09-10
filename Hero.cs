@@ -42,10 +42,10 @@ namespace Gravity
             var content = game.Content;
             var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
             var runSheet = content.Load<Texture2D>("Textures/Hero_Run");
-            var animations = new List<Graphics.Animation>
+            var animations = new List<Animation>
             {
-                new Graphics.Animation("Hero_Idle", idleSheet),
-                new Graphics.Animation("Hero_Run", runSheet),
+                new Animation("Hero_Idle", idleSheet),
+                new Animation("Hero_Run", runSheet),
             };
 
             animator = new Animator(animations)
