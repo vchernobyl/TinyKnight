@@ -61,6 +61,8 @@ namespace Gravity
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            DebugInfo.HandleInput();
+
             if (Input.WasKeyPressed(Keys.P))
                 paused = !paused;
 

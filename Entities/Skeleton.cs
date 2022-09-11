@@ -32,7 +32,7 @@ namespace Gravity.Entities
 
         public override void Update(GameTime gameTime)
         {
-            const float speed = .15f;
+            const float speed = .075f;
 
             if (!dead && Level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(facing) * speed;

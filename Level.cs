@@ -17,7 +17,6 @@ namespace Gravity
         public readonly Cell[,] Cells;
 
         private readonly Texture2D cellTexture;
-        private readonly bool showBounds = false;
 
         public Level(int width, int height, Texture2D texture)
         {
@@ -48,12 +47,10 @@ namespace Gravity
                 if (cell.Type == Cell.CellType.Wall)
                     batch.Draw(cellTexture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
-                if (showBounds)
+                if (cell.Solid && DebugInfo.ShowSolids)
                 {
-                    var color = cell.Solid ? Color.Red: Color.White;
                     var outline = cell.Bounds;
-                    outline.Inflate(-1f, -1f);
-                    batch.DrawRectangleOutline(outline, color, 1f);
+                    batch.DrawRectangleOutline(outline, Color.Red, 1f);
                 }
             }
         }

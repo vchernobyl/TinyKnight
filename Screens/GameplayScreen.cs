@@ -136,7 +136,9 @@ namespace Gravity
 
             spriteBatch.End();
 
-            spriteBatch.Begin(effect: Effects.Flash, transformMatrix: GravityGame.WorldCamera.Transform);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp,
+                effect: Effects.Flash,
+                transformMatrix: GravityGame.WorldCamera.Transform);
             foreach (var entity in Entities)
             {
                 if (entity.IsFlashing)

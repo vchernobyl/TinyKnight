@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using Microsoft.Xna.Framework;
+using System.Threading;
 
 namespace Gravity.Entities
 {
@@ -25,7 +26,7 @@ namespace Gravity.Entities
             // Hit effects.
             {
                 SoundFX.EnemyHit.Play(volume: .5f, 0f, 0f);
-                Flash(duration: .1f);
+                Flash(duration: .1f, Color.Red);
                 Thread.Sleep(millisecondsTimeout: 20);
                 GravityGame.WorldCamera.Shake(trauma: .48f);
             }

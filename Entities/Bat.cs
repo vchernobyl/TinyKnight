@@ -11,7 +11,6 @@ namespace Gravity.Entities
         private readonly Pathfinding pathfinding;
         private readonly NavigationGrid navGrid;
         private readonly Timer pathfindingTimer;
-        private readonly bool showNavigation = false;
 
         private List<Vector2> path = new List<Vector2>();
         private int pointIndex = 0;
@@ -92,7 +91,7 @@ namespace Gravity.Entities
 
         public override void Draw(SpriteBatch batch)
         {
-            if (showNavigation)
+            if (DebugInfo.ShowNavigation)
             {
                 for (int i = 0; i < path.Count - 1; i++)
                     batch.DrawLine(path[i], path[i + 1], Color.DarkBlue, thickness: 2f);
