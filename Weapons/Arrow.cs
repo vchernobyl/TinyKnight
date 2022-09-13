@@ -9,7 +9,8 @@ namespace Gravity
         public Vector2 Velocity { get; set; }
         public int Damage { get; set; }
 
-        public Arrow(GameplayScreen gameplayScreen) : base(gameplayScreen, new Sprite(Textures.Arrow))
+        public Arrow(GameplayScreen gameplayScreen) 
+            : base(gameplayScreen, new Sprite(Textures.Arrow))
         {
         }
 

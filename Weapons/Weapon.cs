@@ -2,11 +2,7 @@
 
 namespace Gravity
 {
-    // TODO: Once we get the weapon sprites, we will make this an Entity.
-    // Weapon entity will be drawn on top of the player with some wobble effect,
-    // and follow the hero movement.
-    // This will also allow us to implement visual weapon kick-back.
-    public abstract class Weapon
+    public abstract class Weapon : Entity
     {
         public string Name { get; private set; }
 
@@ -15,7 +11,8 @@ namespace Gravity
         private readonly float fireRate;
         private float fireTime;
 
-        public Weapon(Hero hero, float fireRate, string name)
+        public Weapon(Hero hero, GameplayScreen gameplayScreen,
+            float fireRate, string name) : base(gameplayScreen)
         {
             this.hero = hero;
             this.fireRate = fireRate;
@@ -23,7 +20,7 @@ namespace Gravity
             this.Name = name;
         }
 
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             fireTime += gameTime.DeltaTime();
         }
@@ -38,5 +35,7 @@ namespace Gravity
         }
 
         public virtual void Shoot() { }
+
+        public abstract void UpdatePosition();
     }
 }

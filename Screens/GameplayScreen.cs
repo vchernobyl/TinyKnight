@@ -14,7 +14,7 @@ namespace Gravity
 
         public Level Level { get; private set; }
         public Hud Hud { get; private set; }
-        public Hero Hero { get; set; }
+        public Hero Hero { get; private set; }
 
         public readonly List<Entity> Entities = new List<Entity>();
         private readonly List<Entity> pendingEntities = new List<Entity>();

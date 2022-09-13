@@ -40,11 +40,20 @@ Power-ups:
 Weapons:
 --------
 - Repeater crossbow (rapid fire, but lower damage)
+  * Maybe it shoots green (poison/acid arrows)
+  * Alternative fire cluster shot? aka flak cannon?
 - Throwing knives/axe (slower, but higher damage)
 - Magic Wand (shooting fireballs, explosion AOE)
+  * Instead of a wand, maybe it's a "mini cannon"?
 - Hammer? (high damage to enemies in front, others are stunned/slowed down)
 - Fire bomb (AOE, low damage and enemies are slowed down)
 - Spike trap (like a mine, shoots spikes up, kills a single enemy, up to N times before destruction)
+- Throws hammer/axe? Travels in one direction and then back? So basically a boomerang!
+  * The more enemies you hit going forward, the more damage it will deal flying backward?
+  * Maybe it will fly offscreen and come to you from the other side? As if it traveled across the whole world lol.
+  * Maybe it's a boomerang?
+  * Or a shield?!
+- Captain america style shield?
 
 Enemies:
 --------
@@ -55,4 +64,5 @@ Enemies:
 
 TODO:
 -----
-- Flash effect does not color individual pixels correctly, it looks weird.
+- Experiment with arrow stretching as it travels, does it give a better impact feeling?
+- Collision masks

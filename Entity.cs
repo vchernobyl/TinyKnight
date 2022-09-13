@@ -41,8 +41,6 @@ namespace Gravity
         public float FrictionY = .9f;
         public float Gravity = .05f;
 
-        public bool IsColliding { get; private set; } = false;
-
         public Vector2 Position
         {
             get => new Vector2(XX, YY);
@@ -123,6 +121,8 @@ namespace Gravity
         // This update should be called by entities.
         public virtual void Update(GameTime gameTime) { }
 
+        public virtual void PostUpdate(GameTime gameTime) { }
+
         // This should only be called by the underlying game loop.
         // NOT to be used by entities directly.
         public void EntityUpdate(GameTime gameTime)
@@ -200,6 +200,8 @@ namespace Gravity
                 sprite.Position = Position;
             if (animator != null)
                 animator.Position = Position;
+
+            PostUpdate(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -208,6 +210,9 @@ namespace Gravity
                 sprite.Draw(spriteBatch);
             else if (animator != null)
                 animator.Draw(spriteBatch);
+
+            if (DebugInfo.ShowEntityColliders)
+                spriteBatch.DrawRectangleOutline(new Rectangle((int)XX - 4, (int)YY - 4, 8, 8), new Color(0f, 255f, 0f));
         }
     }
 }

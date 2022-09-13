@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Gravity
 {
@@ -36,6 +37,8 @@ namespace Gravity
             : base(gameplayScreen)
         {
             CurrentWeapon = new Crossbow(gameplayScreen, this);
+            gameplayScreen.AddEntity(CurrentWeapon);
+
             Health = 3;
             Facing = 1;
 
@@ -51,17 +54,11 @@ namespace Gravity
 
             animator = new Animator(animations)
             {
-                //Origin = new Vector2(4f, 8f)
+                LayerDepth = 1f
             };
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
-        }
-
-        // TODO: Will be useful for other entities as well, for example enemies.
-        public void Knockback(float amount)
-        {
-            DX += -Facing * amount;
         }
 
         public override void OnEntityCollision(Entity other)
@@ -154,8 +151,11 @@ namespace Gravity
 
             if (Input.IsKeyDown(Keys.Space))
                 CurrentWeapon.PullTrigger();
+        }
 
-            CurrentWeapon.Update(gameTime);
+        public override void PostUpdate(GameTime gameTime)
+        {
+            CurrentWeapon.UpdatePosition();
         }
 
         // TODO: These currently assume that every sprite/animator "normal"
