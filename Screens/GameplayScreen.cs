@@ -72,7 +72,7 @@ namespace Gravity
                 }
             }
 
-           GravityGame.Runner.Run(Spawn());
+            //GravityGame.Runner.Run(Spawn());
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and

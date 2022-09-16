@@ -22,8 +22,17 @@ namespace Gravity.GFX
         }
 
         public void Draw(
+            Vector2 position, Color color,
+            float rotation, Vector2 origin, SpriteEffects effect)
+        {
+            Draw(position, color, rotation, origin,
+                Rectangle.Empty, Vector2.Zero, effect);
+        }
+
+        public void Draw(
             Vector2 position, Color color, float rotation,
-            Vector2 origin, Rectangle clipping, Vector2 size)
+            Vector2 origin, Rectangle clipping, Vector2 size,
+            SpriteEffects effect, float depth = 0f)
         {
             if (currentAnimation == null)
                 return;
@@ -40,11 +49,13 @@ namespace Gravity.GFX
                 destination.Height = (int)size.Y;
 
             var spriteBatch = spriteSheet.SpriteBatch;
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin(
+                samplerState: SamplerState.PointClamp,
+                transformMatrix: GravityGame.WorldCamera.Transform);
             {
                 var texture = spriteSheet.Texture;
                 spriteBatch.Draw(texture, destination, source, color,
-                    rotation, origin, SpriteEffects.None, 0f);
+                    rotation, origin, effect, depth);
             }
             spriteBatch.End();
         }

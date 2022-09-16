@@ -1,5 +1,4 @@
-﻿using Gravity.Graphics;
-using Gravity.Entities;
+﻿using Gravity.Entities;
 using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Gravity.Weapons;
+using Gravity.GFX;
 
 namespace Gravity
 {
@@ -34,6 +34,10 @@ namespace Gravity
 
         public bool IsAlive { get { return Health > 0; } }
 
+        private readonly int heroRunAnimID;
+        private readonly int heroIdleAnimID;
+        private readonly Gravity.GFX.Sprite heroSprite;
+
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
@@ -45,21 +49,37 @@ namespace Gravity
 
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
-            var idleSheet = content.Load<Texture2D>("Textures/Hero_Idle");
-            var runSheet = content.Load<Texture2D>("Textures/Hero_Run");
-            var animations = new List<Animation>
-            {
-                new Animation("Hero_Idle", idleSheet),
-                new Animation("Hero_Run", runSheet),
-            };
 
-            animator = new Animator(animations)
-            {
-                LayerDepth = 1f
-            };
+            var texture = content.Load<Texture2D>("Textures/Tiny_Knight");
+            var spriteSheet = new SpriteSheet(game.GraphicsDevice, texture);
+            
+            var heroRunAnim = spriteSheet.CreateAnimation("Hero_Run", out heroRunAnimID);
+            heroRunAnim.AddFrame(new Rectangle(0, 0, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(8, 0, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(16, 0, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(24, 0, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(0, 8, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(8, 8, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(16, 8, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(24, 8, 8, 8), .1f);
+            heroRunAnim.AddFrame(new Rectangle(24, 8, 8, 8), .1f);
+
+            var heroIdleAnim = spriteSheet.CreateAnimation("Hero_Idle", out heroIdleAnimID);
+            heroIdleAnim.AddFrame(new Rectangle(0, 16, 8, 8), .1f);
+            heroIdleAnim.AddFrame(new Rectangle(8, 16, 8, 8), .1f);
+            heroIdleAnim.AddFrame(new Rectangle(16, 16, 8, 8), .1f);
+
+            heroSprite = spriteSheet.Create();
+            heroSprite.Play(heroIdleAnimID);
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            var effect = Facing > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            heroSprite.Draw(Position, Color.White, 0f, heroSprite.FrameSize.ToVector2() / 2f, effect);
         }
 
         public override void OnEntityCollision(Entity other)
@@ -86,6 +106,8 @@ namespace Gravity
             var speed = .0175f;
             var jump = -1.25f;
 
+            heroSprite.Update(gameTime.DeltaTime());
+
             hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
             if (hurtTime == 0)
                 hurting = false;
@@ -95,14 +117,14 @@ namespace Gravity
             {
                 if (Input.IsKeyDown(Keys.Left))
                 {
-                    animator.Flip = SpriteEffects.FlipHorizontally;
+                    //animator.Flip = SpriteEffects.FlipHorizontally;
                     DX += -speed;
                     Facing = -1;
                     state = HeroState.Running;
                 }
                 if (Input.IsKeyDown(Keys.Right))
                 {
-                    animator.Flip = SpriteEffects.None;
+                    //animator.Flip = SpriteEffects.None;
                     DX += speed;
                     Facing = 1;
                     state = HeroState.Running;
@@ -114,7 +136,7 @@ namespace Gravity
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
 
-                    animator.Scale = new Vector2(.4f, 1.35f);
+                    //animator.Scale = new Vector2(.4f, 1.35f);
                 }
             }
 
@@ -126,8 +148,8 @@ namespace Gravity
                 SquashY(.5f);
             }
 
-            animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
-            animator.Origin = Numerics.Approach(animator.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
+            //animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
+            //animator.Origin = Numerics.Approach(animator.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
 
             if (MathF.Abs(DX) < .01f)
                 state = HeroState.Idle;
@@ -136,12 +158,17 @@ namespace Gravity
 
             if (state == HeroState.Idle)
             {
-                animator.Play("Hero_Idle");
+                //animator.Play("Hero_Idle");
             }
             else if (state == HeroState.Running)
             {
-                animator.Play("Hero_Run");
+                //animator.Play("Hero_Run");
             }
+
+            if (MathF.Abs(DX) > 0.005f)
+                heroSprite.Play(heroRunAnimID);
+            else
+                heroSprite.Play(heroIdleAnimID);
 
             var wasOnGround = onGround;
             onGround = Level.IsWithinBounds(CX, CY) && Level.HasCollision(CX, CY + 1);
@@ -164,13 +191,13 @@ namespace Gravity
         // squash vector with the original scale.
         public void SquashX(float squash)
         {
-            animator.Scale = new Vector2(squash, 2f - squash);
+            //animator.Scale = new Vector2(squash, 2f - squash);
         }
 
         public void SquashY(float squash)
         {
-            animator.Scale = new Vector2(2f - squash, squash);
-            animator.Origin.Y = 0f;
+            //animator.Scale = new Vector2(2f - squash, squash);
+            //animator.Origin.Y = 0f;
         }
     }
 }
