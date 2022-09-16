@@ -9,13 +9,6 @@ using System;
 
 namespace Gravity
 {
-    public enum HeroState
-    {
-        Idle,
-        Running,
-        Jumping,
-    }
-
     public class Hero : Entity
     {
         public int Facing { get; private set; }
@@ -26,7 +19,6 @@ namespace Gravity
         private bool onGround = false;
         private bool hurting = false;
         private double hurtTime = 0;
-        private HeroState state = HeroState.Idle;
 
         private readonly ParticleSystem jumpParticles;
 
@@ -47,9 +39,8 @@ namespace Gravity
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
 
-            var texture = content.Load<Texture2D>("Textures/Tiny_Knight");
-            var spriteSheet = new SpriteSheet(game.GraphicsDevice, texture);
-            
+            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Tiny_Knight"));
+
             var heroRunAnim = spriteSheet.CreateAnimation("Hero_Run", out heroRunAnimID);
             heroRunAnim.AddFrame(new Rectangle(0, 0, 8, 8), .1f);
             heroRunAnim.AddFrame(new Rectangle(8, 0, 8, 8), .1f);
@@ -67,7 +58,6 @@ namespace Gravity
 
             sprite = spriteSheet.Create();
             sprite.Play(heroIdleAnimID);
-            sprite.LayerDepth = 1f;
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
@@ -109,23 +99,20 @@ namespace Gravity
                     sprite.Flip = SpriteEffects.FlipHorizontally;
                     DX += -speed;
                     Facing = -1;
-                    state = HeroState.Running;
                 }
                 if (Input.IsKeyDown(Keys.Right))
                 {
                     sprite.Flip = SpriteEffects.None;
                     DX += speed;
                     Facing = 1;
-                    state = HeroState.Running;
                 }
                 if (Input.WasKeyPressed(Keys.Up) && onGround)
                 {
                     DY = jump;
-                    state = HeroState.Jumping;
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
 
-                    //animator.Scale = new Vector2(.4f, 1.35f);
+                    SquashX(.5f);
                 }
             }
 
@@ -133,26 +120,10 @@ namespace Gravity
                 SquashX(.5f);
 
             if (Input.WasKeyPressed(Keys.K))
-            {
                 SquashY(.5f);
-            }
 
-            //animator.Scale = Numerics.Approach(animator.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
-            //animator.Origin = Numerics.Approach(animator.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
-
-            if (MathF.Abs(DX) < .01f)
-                state = HeroState.Idle;
-            else
-                state = HeroState.Running;
-
-            if (state == HeroState.Idle)
-            {
-                //animator.Play("Hero_Idle");
-            }
-            else if (state == HeroState.Running)
-            {
-                //animator.Play("Hero_Run");
-            }
+            sprite.Scale = Numerics.Approach(sprite.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
+            sprite.Origin = Numerics.Approach(sprite.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
 
             if (MathF.Abs(DX) > 0.005f)
                 sprite.Play(heroRunAnimID);
@@ -180,13 +151,13 @@ namespace Gravity
         // squash vector with the original scale.
         public void SquashX(float squash)
         {
-            //animator.Scale = new Vector2(squash, 2f - squash);
+            sprite.Scale = new Vector2(squash, 2f - squash);
         }
 
         public void SquashY(float squash)
         {
-            //animator.Scale = new Vector2(2f - squash, squash);
-            //animator.Origin.Y = 0f;
+            sprite.Scale = new Vector2(2f - squash, squash);
+            sprite.Origin.Y = 0f;
         }
     }
 }

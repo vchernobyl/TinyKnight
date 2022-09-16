@@ -10,10 +10,9 @@ namespace Gravity.GFX
         private readonly List<Animation> animations;
         private readonly Dictionary<string, int> animationIDMap;
 
-        public SpriteSheet(GraphicsDevice device, Texture2D texture)
+        public SpriteSheet(Texture2D texture)
         {
             this.Texture = texture;
-            this.SpriteBatch = new SpriteBatch(device);
             this.sprites = new List<Sprite>();
             this.animations = new List<Animation>();
             this.animationIDMap = new Dictionary<string, int>();
@@ -56,8 +55,6 @@ namespace Gravity.GFX
             Debug.Assert(animationID < animations.Count);
             return animations[animationID];
         }
-
-        public SpriteBatch SpriteBatch { get; }
 
         public Texture2D Texture { get; }
     }

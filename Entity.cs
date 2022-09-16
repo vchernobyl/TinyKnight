@@ -174,10 +174,10 @@ namespace Gravity
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            sprite.Draw(Position);
+            sprite.Draw(Position, spriteBatch);
 
             if (DebugInfo.ShowEntityColliders)
-                spriteBatch.DrawRectangleOutline(new Rectangle((int)XX - 4, (int)YY - 4, 8, 8), new Color(0f, 255f, 0f), .5f);
+                spriteBatch.DrawRectangleOutline(new Rectangle((int)XX - 4, (int)YY - 4, 8, 8), new Color(0f, 255f, 0f), .35f);
         }
     }
 }
