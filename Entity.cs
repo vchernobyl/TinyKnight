@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Weapons;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -32,7 +33,8 @@ namespace Gravity
 
         public float Radius = Level.CellSize / 2;
 
-        public bool Collisions = true;
+        public bool LevelCollisions = true;
+        public bool EntityCollisions = true;
 
         public State EntityState = State.Active;
 
@@ -114,7 +116,7 @@ namespace Gravity
             flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.
-            if (Collisions)
+            if (EntityCollisions)
             {
                 foreach (var other in gameplayScreen.Entities)
                 {
@@ -127,7 +129,7 @@ namespace Gravity
             DX *= FrictionX;
 
             // Right side collision.
-            if (Collisions && Level.HasCollision(CX + 1, CY) && XR >= .7f)
+            if (LevelCollisions && Level.HasCollision(CX + 1, CY) && XR >= .7f)
             {
                 XR = .7f;
                 DX = 0f;
@@ -135,7 +137,7 @@ namespace Gravity
             }
 
             // Left side collision.
-            if (Collisions && Level.HasCollision(CX - 1, CY) && XR <= .3f)
+            if (LevelCollisions && Level.HasCollision(CX - 1, CY) && XR <= .3f)
             {
                 XR = .3f;
                 DX = 0f;
@@ -150,7 +152,7 @@ namespace Gravity
             DY *= FrictionY;
 
             // Top collision.
-            if (Collisions && Level.HasCollision(CX, CY - 1) && YR <= .3f)
+            if (LevelCollisions && Level.HasCollision(CX, CY - 1) && YR <= .3f)
             {
                 DY = .05f;
                 YR = .3f;
@@ -158,7 +160,7 @@ namespace Gravity
             }
 
             // Bottom collision.
-            if (Collisions && Level.HasCollision(CX, CY + 1) && YR >= .5f)
+            if (LevelCollisions && Level.HasCollision(CX, CY + 1) && YR >= .5f)
             {
                 DY = 0f;
                 YR = .5f;

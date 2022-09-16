@@ -3,11 +3,13 @@ using Gravity.GFX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Gravity.Weapons
 {
     public class Axe : Weapon
     {
+        private readonly List<Enemy> damagedEnemies;
         private bool thrown = false;
 
         public Axe(Hero hero, GameplayScreen gameplayScreen)
@@ -22,13 +24,28 @@ namespace Gravity.Weapons
             sprite.Play(defaultAnimID);
 
             Gravity = 0f;
-            Collisions = true;
+            LevelCollisions = false;
+            EntityCollisions = true;
+            damagedEnemies = new List<Enemy>();
         }
 
         public override void OnEntityCollision(Entity other)
         {
-            if (other is Enemy enemy)
+            // Don't apply damage unless the axe is actually thrown.
+            if (!thrown)
+                return;
+
+            if (other is Enemy enemy && !damagedEnemies.Contains(enemy))
+            {
                 enemy.Damage(50);
+                damagedEnemies.Add(enemy);
+                IEnumerator Disable()
+                {
+                    yield return .3f;
+                    damagedEnemies.Remove(enemy);
+                }
+                GravityGame.Runner.Run(Disable());
+            }
         }
 
         public override void UpdatePosition()

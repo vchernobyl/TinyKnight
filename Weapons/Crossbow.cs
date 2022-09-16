@@ -19,7 +19,7 @@ namespace Gravity.Weapons
             //    Origin = Vector2.Zero,
             //};
 
-            Collisions = false;
+            LevelCollisions = false;
             Gravity = 0f;
         }
 
