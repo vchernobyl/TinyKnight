@@ -33,7 +33,7 @@ namespace Gravity
 
         public float Radius = Level.CellSize / 2;
 
-        public bool Collision = true;
+        public bool Collisions = true;
 
         public State EntityState = State.Active;
 
@@ -62,12 +62,14 @@ namespace Gravity
             this.gameplayScreen = gameplayScreen;
         }
 
+        // TODO: Remove this constructor. Instantiate and set sprite in the extended class.
         public Entity(GameplayScreen gameplayScreen, Sprite sprite)
         {
             this.gameplayScreen = gameplayScreen;
             this.sprite = sprite;
         }
 
+        // TODO: Remove this constructor. Instantiate and set animator in the extended class.
         public Entity(GameplayScreen gameplayScreen, Animator animator)
         {
             this.gameplayScreen = gameplayScreen;
@@ -107,7 +109,7 @@ namespace Gravity
             Flash(duration, Color.White);
         }
 
-        public void ScheduleToDestroy()
+        public void Destroy()
         {
             EntityState = State.Dead;
         }
@@ -133,7 +135,7 @@ namespace Gravity
             flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.
-            if (Collision)
+            if (Collisions)
             {
                 foreach (var other in gameplayScreen.Entities)
                 {
@@ -145,11 +147,8 @@ namespace Gravity
             XR += DX;
             DX *= FrictionX;
 
-            CX = Numerics.Mod(CX, Level.Columns);
-            CY = Numerics.Mod(CY, Level.Rows);
-
             // Right side collision.
-            if (Level.HasCollision(CX + 1, CY) && XR >= .7f)
+            if (Collisions && Level.HasCollision(CX + 1, CY) && XR >= .7f)
             {
                 XR = .7f;
                 DX = 0f;
@@ -157,7 +156,7 @@ namespace Gravity
             }
 
             // Left side collision.
-            if (Level.HasCollision(CX - 1, CY) && XR <= .3f)
+            if (Collisions && Level.HasCollision(CX - 1, CY) && XR <= .3f)
             {
                 XR = .3f;
                 DX = 0f;
@@ -172,7 +171,7 @@ namespace Gravity
             DY *= FrictionY;
 
             // Top collision.
-            if (Level.HasCollision(CX, CY - 1) && YR <= .3f)
+            if (Collisions && Level.HasCollision(CX, CY - 1) && YR <= .3f)
             {
                 DY = .05f;
                 YR = .3f;
@@ -180,7 +179,7 @@ namespace Gravity
             }
 
             // Bottom collision.
-            if (Level.HasCollision(CX, CY + 1) && YR >= .5f)
+            if (Collisions && Level.HasCollision(CX, CY + 1) && YR >= .5f)
             {
                 DY = 0f;
                 YR = .5f;
@@ -193,15 +192,13 @@ namespace Gravity
             XX = (int)((CX + XR) * Level.CellSize);
             YY = (int)((CY + YR) * Level.CellSize);
 
-            XX = Numerics.Mod((int)XX, Level.Width);
-            YY = Numerics.Mod((int)YY, Level.Height);
+            //XX = Numerics.Mod((int)XX, Level.Width);
+            //YY = Numerics.Mod((int)YY, Level.Height);
 
             if (sprite != null)
                 sprite.Position = Position;
             if (animator != null)
                 animator.Position = Position;
-
-            PostUpdate(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

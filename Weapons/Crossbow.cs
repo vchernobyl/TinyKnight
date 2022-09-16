@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity
+namespace Gravity.Weapons
 {
     public class Crossbow : Weapon
     {
@@ -19,7 +19,7 @@ namespace Gravity
                 Origin = Vector2.Zero,
             };
 
-            Collision = false;
+            Collisions = false;
             Gravity = 0f;
         }
 

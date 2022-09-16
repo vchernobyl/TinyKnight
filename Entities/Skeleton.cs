@@ -27,7 +27,7 @@ namespace Gravity.Entities
         public override void OnLevelCollision(Vector2 normal)
         {
             if (dead && normal == -Vector2.UnitY)
-                ScheduleToDestroy();
+                Destroy();
         }
 
         public override void Update(GameTime gameTime)

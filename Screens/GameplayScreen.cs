@@ -48,7 +48,7 @@ namespace Gravity
             GravityGame.WorldCamera.Position = new Vector2(Level.Width / 2f, Level.Height / 2f);
             GravityGame.WorldCamera.Scale = zoom;
 
-            Hero = new Hero(this) { Position = new Vector2(80f, 200f) };
+            Hero = new Hero(this) { Position = new Vector2(50f, 25f) };
             Entities.Add(Hero);
 
             Hud = new Hud(this, Hero);
@@ -72,7 +72,7 @@ namespace Gravity
                 }
             }
 
-            GravityGame.Runner.Run(Spawn());
+           GravityGame.Runner.Run(Spawn());
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and
@@ -96,6 +96,11 @@ namespace Gravity
                     entity.EntityUpdate(gameTime);
             }
 
+            foreach (var entity in Entities)
+            {
+                if (entity.EntityState == Entity.State.Active)
+                    entity.PostUpdate(gameTime);
+            }
             updatingEntities = false;
 
             foreach (var pending in pendingEntities)

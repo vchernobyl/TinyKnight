@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Gravity
+namespace Gravity.Weapons
 {
     public abstract class Weapon : Entity
     {
@@ -16,8 +16,8 @@ namespace Gravity
         {
             this.hero = hero;
             this.fireRate = fireRate;
-            this.fireTime = 1f / fireRate;
-            this.Name = name;
+            fireTime = 1f / fireRate;
+            Name = name;
         }
 
         public override void Update(GameTime gameTime)

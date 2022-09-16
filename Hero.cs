@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Gravity.Weapons;
 
 namespace Gravity
 {
@@ -36,7 +37,7 @@ namespace Gravity
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
-            CurrentWeapon = new Crossbow(gameplayScreen, this);
+            CurrentWeapon = new Axe(this, gameplayScreen);
             gameplayScreen.AddEntity(CurrentWeapon);
 
             Health = 3;

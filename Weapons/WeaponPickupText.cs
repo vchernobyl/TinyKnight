@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity
+namespace Gravity.Weapons
 {
     public class WeaponPickupText : DrawableGameComponent
     {
@@ -18,8 +18,8 @@ namespace Gravity
             : base(game)
         {
             this.weaponText = weaponText;
-            this.spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
-            this.font = game.Content.Load<SpriteFont>("Fonts/font");
+            spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
+            font = game.Content.Load<SpriteFont>("Fonts/font");
             this.position = position - font.MeasureString(weaponText) / 2f;
             this.position.Y -= Level.CellSize / 2f;
 

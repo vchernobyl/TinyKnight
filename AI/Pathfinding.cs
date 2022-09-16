@@ -39,9 +39,12 @@ namespace Gravity.AI
             }
 
             // TODO: This shouldn't be necessary!
-            var last = path.Last();
-            if (!simplified.Contains(last))
-                simplified.Add(path.Last());
+            if (path.Count > 0)
+            {
+                var last = path.Last();
+                if (!simplified.Contains(last))
+                    simplified.Add(path.Last());
+            }
 
             return simplified;
         }

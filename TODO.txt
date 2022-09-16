@@ -66,3 +66,4 @@ TODO:
 -----
 - Experiment with arrow stretching as it travels, does it give a better impact feeling?
 - Collision masks
+- Pinky looking charging monster
