@@ -31,7 +31,7 @@ namespace Gravity
             : base(gameplayScreen)
         {
             CurrentWeapon = new Axe(this, gameplayScreen);
-            //gameplayScreen.AddEntity(CurrentWeapon);
+            gameplayScreen.AddEntity(CurrentWeapon);
 
             Health = 3;
             Facing = 1;
@@ -53,8 +53,8 @@ namespace Gravity
 
             var heroIdleAnim = spriteSheet.CreateAnimation("Hero_Idle", out heroIdleAnimID);
             heroIdleAnim.AddFrame(new Rectangle(0, 16, 8, 8), .1f);
-            heroIdleAnim.AddFrame(new Rectangle(8, 16, 8, 8), .1f);
-            heroIdleAnim.AddFrame(new Rectangle(16, 16, 8, 8), .1f);
+            //heroIdleAnim.AddFrame(new Rectangle(8, 16, 8, 8), .1f);
+            //heroIdleAnim.AddFrame(new Rectangle(16, 16, 8, 8), .1f);
 
             sprite = spriteSheet.Create();
             sprite.Play(heroIdleAnimID);

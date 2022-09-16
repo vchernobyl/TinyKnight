@@ -1,69 +1,86 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Entities;
+using Gravity.GFX;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
+using System.Collections;
 
 namespace Gravity.Weapons
 {
-    public class AxeProjectile : Entity
-    {
-        private readonly int facing;
-
-        public AxeProjectile(GameplayScreen gameplayScreen, int facing)
-            : base(gameplayScreen)
-        {
-            this.facing = facing;
-            Gravity = 0f;
-
-            // TODO: We want the axe to collide only with enemies, but not with solids.
-            // For this we need some collision mask functionality.
-            //Debug.Assert(false);
-            Collisions = false;
-
-            var content = gameplayScreen.ScreenManager.Game.Content;
-            //sprite = new Sprite(content.Load<Texture2D>("Textures/Axe"))
-            //{
-            //    Flip = facing > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally
-            //};
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            DX = .75f * facing;
-            //sprite.Rotation += 15f * facing * gameTime.DeltaTime();
-        }
-    }
-
     public class Axe : Weapon
     {
+        private bool thrown = false;
+
         public Axe(Hero hero, GameplayScreen gameplayScreen)
             : base(hero, gameplayScreen, fireRate: 1f, nameof(Axe))
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
-            //sprite = new Sprite(content.Load<Texture2D>("Textures/Axe"));
+            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
+            var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
+            anim.AddFrame(new Rectangle(0, 8, 8, 8), 0f);
+
+            sprite = spriteSheet.Create();
+            sprite.Play(defaultAnimID);
+
+            Gravity = 0f;
+            Collisions = true;
+        }
+
+        public override void OnEntityCollision(Entity other)
+        {
+            if (other is Enemy enemy)
+                enemy.Damage(50);
         }
 
         public override void UpdatePosition()
         {
+            // Only make axe follow the player if it's not flying around at this moment.
+            if (thrown)
+            {
+                sprite.Rotation += .25f * hero.Facing;
+                return;
+            }
+
             if (hero.Facing > 0)
             {
                 Position = hero.Position + new Vector2(5f, 0f);
-                //sprite.Flip = SpriteEffects.None;
+                sprite.Flip = SpriteEffects.None;
             }
             else
             {
                 Position = hero.Position + new Vector2(-5f, 0f);
-                //sprite.Flip = SpriteEffects.FlipHorizontally;
+                sprite.Flip = SpriteEffects.FlipHorizontally;
             }
         }
 
         public override void Shoot()
         {
-            var p = new AxeProjectile(gameplayScreen, hero.Facing)
-            {
-                Position = Position
-            };
+            if (!thrown)
+                GravityGame.Runner.Run(Throw());
+        }
 
-            gameplayScreen.AddEntity(p);
+        private IEnumerator Throw()
+        {
+            thrown = true;
+            var frames = -1;
+            var throwDirection = hero.Facing;
+            while (++frames < 10)
+            {
+                DX = 1.2f * throwDirection;
+                yield return null;
+            }
+
+            while (Vector2.Distance(Position, hero.Position) > 8f)
+            {
+                var dir = hero.Position - Position;
+                dir.Normalize();
+
+                DX += dir.X * .15f;
+                DY += dir.Y * .15f;
+
+                yield return null;
+            }
+            thrown = false;
+            sprite.Rotation = 0f;
         }
     }
 }

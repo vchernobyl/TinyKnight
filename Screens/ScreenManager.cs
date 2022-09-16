@@ -26,7 +26,7 @@ namespace Gravity
         #region Properties
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saved
-        /// each screen having to bother creating theor own local instance.
+        /// each screen having to bother creating their own local instance.
         /// </summary>
         public SpriteBatch SpriteBatch { get; private set; }
 

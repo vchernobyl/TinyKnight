@@ -60,19 +60,20 @@ namespace Gravity
             {
                 while (true)
                 {
-                    var roll = Random.FloatValue;
-                    if (roll <= .33f)
-                        AddEntity(new Bat(this) { Position = position });
-                    else if (roll <= .66f)
-                        AddEntity(new Zombie(this) { Position = position });
-                    else
-                        AddEntity(new Skeleton(this) { Position = position });
+                    AddEntity(new Bat(this) { Position = position });
+                    //var roll = Random.FloatValue;
+                    //if (roll <= .33f)
+                    //    AddEntity(new Bat(this) { Position = position });
+                    //else if (roll <= .66f)
+                    //    AddEntity(new Zombie(this) { Position = position });
+                    //else
+                    //    AddEntity(new Skeleton(this) { Position = position });
 
                     yield return spawnInterval;
                 }
             }
 
-            //GravityGame.Runner.Run(Spawn());
+            GravityGame.Runner.Run(Spawn());
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and

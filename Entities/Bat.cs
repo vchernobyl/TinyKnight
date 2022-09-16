@@ -1,4 +1,5 @@
 ﻿using Gravity.AI;
+using Gravity.GFX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -18,11 +19,15 @@ namespace Gravity.Entities
         public Bat(GameplayScreen gameplayScreen) : base(gameplayScreen, health: 100)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
+            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Bat"));
+            var anim = spriteSheet.CreateAnimation("Bat_Fly", out int animID);
+            anim.AddFrame(new Rectangle(0, 0, 8, 8), .1f);
+            anim.AddFrame(new Rectangle(8, 0, 8, 8), .1f);
+            anim.AddFrame(new Rectangle(16, 0, 8, 8), .1f);
+            anim.AddFrame(new Rectangle(24, 0, 8, 8), .1f);
 
-            //animator = new Animator(new List<Graphics.Animation>
-            //{
-            //    new Graphics.Animation("Bat", content.Load<Texture2D>("Textures/Bat"))
-            //});
+            sprite = spriteSheet.Create();
+            sprite.Play(animID);
 
             Gravity = 0f;
 
@@ -81,10 +86,10 @@ namespace Gravity.Entities
                 DX += movement.X * .005f;
                 DY += movement.Y * .005f;
 
-                //if (DX >= 0)
-                    //animator.Flip = SpriteEffects.None;
-                //else
-                    //animator.Flip = SpriteEffects.FlipHorizontally;
+                if (DX >= 0)
+                    sprite.Flip = SpriteEffects.None;
+                else
+                    sprite.Flip = SpriteEffects.FlipHorizontally;
             }
         }
 
