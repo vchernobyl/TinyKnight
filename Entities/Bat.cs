@@ -1,5 +1,4 @@
 ﻿using Gravity.AI;
-using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -20,10 +19,10 @@ namespace Gravity.Entities
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
 
-            animator = new Animator(new List<Graphics.Animation>
-            {
-                new Graphics.Animation("Bat", content.Load<Texture2D>("Textures/Bat"))
-            });
+            //animator = new Animator(new List<Graphics.Animation>
+            //{
+            //    new Graphics.Animation("Bat", content.Load<Texture2D>("Textures/Bat"))
+            //});
 
             Gravity = 0f;
 
@@ -82,10 +81,10 @@ namespace Gravity.Entities
                 DX += movement.X * .005f;
                 DY += movement.Y * .005f;
 
-                if (DX >= 0)
-                    animator.Flip = SpriteEffects.None;
-                else
-                    animator.Flip = SpriteEffects.FlipHorizontally;
+                //if (DX >= 0)
+                    //animator.Flip = SpriteEffects.None;
+                //else
+                    //animator.Flip = SpriteEffects.FlipHorizontally;
             }
         }
 

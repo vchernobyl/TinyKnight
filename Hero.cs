@@ -1,13 +1,11 @@
 ﻿using Gravity.Entities;
+using Gravity.GFX;
 using Gravity.Particles;
+using Gravity.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Gravity.Weapons;
-using Gravity.GFX;
 
 namespace Gravity
 {
@@ -36,13 +34,12 @@ namespace Gravity
 
         private readonly int heroRunAnimID;
         private readonly int heroIdleAnimID;
-        private readonly Gravity.GFX.Sprite heroSprite;
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
             CurrentWeapon = new Axe(this, gameplayScreen);
-            gameplayScreen.AddEntity(CurrentWeapon);
+            //gameplayScreen.AddEntity(CurrentWeapon);
 
             Health = 3;
             Facing = 1;
@@ -62,24 +59,18 @@ namespace Gravity
             heroRunAnim.AddFrame(new Rectangle(8, 8, 8, 8), .1f);
             heroRunAnim.AddFrame(new Rectangle(16, 8, 8, 8), .1f);
             heroRunAnim.AddFrame(new Rectangle(24, 8, 8, 8), .1f);
-            heroRunAnim.AddFrame(new Rectangle(24, 8, 8, 8), .1f);
 
             var heroIdleAnim = spriteSheet.CreateAnimation("Hero_Idle", out heroIdleAnimID);
             heroIdleAnim.AddFrame(new Rectangle(0, 16, 8, 8), .1f);
             heroIdleAnim.AddFrame(new Rectangle(8, 16, 8, 8), .1f);
             heroIdleAnim.AddFrame(new Rectangle(16, 16, 8, 8), .1f);
 
-            heroSprite = spriteSheet.Create();
-            heroSprite.Play(heroIdleAnimID);
+            sprite = spriteSheet.Create();
+            sprite.Play(heroIdleAnimID);
+            sprite.LayerDepth = 1f;
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            var effect = Facing > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            heroSprite.Draw(Position, Color.White, 0f, heroSprite.FrameSize.ToVector2() / 2f, effect);
         }
 
         public override void OnEntityCollision(Entity other)
@@ -106,8 +97,6 @@ namespace Gravity
             var speed = .0175f;
             var jump = -1.25f;
 
-            heroSprite.Update(gameTime.DeltaTime());
-
             hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
             if (hurtTime == 0)
                 hurting = false;
@@ -117,14 +106,14 @@ namespace Gravity
             {
                 if (Input.IsKeyDown(Keys.Left))
                 {
-                    //animator.Flip = SpriteEffects.FlipHorizontally;
+                    sprite.Flip = SpriteEffects.FlipHorizontally;
                     DX += -speed;
                     Facing = -1;
                     state = HeroState.Running;
                 }
                 if (Input.IsKeyDown(Keys.Right))
                 {
-                    //animator.Flip = SpriteEffects.None;
+                    sprite.Flip = SpriteEffects.None;
                     DX += speed;
                     Facing = 1;
                     state = HeroState.Running;
@@ -166,9 +155,9 @@ namespace Gravity
             }
 
             if (MathF.Abs(DX) > 0.005f)
-                heroSprite.Play(heroRunAnimID);
+                sprite.Play(heroRunAnimID);
             else
-                heroSprite.Play(heroIdleAnimID);
+                sprite.Play(heroIdleAnimID);
 
             var wasOnGround = onGround;
             onGround = Level.IsWithinBounds(CX, CY) && Level.HasCollision(CX, CY + 1);

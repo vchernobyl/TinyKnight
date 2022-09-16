@@ -1,5 +1,4 @@
-﻿using Gravity.Graphics;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System;
@@ -16,10 +15,10 @@ namespace Gravity.Entities
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
 
-            animator = new Animator(new List<Animation>
-            {
-                new Animation("Skeleton", content.Load<Texture2D>("Textures/Skeleton"))
-            });
+            //animator = new Animator(new List<Animation>
+            //{
+            //    new Animation("Skeleton", content.Load<Texture2D>("Textures/Skeleton"))
+            //});
 
             facing = Numerics.PickOne(-1, 1);
         }
@@ -45,10 +44,10 @@ namespace Gravity.Entities
                 DX = Math.Sign(facing) * speed;
             }
 
-            if (facing > 0)
-                animator.Flip = SpriteEffects.None;
-            else
-                animator.Flip = SpriteEffects.FlipHorizontally;
+            //if (facing > 0)
+                //animator.Flip = SpriteEffects.None;
+            //else
+                //animator.Flip = SpriteEffects.FlipHorizontally;
         }
 
         public override void Die()

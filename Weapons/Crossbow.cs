@@ -13,11 +13,11 @@ namespace Gravity.Weapons
             : base(hero, gameplayScreen, fireRate: 8f, name: nameof(Crossbow))
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
-            sprite = new Sprite(content.Load<Texture2D>("Textures/Crossbow"))
-            {
-                LayerDepth = .9f,
-                Origin = Vector2.Zero,
-            };
+            //sprite = new Sprite(content.Load<Texture2D>("Textures/Crossbow"))
+            //{
+            //    LayerDepth = .9f,
+            //    Origin = Vector2.Zero,
+            //};
 
             Collisions = false;
             Gravity = 0f;
@@ -36,13 +36,13 @@ namespace Gravity.Weapons
             if (hero.Facing > 0)
             {
                 Position = hero.Position + new Vector2(-1f, -2f);
-                sprite.Flip = SpriteEffects.None;
+                //sprite.Flip = SpriteEffects.None;
             }
             else
             {
                 var anchor = new Vector2(-7f, -2f);
                 Position = hero.Position + anchor;
-                sprite.Flip = SpriteEffects.FlipHorizontally;
+                //sprite.Flip = SpriteEffects.FlipHorizontally;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Gravity
         public int Damage { get; set; }
 
         public Arrow(GameplayScreen gameplayScreen) 
-            : base(gameplayScreen, new Sprite(Textures.Arrow))
+            : base(gameplayScreen)
         {
         }
 
@@ -34,10 +34,10 @@ namespace Gravity
             DX = Velocity.X;
             DY = Velocity.Y;
 
-            if (Velocity.X < 0)
-                sprite.Flip = SpriteEffects.FlipHorizontally;
-            else
-                sprite.Flip = SpriteEffects.None;
+            //if (Velocity.X < 0)
+            //    sprite.Flip = SpriteEffects.FlipHorizontally;
+            //else
+            //    sprite.Flip = SpriteEffects.None;
         }
     }
 }

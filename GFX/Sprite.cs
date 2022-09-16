@@ -5,39 +5,50 @@ namespace Gravity.GFX
 {
     public class Sprite
     {
-        private readonly SpriteSheet spriteSheet;
+        public Vector2 Scale;
+        public Vector2 Offset;
+        public float Rotation;
+        public float LayerDepth;
+        public SpriteEffects Flip;
 
-        private AnimationTrack currentAnimation;
-        private int currentAnimationID;
+        private readonly SpriteSheet spriteSheet;
 
         public Sprite(SpriteSheet spriteSheet)
         {
             this.spriteSheet = spriteSheet;
-            this.currentAnimationID = int.MaxValue;
+            this.CurrentAnimationID = int.MaxValue;
+            Scale = Vector2.One;
         }
 
-        public void Update(float deltaTime)
+        public void Update(GameTime gameTime)
         {
-            currentAnimation?.Update(deltaTime);
+            Animation?.Update(gameTime.DeltaTime());
         }
 
-        public void Draw(
-            Vector2 position, Color color,
-            float rotation, Vector2 origin, SpriteEffects effect)
+        public void Draw(Vector2 position)
         {
-            Draw(position, color, rotation, origin,
-                Rectangle.Empty, Vector2.Zero, effect);
-        }
-
-        public void Draw(
-            Vector2 position, Color color, float rotation,
-            Vector2 origin, Rectangle clipping, Vector2 size,
-            SpriteEffects effect, float depth = 0f)
-        {
-            if (currentAnimation == null)
+            if (Animation == null)
                 return;
 
-            var frame = currentAnimation.CurrentFrame;
+            var frame = Animation.CurrentFrame;
+            var source = frame.Region;
+
+            var spriteBatch = spriteSheet.SpriteBatch;
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp,
+                transformMatrix: GravityGame.WorldCamera.Transform);
+            {
+                spriteBatch.Draw(spriteSheet.Texture, position + Offset, source, Color.White,
+                    Rotation, Center, Scale, Flip, LayerDepth);
+            }
+            spriteBatch.End();
+        }
+
+        public void Draw(Vector2 position, Vector2 size)
+        {
+            if (Animation == null)
+                return;
+
+            var frame = Animation.CurrentFrame;
             var source = frame.Region;
             var destination = new Rectangle(
                 (int)position.X, (int)position.Y,
@@ -49,45 +60,51 @@ namespace Gravity.GFX
                 destination.Height = (int)size.Y;
 
             var spriteBatch = spriteSheet.SpriteBatch;
-            spriteBatch.Begin(
-                samplerState: SamplerState.PointClamp,
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp,
                 transformMatrix: GravityGame.WorldCamera.Transform);
             {
                 var texture = spriteSheet.Texture;
-                spriteBatch.Draw(texture, destination, source, color,
-                    rotation, origin, effect, depth);
+                spriteBatch.Draw(texture, destination, source, Color.White,
+                    Rotation, Center, Flip, LayerDepth);
             }
             spriteBatch.End();
         }
 
         public void Play(int animationID, int startFrame = 0)
         {
-            if (currentAnimationID == animationID)
+            if (CurrentAnimationID == animationID)
                 return;
 
-            currentAnimationID = animationID;
-            currentAnimation = new AnimationTrack(spriteSheet.GetAnimation(animationID));
-            currentAnimation.Start(startFrame);
+            CurrentAnimationID = animationID;
+            Animation = new AnimationTrack(spriteSheet.GetAnimation(animationID));
+            Animation.Start(startFrame);
         }
 
         public bool IsPlaying(int animationID)
         {
-            return currentAnimation != null && currentAnimationID == animationID;
+            return Animation != null && CurrentAnimationID == animationID;
         }
 
         public AnimationTrack Animation
         {
-            get { return currentAnimation; }
+            get;
+            private set;
         }
 
         public int CurrentAnimationID
         {
-            get { return currentAnimationID; }
+            get;
+            private set;
         }
 
         public Point FrameSize
         {
-            get { return currentAnimation.CurrentFrame.Region.Size; }
+            get { return Animation.CurrentFrame.Region.Size; }
+        }
+
+        public Vector2 Center
+        {
+            get { return FrameSize.ToVector2() / 2f; }
         }
     }
 }

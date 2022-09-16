@@ -1,5 +1,4 @@
-﻿using Gravity.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -52,28 +51,13 @@ namespace Gravity
         public Color FlashColor { get; private set; }
 
         protected readonly GameplayScreen gameplayScreen;
-        protected Sprite? sprite;
-        protected Animator animator;
+        protected GFX.Sprite sprite;
 
         private double flashDuration = .0;
 
         public Entity(GameplayScreen gameplayScreen)
         {
             this.gameplayScreen = gameplayScreen;
-        }
-
-        // TODO: Remove this constructor. Instantiate and set sprite in the extended class.
-        public Entity(GameplayScreen gameplayScreen, Sprite sprite)
-        {
-            this.gameplayScreen = gameplayScreen;
-            this.sprite = sprite;
-        }
-
-        // TODO: Remove this constructor. Instantiate and set animator in the extended class.
-        public Entity(GameplayScreen gameplayScreen, Animator animator)
-        {
-            this.gameplayScreen = gameplayScreen;
-            this.animator = animator;
         }
 
         public void SetCoordinates(float x, float y)
@@ -84,11 +68,6 @@ namespace Gravity
             CY = (int)(YY / Level.CellSize);
             XR = (XX - CX * Level.CellSize) / Level.CellSize;
             YR = (YY - CY * Level.CellSize) / Level.CellSize;
-
-            if (sprite != null)
-                sprite.Position = Position;
-            if (animator != null)
-                animator.Position = Position;
         }
 
         public bool Overlaps(Entity other)
@@ -130,8 +109,8 @@ namespace Gravity
         public void EntityUpdate(GameTime gameTime)
         {
             Update(gameTime);
+            sprite.Update(gameTime);
 
-            animator?.Update(gameTime);
             flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.
@@ -191,25 +170,14 @@ namespace Gravity
 
             XX = (int)((CX + XR) * Level.CellSize);
             YY = (int)((CY + YR) * Level.CellSize);
-
-            //XX = Numerics.Mod((int)XX, Level.Width);
-            //YY = Numerics.Mod((int)YY, Level.Height);
-
-            if (sprite != null)
-                sprite.Position = Position;
-            if (animator != null)
-                animator.Position = Position;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (sprite != null)
-                sprite.Draw(spriteBatch);
-            else if (animator != null)
-                animator.Draw(spriteBatch);
+            sprite.Draw(Position);
 
             if (DebugInfo.ShowEntityColliders)
-                spriteBatch.DrawRectangleOutline(new Rectangle((int)XX - 4, (int)YY - 4, 8, 8), new Color(0f, 255f, 0f));
+                spriteBatch.DrawRectangleOutline(new Rectangle((int)XX - 4, (int)YY - 4, 8, 8), new Color(0f, 255f, 0f), .5f);
         }
     }
 }

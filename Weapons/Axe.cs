@@ -20,16 +20,16 @@ namespace Gravity.Weapons
             Collisions = false;
 
             var content = gameplayScreen.ScreenManager.Game.Content;
-            sprite = new Sprite(content.Load<Texture2D>("Textures/Axe"))
-            {
-                Flip = facing > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally
-            };
+            //sprite = new Sprite(content.Load<Texture2D>("Textures/Axe"))
+            //{
+            //    Flip = facing > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally
+            //};
         }
 
         public override void Update(GameTime gameTime)
         {
             DX = .75f * facing;
-            sprite.Rotation += 15f * facing * gameTime.DeltaTime();
+            //sprite.Rotation += 15f * facing * gameTime.DeltaTime();
         }
     }
 
@@ -39,7 +39,7 @@ namespace Gravity.Weapons
             : base(hero, gameplayScreen, fireRate: 1f, nameof(Axe))
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
-            sprite = new Sprite(content.Load<Texture2D>("Textures/Axe"));
+            //sprite = new Sprite(content.Load<Texture2D>("Textures/Axe"));
         }
 
         public override void UpdatePosition()
@@ -47,12 +47,12 @@ namespace Gravity.Weapons
             if (hero.Facing > 0)
             {
                 Position = hero.Position + new Vector2(5f, 0f);
-                sprite.Flip = SpriteEffects.None;
+                //sprite.Flip = SpriteEffects.None;
             }
             else
             {
                 Position = hero.Position + new Vector2(-5f, 0f);
-                sprite.Flip = SpriteEffects.FlipHorizontally;
+                //sprite.Flip = SpriteEffects.FlipHorizontally;
             }
         }
 
