@@ -48,7 +48,7 @@ namespace Gravity
             GravityGame.WorldCamera.Position = new Vector2(Level.Width / 2f, Level.Height / 2f);
             GravityGame.WorldCamera.Scale = zoom;
 
-            Hero = new Hero(this) { Position = new Vector2(50f, 25f) };
+            Hero = new Hero(this) { Position = new Vector2(100f, 25f) };
             Entities.Add(Hero);
 
             Hud = new Hud(this, Hero);
@@ -60,20 +60,18 @@ namespace Gravity
             {
                 while (true)
                 {
-                    AddEntity(new Bat(this) { Position = position });
-                    //var roll = Random.FloatValue;
-                    //if (roll <= .33f)
-                    //    AddEntity(new Bat(this) { Position = position });
-                    //else if (roll <= .66f)
-                    //    AddEntity(new Zombie(this) { Position = position });
-                    //else
-                    //    AddEntity(new Skeleton(this) { Position = position });
+                    var roll = Random.FloatValue;
+                    if (roll <= .5f)
+                        AddEntity(new Bat(this) { Position = position });
+                    else
+                        AddEntity(new Zombie(this) { Position = position });
 
                     yield return spawnInterval;
                 }
             }
+            AddEntity(new Zombie(this) { Position = Hero.Position + new Vector2(60f, 0f) });
 
-            GravityGame.Runner.Run(Spawn());
+            //GravityGame.Runner.Run(Spawn());
 
             // Once the load has finished, we use ResetElapsedTime to tell the game's
             // timining mechanism that we have just finished a very long frame, and

@@ -1,7 +1,8 @@
-﻿using Gravity.Weapons;
+﻿using Gravity.GFX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace Gravity
 {
@@ -53,9 +54,11 @@ namespace Gravity
         public Color FlashColor { get; private set; }
 
         protected readonly GameplayScreen gameplayScreen;
-        protected GFX.Sprite sprite;
+        protected Sprite sprite;
 
         private double flashDuration = .0;
+
+        private readonly List<Entity> prevFrameCollisions = new List<Entity>();
 
         public Entity(GameplayScreen gameplayScreen)
         {
@@ -95,7 +98,11 @@ namespace Gravity
             EntityState = State.Dead;
         }
 
-        public virtual void OnEntityCollision(Entity other) { }
+        public virtual void OnEntityCollisionEnter(Entity other) { }
+
+        public virtual void OnEntityCollisionStay(Entity other) { }
+
+        public virtual void OnEntityCollisionExit(Entity other) { }
 
         public virtual void OnLevelCollision(Vector2 normal) { }
 
@@ -120,8 +127,29 @@ namespace Gravity
             {
                 foreach (var other in gameplayScreen.Entities)
                 {
-                    if (this != other && Overlaps(other))
-                        OnEntityCollision(other);
+                    if (this == other)
+                        continue;
+
+                    if (Overlaps(other))
+                    {
+                        if (prevFrameCollisions.Contains(other))
+                        {
+                            OnEntityCollisionStay(other);
+                        }
+                        else
+                        {
+                            prevFrameCollisions.Add(other);
+                            OnEntityCollisionEnter(other);
+                        }
+                    }
+                    else
+                    {
+                        if (prevFrameCollisions.Contains(other))
+                        {
+                            prevFrameCollisions.Remove(other);
+                            OnEntityCollisionExit(other);
+                        }
+                    }
                 }
             }
 

@@ -63,7 +63,7 @@ namespace Gravity
             game.Components.Add(jumpParticles);
         }
 
-        public override void OnEntityCollision(Entity other)
+        public override void OnEntityCollisionEnter(Entity other)
         {
             // TODO: Player death state.
             if (other is Enemy enemy && enemy.IsAlive && !hurting)

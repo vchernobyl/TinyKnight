@@ -11,7 +11,6 @@ namespace Gravity
         private SpriteBatch spriteBatch;
         private GraphicsDevice graphics;
         private SpriteFont font;
-        private Sprite emitterSprite;
 
         ParticleSystem explosion;
         ParticleSystem smoke;
@@ -44,7 +43,6 @@ namespace Gravity
 
             var content = ScreenManager.Game.Content;
             font = content.Load<SpriteFont>("Fonts/font");
-            emitterSprite = new Sprite(content.Load<Texture2D>("Textures/BlockEmitter"));
 
             var game = ScreenManager.Game;
 
@@ -149,10 +147,6 @@ namespace Gravity
                 smoke.FreeParticleCount, smokePlume.FreeParticleCount,
                 emitterSystem.FreeParticleCount);
             spriteBatch.DrawString(font, message, new Vector2(50, 50), Color.White);
-
-            // Draw a sprite to represent our emitter for that state.
-            if (currentState == State.Emitter)
-                emitterSprite.Draw(spriteBatch);
 
             spriteBatch.End();
         }
