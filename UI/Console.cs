@@ -29,11 +29,8 @@ namespace Gravity.UI
         private float currentY;
 
         private const float OpenAmount = .45f;
-
-        public bool IsOpen
-        {
-            get { return currentY > 0f; }
-        }
+        private const int CursorPaddingLeft = 5;
+        private const int CursorPaddingBottom = -10;
 
         public Console(Game game) : base(game)
         {
@@ -49,7 +46,8 @@ namespace Gravity.UI
             rectangle = new Rectangle(0, -height, width, height);
 
             (cursorWidth, cursorHeight) = font.MeasureString("M").ToPoint();
-            cursor = new Cursor(rectangle.Left, rectangle.Bottom,
+            cursor = new Cursor(rectangle.Left,
+                rectangle.Bottom,
                 cursorWidth, cursorHeight,
                 Color.White, blinkRate: .75f);
 
@@ -57,7 +55,7 @@ namespace Gravity.UI
 
             history = new List<string>();
 
-            registry = new CommandRegistry();
+            registry = new CommandRegistry(game);
 
             game.Window.TextInput += HandleTextInput;
         }
@@ -103,10 +101,15 @@ namespace Gravity.UI
             }
         }
 
+        public void ClearHistory()
+        {
+            history.Clear();
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (Input.WasKeyPressed(Keys.OemTilde))
-                targetY = IsOpen ? 0f : OpenAmount;
+                targetY = currentY > 0f ? 0f : OpenAmount;
 
             currentY = Numerics.Approach(currentY, targetY, gameTime.DeltaTime() * 4f);
             rectangle.Y = (int)(-height + currentY * height);
