@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
+using System.Text;
 
 namespace Gravity.UI
 {
@@ -20,6 +22,10 @@ namespace Gravity.UI
         private float targetY;
         private float currentY;
 
+        private const float OpenAmount = .45f;
+
+        private StringBuilder textInput;
+
         public bool IsOpen
         {
             get { return currentY > 0f; }
@@ -29,29 +35,46 @@ namespace Gravity.UI
         {
             width = game.GraphicsDevice.Viewport.Width;
             height = game.GraphicsDevice.Viewport.Height;
+
             spriteBatch = game.Services.GetService<SpriteBatch>();
+
             font = game.Content.Load<SpriteFont>("Fonts/Default");
+
             backgroundColor = new Color(.2f, .4f, .6f, .85f);
+
             rectangle = new Rectangle(0, -height, width, height);
 
             (cursorWidth, cursorHeight) = font.MeasureString("M").ToPoint();
             cursor = new Cursor(rectangle.Left, rectangle.Bottom,
                 cursorWidth, cursorHeight,
                 Color.White, blinkRate: .75f);
+
+            textInput = new StringBuilder();
+
+            game.Window.TextInput += HandleTextInput;
+        }
+
+        private void HandleTextInput(object? sender, TextInputEventArgs e)
+        {
+            if (e.Key == Keys.OemTilde)
+                return;
+
+            if (font.Characters.Contains(e.Character))
+            {
+                textInput.Append(e.Character);
+                cursor.Left = (int)font.MeasureString(textInput).X;
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             if (Input.WasKeyPressed(Keys.OemTilde))
-                targetY = IsOpen ? 0f : .45f;
+                targetY = IsOpen ? 0f : OpenAmount;
 
             currentY = Numerics.Approach(currentY, targetY, gameTime.DeltaTime() * 4f);
             rectangle.Y = (int)(-height + currentY * height);
 
-            var leftPadding = 5;
-            var bottomPadding = 10;
-            cursor.Top = rectangle.Bottom - 20 - bottomPadding;
-            cursor.Left = rectangle.Left + leftPadding;
+            cursor.Top = rectangle.Bottom - cursorHeight;
 
             cursor.Update(gameTime);
         }
@@ -60,6 +83,7 @@ namespace Gravity.UI
         {
             spriteBatch.Begin();
             spriteBatch.DrawRectangle(rectangle, backgroundColor);
+            spriteBatch.DrawString(font, textInput, new Vector2(rectangle.Left, cursor.Top), Color.White);
             cursor.Draw(spriteBatch);
             spriteBatch.End();
         }

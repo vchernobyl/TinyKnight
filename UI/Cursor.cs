@@ -15,16 +15,19 @@ namespace Gravity.UI
 
         public int Top
         {
+            get { return rectangle.Top; }
             set { rectangle.Y = value; ; }
         }
 
         public int Left
         {
+            get { return rectangle.Left; }
             set { rectangle.X = value; }
         }
 
         public Point Location
         {
+            get { return rectangle.Location; }
             set { rectangle.Location = value; }
         }
 
