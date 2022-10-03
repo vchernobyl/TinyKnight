@@ -6,41 +6,6 @@ using System;
 namespace Gravity
 {
     [Obsolete("Load content directly from ContentManager")]
-    public static class Textures
-    {
-        public static Texture2D Bullet { get; private set; }
-        public static Texture2D Pellet { get; private set; }
-        public static Texture2D MuzzleFlash { get; private set; }
-        public static Texture2D Coin { get; private set; }
-        public static Texture2D Hero { get; private set; }
-        public static Texture2D Enemy { get; private set; }
-        public static Texture2D Flyer { get; private set; }
-        public static Texture2D PortalOrange { get; private set; }
-        public static Texture2D PortalYellow { get; private set; }
-        public static Texture2D Pixel { get; private set; }
-        public static Texture2D Circle { get; private set; }
-        public static Texture2D Box { get; private set; }
-        public static Texture2D Arrow { get; private set; }
-
-        public static void Load(ContentManager content)
-        {
-            Bullet = content.Load<Texture2D>("Textures/bullet");
-            Pellet = content.Load<Texture2D>("Textures/Pellet");
-            MuzzleFlash = content.Load<Texture2D>("Textures/Muzzle_Flash");
-            Coin = content.Load<Texture2D>("Textures/Coin");
-            Hero = content.Load<Texture2D>("Textures/character_0000");
-            Enemy = content.Load<Texture2D>("Textures/character_0015");
-            Flyer = content.Load<Texture2D>("Textures/Flyer");
-            PortalOrange = content.Load<Texture2D>("Textures/Portal");
-            PortalYellow = content.Load<Texture2D>("Textures/Portal");
-            Pixel = content.Load<Texture2D>("Textures/Pixel");
-            Circle = content.Load<Texture2D>("Textures/Circle");
-            Box = content.Load<Texture2D>("Textures/Box");
-            Arrow = content.Load<Texture2D>("Textures/Arrow");
-        }
-    }
-
-    [Obsolete("Load content directly from ContentManager")]
     public static class SoundFX
     {
         public static SoundEffect PistolShot { get; private set; }
@@ -67,17 +32,6 @@ namespace Gravity
             Explosion = content.Load<SoundEffect>("SoundFX/Explosion");
             PortalExplosionWindup = content.Load<SoundEffect>("SoundFX/Portal_Explosion_Windup");
             PortalExplosion = content.Load<SoundEffect>("SoundFX/Portal_Explosion");
-        }
-    }
-
-    [Obsolete("Load content directly from ContentManager")]
-    public static class Fonts
-    {
-        public static SpriteFont Default { get; private set; }
-
-        public static void Load(ContentManager content)
-        {
-            Default = content.Load<SpriteFont>("Fonts/Default");
         }
     }
 

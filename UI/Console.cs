@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Gravity.UI
@@ -11,20 +11,23 @@ namespace Gravity.UI
         private readonly int width;
         private readonly int height;
 
-        private readonly SpriteBatch spriteBatch;
-        private readonly SpriteFont font;
-        private readonly Color backgroundColor;
-        private readonly Cursor cursor;
         private readonly int cursorWidth;
         private readonly int cursorHeight;
+
+        private readonly SpriteBatch spriteBatch;
+        private readonly SpriteFont font;
+
+        private readonly Color backgroundColor;
+        private readonly Cursor cursor;
+
+        private readonly StringBuilder textInput;
+        private readonly List<string> history;
 
         private Rectangle rectangle;
         private float targetY;
         private float currentY;
 
         private const float OpenAmount = .45f;
-
-        private StringBuilder textInput;
 
         public bool IsOpen
         {
@@ -51,6 +54,8 @@ namespace Gravity.UI
 
             textInput = new StringBuilder();
 
+            history = new List<string>();
+
             game.Window.TextInput += HandleTextInput;
         }
 
@@ -58,6 +63,22 @@ namespace Gravity.UI
         {
             if (e.Key == Keys.OemTilde)
                 return;
+
+            // Prevent cursor blinking when typing.
+            cursor.ResetBlinkTime();
+
+            switch (e.Key)
+            {
+                case Keys.Back:
+                    textInput.Remove(textInput.Length - 1, 1);
+                    cursor.Left = (int)font.MeasureString(textInput).X;
+                    break;
+                case Keys.Enter:
+                    history.Add(textInput.ToString());
+                    textInput.Clear();
+                    cursor.Left = (int)font.MeasureString(textInput).X;
+                    break;
+            }
 
             if (font.Characters.Contains(e.Character))
             {
@@ -75,7 +96,6 @@ namespace Gravity.UI
             rectangle.Y = (int)(-height + currentY * height);
 
             cursor.Top = rectangle.Bottom - cursorHeight;
-
             cursor.Update(gameTime);
         }
 
@@ -84,6 +104,14 @@ namespace Gravity.UI
             spriteBatch.Begin();
             spriteBatch.DrawRectangle(rectangle, backgroundColor);
             spriteBatch.DrawString(font, textInput, new Vector2(rectangle.Left, cursor.Top), Color.White);
+
+            var y = cursor.Top - cursorHeight;
+            for (var i = history.Count - 1; i >= 0; i--)
+            {
+                var position = new Vector2(0f, y - (history.Count - 1 - i) * cursorHeight);
+                spriteBatch.DrawString(font, history[i], position, Color.White);
+            }
+
             cursor.Draw(spriteBatch);
             spriteBatch.End();
         }

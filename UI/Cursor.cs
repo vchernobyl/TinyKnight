@@ -41,12 +41,17 @@ namespace Gravity.UI
             this.toggle = true;
         }
 
+        public void ResetBlinkTime()
+        {
+            blinkTime = blinkDuration;
+        }
+
         public void Update(GameTime gameTime)
         {
             blinkTime -= gameTime.DeltaTime();
             if (blinkTime <= 0f)
             {
-                blinkTime = blinkDuration;
+                ResetBlinkTime();
                 toggle = !toggle;
             }
         }

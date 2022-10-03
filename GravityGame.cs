@@ -16,8 +16,6 @@ namespace Gravity
 
         public static readonly CoroutineRunner Runner = new CoroutineRunner();
 
-        private bool paused = false;
-
         public GravityGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,9 +46,7 @@ namespace Gravity
 
         protected override void LoadContent()
         {
-            Textures.Load(Content);
             SoundFX.Load(Content);
-            Fonts.Load(Content);
             Effects.Load(Content);
 
             var spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -66,14 +62,8 @@ namespace Gravity
 
             DebugInfo.HandleInput();
 
-            if (Input.WasKeyPressed(Keys.P))
-                paused = !paused;
-
-            if (!paused)
-            {
-                Runner.Update(gameTime.DeltaTime());
-                base.Update(gameTime);
-            }
+            Runner.Update(gameTime.DeltaTime());
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
