@@ -6,7 +6,12 @@ namespace Gravity.UI
     public class Cursor
     {
         private Rectangle rectangle;
-        private readonly Color color;
+        private Color color;
+        
+        private float blinkTime;
+        private readonly float blinkDuration;
+
+        private bool toggle;
 
         public int Top
         {
@@ -23,20 +28,29 @@ namespace Gravity.UI
             set { rectangle.Location = value; }
         }
 
-        public Cursor(int x, int y, int width, int height, Color color)
+        public Cursor(int x, int y, int width, int height,
+            Color color, float blinkRate = 1f)
         {
             this.rectangle = new Rectangle(x, y, width, height);
             this.color = color;
+            this.blinkTime = 0f;
+            this.blinkDuration = blinkRate;
+            this.toggle = true;
         }
 
         public void Update(GameTime gameTime)
         {
-            
+            blinkTime -= gameTime.DeltaTime();
+            if (blinkTime <= 0f)
+            {
+                blinkTime = blinkDuration;
+                toggle = !toggle;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawRectangle(rectangle, color);
+            spriteBatch.DrawRectangle(rectangle, toggle ? color : Color.Transparent);
         }
     }
 }

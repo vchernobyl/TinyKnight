@@ -34,10 +34,10 @@ namespace Gravity.UI
             backgroundColor = new Color(.2f, .4f, .6f, .85f);
             rectangle = new Rectangle(0, -height, width, height);
 
-            // TODO: Measure font for cursor size.
             (cursorWidth, cursorHeight) = font.MeasureString("M").ToPoint();
-
-            cursor = new Cursor(rectangle.Left, rectangle.Bottom, cursorWidth, cursorHeight, Color.White);
+            cursor = new Cursor(rectangle.Left, rectangle.Bottom,
+                cursorWidth, cursorHeight,
+                Color.White, blinkRate: .75f);
         }
 
         public override void Update(GameTime gameTime)
