@@ -54,6 +54,8 @@ namespace Gravity
 
             var spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
+
+            Components.Add(new Console(this));
         }
 
         protected override void Update(GameTime gameTime)
