@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Gravity
+namespace Gravity.UI
 {
     public class Console : DrawableGameComponent
     {
@@ -10,8 +10,13 @@ namespace Gravity
         private readonly int height;
 
         private readonly SpriteBatch spriteBatch;
+        private readonly SpriteFont font;
         private readonly Color backgroundColor;
+        private readonly Cursor cursor;
+        private readonly int cursorWidth;
+        private readonly int cursorHeight;
 
+        private Rectangle rectangle;
         private float targetY;
         private float currentY;
 
@@ -25,7 +30,14 @@ namespace Gravity
             width = game.GraphicsDevice.Viewport.Width;
             height = game.GraphicsDevice.Viewport.Height;
             spriteBatch = game.Services.GetService<SpriteBatch>();
+            font = game.Content.Load<SpriteFont>("Fonts/Default");
             backgroundColor = new Color(.2f, .4f, .6f, .85f);
+            rectangle = new Rectangle(0, -height, width, height);
+
+            // TODO: Measure font for cursor size.
+            (cursorWidth, cursorHeight) = font.MeasureString("M").ToPoint();
+
+            cursor = new Cursor(rectangle.Left, rectangle.Bottom, cursorWidth, cursorHeight, Color.White);
         }
 
         public override void Update(GameTime gameTime)
@@ -34,13 +46,21 @@ namespace Gravity
                 targetY = IsOpen ? 0f : .45f;
 
             currentY = Numerics.Approach(currentY, targetY, gameTime.DeltaTime() * 4f);
+            rectangle.Y = (int)(-height + currentY * height);
+
+            var leftPadding = 5;
+            var bottomPadding = 10;
+            cursor.Top = rectangle.Bottom - 20 - bottomPadding;
+            cursor.Left = rectangle.Left + leftPadding;
+
+            cursor.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            var size = new Rectangle(0, (int)(-height + (currentY * height)), width, height);
             spriteBatch.Begin();
-            spriteBatch.DrawRectangle(size, backgroundColor);
+            spriteBatch.DrawRectangle(rectangle, backgroundColor);
+            cursor.Draw(spriteBatch);
             spriteBatch.End();
         }
     }
