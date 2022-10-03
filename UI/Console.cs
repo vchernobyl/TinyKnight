@@ -22,6 +22,7 @@ namespace Gravity.UI
 
         private readonly StringBuilder textInput;
         private readonly List<string> history;
+        private readonly CommandRegistry registry;
 
         private Rectangle rectangle;
         private float targetY;
@@ -56,6 +57,8 @@ namespace Gravity.UI
 
             history = new List<string>();
 
+            registry = new CommandRegistry();
+
             game.Window.TextInput += HandleTextInput;
         }
 
@@ -74,9 +77,22 @@ namespace Gravity.UI
                     cursor.Left = (int)font.MeasureString(textInput).X;
                     break;
                 case Keys.Enter:
-                    history.Add(textInput.ToString());
+                    var args = textInput.ToString().Trim().Split(" ");
+                    var commandName = args[0];
+                    if (commandName == "")
+                        history.Add("");
+                    else
+                    {
+                        var command = registry.Find(commandName);
+                        if (command == null)
+                            history.Add($"Command `{commandName}` not found!");
+                        else
+                            history.Add(command.Procedure.Invoke(args[1..^0]));
+                    }
+
                     textInput.Clear();
                     cursor.Left = (int)font.MeasureString(textInput).X;
+
                     break;
             }
 
