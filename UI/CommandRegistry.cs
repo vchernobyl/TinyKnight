@@ -17,6 +17,7 @@ namespace Gravity.UI
                 new Command("clear", Clear),
                 new Command("commands", AvailableCommands),
                 new Command("add", Add),
+                new Command("exit", Exit),
             };
         }
 
@@ -27,13 +28,14 @@ namespace Gravity.UI
             return "";
         }
 
-        // BUG: Multiline output is not printed correctly in the console.
         private string AvailableCommands(string[] args)
         {
             var builder = new StringBuilder();
-            foreach (var command in commands)
+            for (int i = 0; i < commands.Count; i++)
             {
-                builder.Append($"{command.Name}\n");
+                builder.Append(commands[i].Name);
+                if (i != commands.Count - 1)
+                    builder.Append("\n");
             }
             return builder.ToString();
         }
@@ -47,6 +49,12 @@ namespace Gravity.UI
                 return $"{a + b}";
             else
                 return "Arguments have to be integers";
+        }
+
+        private string Exit(string[] args)
+        {
+            game.Exit();
+            return "";
         }
 
         public Command? Find(string name)

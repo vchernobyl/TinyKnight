@@ -41,9 +41,10 @@ namespace Gravity.UI
             this.toggle = true;
         }
 
-        public void ResetBlinkTime()
+        public void PauseBlink()
         {
             blinkTime = blinkDuration;
+            toggle = true;
         }
 
         public void Update(GameTime gameTime)
@@ -51,7 +52,7 @@ namespace Gravity.UI
             blinkTime -= gameTime.DeltaTime();
             if (blinkTime <= 0f)
             {
-                ResetBlinkTime();
+                blinkTime = blinkDuration;
                 toggle = !toggle;
             }
         }
