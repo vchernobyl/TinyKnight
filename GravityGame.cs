@@ -24,6 +24,7 @@ namespace Gravity
 
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
+            Services.AddService(screenManager);
 
             // Add initial screens.
             //screenManager.AddScreen(new SandboxScreen());
@@ -50,11 +51,11 @@ namespace Gravity
             Effects.Load(Content);
 
             var spriteBatch = new SpriteBatch(GraphicsDevice);
-            Services.AddService(typeof(SpriteBatch), spriteBatch);
+            Services.AddService(spriteBatch);
 
             var console = new Console(this);
             Components.Add(console);
-            Services.AddService(typeof(Console), console);
+            Services.AddService(console);
         }
 
         protected override void Update(GameTime gameTime)

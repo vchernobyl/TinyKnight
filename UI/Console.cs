@@ -65,6 +65,9 @@ namespace Gravity.UI
             if (e.Key == Keys.OemTilde)
                 return;
 
+            if (currentY == 0f)
+                return;
+
             // Prevent cursor blinking when typing.
             cursor.PauseBlink();
 

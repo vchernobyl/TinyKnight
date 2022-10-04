@@ -46,6 +46,11 @@ namespace Gravity
         public Texture2D BlankTexture { get; private set; }
         #endregion
 
+        public GameScreen CurrentScreen
+        {
+            get { return screens[^1]; }
+        }
+
         public ScreenManager(GravityGame game) : base(game)
         {
             TouchPanel.EnabledGestures = GestureType.None;
