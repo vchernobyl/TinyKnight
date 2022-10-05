@@ -20,6 +20,8 @@ namespace Gravity.UI
                 new Command("add", Add),
                 new Command("exit", Exit),
                 new Command("add_entity", AddEntity),
+                new Command("show_solids", ToggleSolids),
+                new Command("show_colliders", ToggleColliders),
             };
         }
 
@@ -98,6 +100,46 @@ namespace Gravity.UI
         public Command? Find(string name)
         {
             return commands.Find(c => c.Name == name);
+        }
+
+        private static bool? ToBoolean(string arg)
+        {
+            return arg switch
+            {
+                "on" => true,
+                "off" => false,
+                _ => null,
+            };
+        }
+
+        private string ToggleSolids(string[] arg)
+        {
+            if (arg.Length != 1)
+                return "show_solids takes exactly 1 argument";
+
+            var toggle = ToBoolean(arg[0]);
+            if (ToBoolean(arg[0]) is bool flag)
+            {
+                DebugInfo.ShowSolids = flag;
+                return $"show_solids is {arg[0]}";
+            }
+
+            return $"show_solids: invalid argument {toggle}";
+        }
+
+        private string ToggleColliders(string[] arg)
+        {
+            if (arg.Length != 1)
+                return "show_collider takes exactly 1 argument";
+
+            var toggle = ToBoolean(arg[0]);
+            if (ToBoolean(arg[0]) is bool flag)
+            {
+                DebugInfo.ShowEntityColliders = flag;
+                return $"show_colliders is {arg[0]}";
+            }
+
+            return $"show_colliders: invalid argument {toggle}";
         }
     }
 }

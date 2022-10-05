@@ -61,8 +61,6 @@ namespace Gravity
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            DebugInfo.HandleInput();
-
             Runner.Update(gameTime.DeltaTime());
             base.Update(gameTime);
         }
