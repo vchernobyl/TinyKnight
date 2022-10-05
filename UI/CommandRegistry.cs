@@ -19,7 +19,7 @@ namespace Gravity.UI
                 new Command("commands", AvailableCommands),
                 new Command("add", Add),
                 new Command("exit", Exit),
-                new Command("add_entity", AddEntity),
+                new Command("spawn", Spawn),
                 new Command("show_solids", ToggleSolids),
                 new Command("show_colliders", ToggleColliders),
                 new Command("history", PrintHistory),
@@ -62,14 +62,14 @@ namespace Gravity.UI
             return "";
         }
 
-        private string AddEntity(string[] args)
+        private string Spawn(string[] args)
         {
             var g = game as GravityGame;
             var screenManager = g.Services.GetService<ScreenManager>();
             if (screenManager.CurrentScreen is GameplayScreen gameplayScreen)
             {
                 if (args.Length != 3)
-                    return "add_entity takes exactly 3 arguments";
+                    return "spawn takes exactly 3 arguments";
 
                 var name = args[0];
                 Entity? entity = name switch
@@ -95,7 +95,7 @@ namespace Gravity.UI
                     return $"Entity {name} not recognized";
 
             }
-            return "You have to be in GameplayScreen to add an entity";
+            return "You have to be in GameplayScreen to spawn an entity";
         }
 
         public Command? Find(string name)

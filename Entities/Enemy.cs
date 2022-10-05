@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using System.Threading;
 
 namespace Gravity.Entities
@@ -8,10 +9,15 @@ namespace Gravity.Entities
         public int Health { get; private set; }
         public bool IsAlive => Health > 0;
 
+        private readonly SoundEffect hitSound;
+
         public Enemy(GameplayScreen gameplayScreen, int health)
             : base(gameplayScreen)
         {
             Health = health;
+
+            var content = gameplayScreen.ScreenManager.Game.Content;
+            hitSound = content.Load<SoundEffect>("SoundFX/Enemy_Hit");
         }
 
         public void Heal(int amount)
@@ -25,7 +31,7 @@ namespace Gravity.Entities
 
             // Hit effects.
             {
-                SoundFX.EnemyHit.Play(volume: .5f, 0f, 0f);
+                hitSound.Play(volume: .5f, 0f, 0f);
                 Flash(duration: .1f, Color.Red);
                 Thread.Sleep(millisecondsTimeout: 20);
                 GravityGame.WorldCamera.Shake(trauma: .48f);

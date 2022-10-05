@@ -1,4 +1,5 @@
 ﻿using Gravity.Entities;
+using Gravity.GFX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,6 +13,13 @@ namespace Gravity
         public Arrow(GameplayScreen gameplayScreen) 
             : base(gameplayScreen)
         {
+            var content = gameplayScreen.ScreenManager.Game.Content;
+            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
+            var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
+            anim.AddFrame(new Rectangle(8, 0, 8, 8), duration: 0f);
+
+            sprite = spriteSheet.Create();
+            sprite.Play(defaultAnimID);
         }
 
         public override void OnEntityCollisionEnter(Entity other)
@@ -34,10 +42,10 @@ namespace Gravity
             DX = Velocity.X;
             DY = Velocity.Y;
 
-            //if (Velocity.X < 0)
-            //    sprite.Flip = SpriteEffects.FlipHorizontally;
-            //else
-            //    sprite.Flip = SpriteEffects.None;
+            if (Velocity.X < 0)
+                sprite.Flip = SpriteEffects.FlipHorizontally;
+            else
+                sprite.Flip = SpriteEffects.None;
         }
     }
 }

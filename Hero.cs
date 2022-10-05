@@ -3,6 +3,7 @@ using Gravity.GFX;
 using Gravity.Particles;
 using Gravity.Weapons;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -32,6 +33,9 @@ namespace Gravity
         private readonly InputAction jump;
         private readonly InputAction shoot;
 
+        private readonly SoundEffect jumpSound;
+        private readonly SoundEffect hurtSound;
+
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
@@ -58,11 +62,13 @@ namespace Gravity
 
             var heroIdleAnim = spriteSheet.CreateAnimation("Hero_Idle", out heroIdleAnimID);
             heroIdleAnim.AddFrame(new Rectangle(0, 16, 8, 8), .1f);
-            //heroIdleAnim.AddFrame(new Rectangle(8, 16, 8, 8), .1f);
-            //heroIdleAnim.AddFrame(new Rectangle(16, 16, 8, 8), .1f);
 
             sprite = spriteSheet.Create();
             sprite.Play(heroIdleAnimID);
+            sprite.LayerDepth = .1f;
+
+            jumpSound = content.Load<SoundEffect>("SoundFX/Hero_Jump");
+            hurtSound = content.Load<SoundEffect>("SoundFX/Hero_Hurt");
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
@@ -84,7 +90,8 @@ namespace Gravity
 
                 hurting = true;
                 hurtTime = .2;
-                SoundFX.HeroHurt.Play();
+                hurtSound.Play();
+
                 Flash(duration: .15f, Color.Red);
 
                 DY = -.3f;
@@ -115,7 +122,8 @@ namespace Gravity
                 if (jump.Evaluate(input) && onGround)
                 {
                     DY = jumpForce;
-                    SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
+
+                    jumpSound.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
 
                     SquashX(.5f);
@@ -146,11 +154,6 @@ namespace Gravity
             // Landing.
             if (!wasOnGround && onGround)
                 SquashY(.5f);
-        }
-
-        public override void PostUpdate(GameTime gameTime)
-        {
-            CurrentWeapon.UpdatePosition();
         }
 
         // TODO: These currently assume that every sprite/animator "normal"

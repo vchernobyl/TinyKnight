@@ -8,8 +8,10 @@ namespace Gravity.GFX
         public Vector2 Offset;
         public Vector2 Origin;
         public Vector2 Scale;
+
         public float Rotation;
         public float LayerDepth;
+
         public SpriteEffects Flip;
 
         private readonly SpriteSheet spriteSheet;

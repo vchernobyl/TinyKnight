@@ -1,6 +1,5 @@
 ﻿namespace Gravity.GFX
 {
-    // This is the animation player. State.
     public class AnimationTrack
     {
         private readonly Animation animation;

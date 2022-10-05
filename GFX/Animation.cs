@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Gravity.GFX
 {
-    // This is just the animation data. Immutable.
     public class Animation
     {
         public class Frame

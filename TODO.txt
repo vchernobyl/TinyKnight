@@ -67,3 +67,6 @@ TODO:
 - Experiment with arrow stretching as it travels, does it give a better impact feeling?
 - Collision masks
 - Pinky looking charging monster
+- Greatly simplify current screen manager. For some reason it calls Update on the screen before
+  calling HandleInput. It also gives us functionality that we don't need, including possibility
+  for multiplayer input etc.

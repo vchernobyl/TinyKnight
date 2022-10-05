@@ -45,7 +45,7 @@ namespace Gravity
             foreach (var cell in Cells)
             {
                 if (cell.Type == Cell.CellType.Wall)
-                    batch.Draw(cellTexture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                    batch.Draw(cellTexture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
 
                 if (cell.Solid && DebugInfo.ShowSolids)
                 {

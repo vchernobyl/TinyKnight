@@ -35,7 +35,5 @@ namespace Gravity.Weapons
         }
 
         public virtual void Shoot() { }
-
-        public abstract void UpdatePosition();
     }
 }

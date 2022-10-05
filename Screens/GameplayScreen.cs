@@ -20,6 +20,7 @@ namespace Gravity
         private readonly List<Entity> pendingEntities = new List<Entity>();
 
         private bool updatingEntities = false;
+        private Effect flashEffect;
 
         public GameplayScreen()
         {
@@ -38,6 +39,8 @@ namespace Gravity
         public override void LoadContent()
         {
             content ??= new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
+
+            flashEffect = content.Load<Effect>("Effects/FlashEffect");
 
             Level = LevelLoader.Load(content.Load<Texture2D>("Levels/Map1"),
                 content.Load<Texture2D>("Textures/Tile"));
@@ -86,8 +89,12 @@ namespace Gravity
 
         public override void HandleInput(GameTime gameTime, InputState input)
         {
-            foreach (var en in Entities)
-                en.HandleInput(input);
+            updatingEntities = true;
+
+            foreach (var entity in Entities)
+                entity.HandleInput(input);
+
+            updatingEntities = false;
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -132,7 +139,7 @@ namespace Gravity
 
             var spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront,
+            spriteBatch.Begin(SpriteSortMode.FrontToBack,
                 samplerState: SamplerState.PointClamp,
                 transformMatrix: GravityGame.WorldCamera.Transform);
 
@@ -147,14 +154,14 @@ namespace Gravity
             spriteBatch.End();
 
             spriteBatch.Begin(samplerState: SamplerState.PointClamp,
-                effect: Effects.Flash,
+                effect: flashEffect,
                 transformMatrix: GravityGame.WorldCamera.Transform);
             foreach (var entity in Entities)
             {
                 if (entity.IsFlashing)
                 {
                     var normalizedColor = entity.FlashColor.ToVector4();
-                    Effects.Flash.Parameters["flash_color"].SetValue(normalizedColor);
+                    flashEffect.Parameters["flash_color"].SetValue(normalizedColor);
                     entity.Draw(spriteBatch);
                 }
             }

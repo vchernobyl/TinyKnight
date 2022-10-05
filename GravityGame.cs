@@ -13,9 +13,7 @@ namespace Gravity
 
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
-
-        // TODO: Maybe make it a service?
-        public static readonly CoroutineRunner Runner = new CoroutineRunner();
+        private readonly CoroutineRunner runner;
 
         public GravityGame()
         {
@@ -23,9 +21,10 @@ namespace Gravity
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            screenManager = new ScreenManager(this);
+            Services.AddService(screenManager = new ScreenManager(this));
+            Services.AddService(runner = new CoroutineRunner());
+
             Components.Add(screenManager);
-            Services.AddService(screenManager);
 
             screenManager.AddScreen(new BackgroundScreen());
             screenManager.AddScreen(new MainMenuScreen());
@@ -45,9 +44,6 @@ namespace Gravity
 
         protected override void LoadContent()
         {
-            SoundFX.Load(Content);
-            Effects.Load(Content);
-
             var spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(spriteBatch);
 
@@ -61,13 +57,15 @@ namespace Gravity
             if (Input.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Runner.Update(gameTime.DeltaTime());
+            runner.Update(gameTime.DeltaTime());
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             base.Draw(gameTime);
         }
     }
