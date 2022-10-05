@@ -27,6 +27,11 @@ namespace Gravity
         private readonly int heroRunAnimID;
         private readonly int heroIdleAnimID;
 
+        private readonly InputAction moveLeft;
+        private readonly InputAction moveRight;
+        private readonly InputAction jump;
+        private readonly InputAction shoot;
+
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
@@ -61,6 +66,11 @@ namespace Gravity
 
             jumpParticles = new ParticleSystem(game, "Particles/HeroJumpParticleSettings");
             game.Components.Add(jumpParticles);
+
+            moveLeft = new InputAction(new[] { Buttons.DPadLeft }, new[] { Keys.Left }, false);
+            moveRight = new InputAction(new[] { Buttons.DPadRight }, new[] { Keys.Right }, false);
+            jump = new InputAction(new[] { Buttons.A }, new[] { Keys.Up }, true);
+            shoot = new InputAction(new[] { Buttons.X }, new[] { Keys.Space }, false);
         }
 
         public override void OnEntityCollisionEnter(Entity other)
@@ -85,26 +95,26 @@ namespace Gravity
         public override void HandleInput(InputState input)
         {
             var speed = .0175f;
-            var jump = -1.25f;
+            var jumpForce = -1.25f;
 
             // Movement.
             if (!hurting)
             {
-                if (input.IsKeyPressed(Keys.Left))
+                if (moveLeft.Evaluate(input))
                 {
                     sprite.Flip = SpriteEffects.FlipHorizontally;
                     DX += -speed;
                     Facing = -1;
                 }
-                if (input.IsKeyPressed(Keys.Right))
+                if (moveRight.Evaluate(input))
                 {
                     sprite.Flip = SpriteEffects.None;
                     DX += speed;
                     Facing = 1;
                 }
-                if (input.IsNewKeyPress(Keys.Up) && onGround)
+                if (jump.Evaluate(input) && onGround)
                 {
-                    DY = jump;
+                    DY = jumpForce;
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
 
@@ -112,7 +122,7 @@ namespace Gravity
                 }
             }
 
-            if (input.IsKeyPressed(Keys.Space))
+            if (shoot.Evaluate(input))
                 CurrentWeapon.PullTrigger();
         }
 

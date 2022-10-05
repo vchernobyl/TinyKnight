@@ -41,6 +41,11 @@ namespace Gravity
             this.newPressOnly = newPressOnly;
         }
 
+        public bool Evaluate(InputState input)
+        {
+            return Evaluate(input, null, out _);
+        }
+
         public bool Evaluate(InputState state, PlayerIndex? controllingPlayer, out PlayerIndex player)
         {
             // Figure out which delegate methods to map from the state
