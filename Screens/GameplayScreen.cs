@@ -84,6 +84,12 @@ namespace Gravity
             content.Unload();
         }
 
+        public override void HandleInput(GameTime gameTime, InputState input)
+        {
+            foreach (var en in Entities)
+                en.HandleInput(input);
+        }
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);

@@ -14,6 +14,7 @@ namespace Gravity
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
 
+        // TODO: Maybe make it a service?
         public static readonly CoroutineRunner Runner = new CoroutineRunner();
 
         public GravityGame()
@@ -26,9 +27,6 @@ namespace Gravity
             Components.Add(screenManager);
             Services.AddService(screenManager);
 
-            // Add initial screens.
-            //screenManager.AddScreen(new SandboxScreen());
-            //screenManager.AddScreen(new ParticlesScreen());
             screenManager.AddScreen(new BackgroundScreen());
             screenManager.AddScreen(new MainMenuScreen());
         }

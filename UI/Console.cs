@@ -20,6 +20,7 @@ namespace Gravity.UI
         private readonly Color backgroundColor;
         private readonly Cursor cursor;
 
+        private readonly InputState input;
         private readonly StringBuilder textInput;
         private readonly List<string> history;
         private readonly CommandRegistry registry;
@@ -31,6 +32,11 @@ namespace Gravity.UI
         private const float OpenAmount = .45f;
         private const int CursorPaddingLeft = 5;
         private const int CursorPaddingBottom = 5;
+
+        public bool IsOpen
+        {
+            get { return currentY > 0f; }
+        }
 
         public Console(Game game) : base(game)
         {
@@ -51,6 +57,7 @@ namespace Gravity.UI
                 cursorWidth, cursorHeight,
                 Color.White, blinkRate: .5f);
 
+            input = new InputState();
             textInput = new StringBuilder();
 
             history = new List<string>();
@@ -111,8 +118,10 @@ namespace Gravity.UI
 
         public override void Update(GameTime gameTime)
         {
-            if (Input.WasKeyPressed(Keys.OemTilde))
-                targetY = currentY > 0f ? 0f : OpenAmount;
+            input.Update();
+
+            if (input.IsNewKeyPress(Keys.OemTilde, null, out _))
+                targetY = IsOpen ? 0f : OpenAmount;
 
             currentY = Numerics.Approach(currentY, targetY, gameTime.DeltaTime() * 4f);
             rectangle.Y = (int)(-height + currentY * height);

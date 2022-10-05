@@ -7,6 +7,8 @@ namespace Gravity
         private static KeyboardState current;
         private static KeyboardState previous;
 
+        public static bool Enabled = true;
+
         public static KeyboardState GetState()
         {
             previous = current;
@@ -16,17 +18,17 @@ namespace Gravity
 
         public static bool IsKeyDown(Keys key)
         {
-            return current.IsKeyDown(key);
+            return Enabled && current.IsKeyDown(key);
         }
 
         public static bool WasKeyPressed(Keys key)
         {
-            return current.IsKeyDown(key) && !previous.IsKeyDown(key);
+            return Enabled && current.IsKeyDown(key) && !previous.IsKeyDown(key);
         }
 
         public static bool IsKeyUp(Keys key)
         {
-            return current.IsKeyUp(key);
+            return Enabled && current.IsKeyUp(key);
         }
     }
 }

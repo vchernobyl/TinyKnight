@@ -113,6 +113,8 @@ namespace Gravity
 
         public virtual void PostUpdate(GameTime gameTime) { }
 
+        public virtual void HandleInput(InputState input) { }
+
         // This should only be called by the underlying game loop.
         // NOT to be used by entities directly.
         public void EntityUpdate(GameTime gameTime)

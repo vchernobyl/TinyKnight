@@ -82,31 +82,27 @@ namespace Gravity
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public override void HandleInput(InputState input)
         {
             var speed = .0175f;
             var jump = -1.25f;
 
-            hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
-            if (hurtTime == 0)
-                hurting = false;
-
             // Movement.
             if (!hurting)
             {
-                if (Input.IsKeyDown(Keys.Left))
+                if (input.IsKeyPressed(Keys.Left))
                 {
                     sprite.Flip = SpriteEffects.FlipHorizontally;
                     DX += -speed;
                     Facing = -1;
                 }
-                if (Input.IsKeyDown(Keys.Right))
+                if (input.IsKeyPressed(Keys.Right))
                 {
                     sprite.Flip = SpriteEffects.None;
                     DX += speed;
                     Facing = 1;
                 }
-                if (Input.WasKeyPressed(Keys.Up) && onGround)
+                if (input.IsNewKeyPress(Keys.Up) && onGround)
                 {
                     DY = jump;
                     SoundFX.HeroJump.Play(volume: .7f, 0f, 0f);
@@ -116,11 +112,15 @@ namespace Gravity
                 }
             }
 
-            if (Input.WasKeyPressed(Keys.L))
-                SquashX(.5f);
+            if (input.IsKeyPressed(Keys.Space))
+                CurrentWeapon.PullTrigger();
+        }
 
-            if (Input.WasKeyPressed(Keys.K))
-                SquashY(.5f);
+        public override void Update(GameTime gameTime)
+        {
+            hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
+            if (hurtTime == 0)
+                hurting = false;
 
             sprite.Scale = Numerics.Approach(sprite.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
             sprite.Origin = Numerics.Approach(sprite.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
@@ -136,9 +136,6 @@ namespace Gravity
             // Landing.
             if (!wasOnGround && onGround)
                 SquashY(.5f);
-
-            if (Input.IsKeyDown(Keys.Space))
-                CurrentWeapon.PullTrigger();
         }
 
         public override void PostUpdate(GameTime gameTime)

@@ -85,6 +85,11 @@ namespace Gravity
                    IsKeyPressed(key, PlayerIndex.Four, out playerIndex);
         }
 
+        public bool IsKeyPressed(Keys key)
+        {
+            return IsKeyPressed(key, null, out _);
+        }
+
         public bool IsButtonPressed(Buttons button, PlayerIndex? controllingPlayer,
             out PlayerIndex playerIndex)
         {
@@ -118,6 +123,11 @@ namespace Gravity
                    IsNewKeyPress(key, PlayerIndex.Two, out playerIndex) ||
                    IsNewKeyPress(key, PlayerIndex.Three, out playerIndex) ||
                    IsNewKeyPress(key, PlayerIndex.Four, out playerIndex);
+        }
+
+        public bool IsNewKeyPress(Keys key)
+        {
+            return IsNewKeyPress(key, null, out _);
         }
 
         public bool IsNewButtonPress(Buttons button, PlayerIndex? controllingPlayer,

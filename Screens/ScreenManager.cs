@@ -108,7 +108,7 @@ namespace Gravity
                 {
                     // If this is the first active screen we came across,
                     // give it a chance to handle input.
-                    if (!otherScreenHasFocus)
+                    if (!otherScreenHasFocus && !Game.Services.GetService<UI.Console>().IsOpen)
                     {
                         screen.HandleInput(gameTime, input);
                         otherScreenHasFocus = true;
