@@ -22,6 +22,7 @@ namespace Gravity.UI
                 new Command("add_entity", AddEntity),
                 new Command("show_solids", ToggleSolids),
                 new Command("show_colliders", ToggleColliders),
+                new Command("history", PrintHistory),
             };
         }
 
@@ -140,6 +141,19 @@ namespace Gravity.UI
             }
 
             return $"show_colliders: invalid argument {toggle}";
+        }
+
+        private string PrintHistory(string[] ars)
+        {
+            var console = game.Services.GetService<Console>();
+            var builder = new StringBuilder();
+            for (int i = 0; i < console.History.Count; i++)
+            {
+                builder.Append(console.History[i]);
+                if (i != console.History.Count - 1)
+                    builder.Append("\n");
+            }
+            return builder.ToString();
         }
     }
 }

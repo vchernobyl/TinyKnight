@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Gravity.UI
@@ -41,17 +39,20 @@ namespace Gravity.UI
             get { return currentY > 0f; }
         }
 
+        public IReadOnlyList<string> History
+        {
+            get { return history; }
+        }
+
         public Console(Game game) : base(game)
         {
             width = game.GraphicsDevice.Viewport.Width;
             height = game.GraphicsDevice.Viewport.Height;
 
             spriteBatch = game.Services.GetService<SpriteBatch>();
-
             font = game.Content.Load<SpriteFont>("Fonts/Default");
 
             backgroundColor = new Color(.2f, .4f, .6f, .85f);
-
             rectangle = new Rectangle(0, -height, width, height);
 
             (cursorWidth, cursorHeight) = font.MeasureString("M").ToPoint();
@@ -61,11 +62,8 @@ namespace Gravity.UI
                 Color.White, blinkRate: .5f);
 
             textInput = new StringBuilder();
-
             output = new List<string>();
             history = new List<string>();
-            //historyIndex;
-
             registry = new CommandRegistry(game);
 
             game.Window.TextInput += HandleTextInput;
@@ -77,8 +75,8 @@ namespace Gravity.UI
             if (e.Key == Keys.OemTilde)
                 targetY = IsOpen ? 0f : OpenAmount;
 
-            // Handle history.
-            if (history.Count > 0)
+            // History interaction.
+            if (history.Count > 0 && IsOpen)
             {
                 if (e.Key == Keys.Up)
                 {
