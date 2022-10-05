@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Gravity.UI
@@ -20,14 +22,15 @@ namespace Gravity.UI
         private readonly Color backgroundColor;
         private readonly Cursor cursor;
 
-        private readonly InputState input;
         private readonly StringBuilder textInput;
+        private readonly List<string> output;
         private readonly List<string> history;
         private readonly CommandRegistry registry;
 
         private Rectangle rectangle;
         private float targetY;
         private float currentY;
+        private int historyIndex;
 
         private const float OpenAmount = .45f;
         private const int CursorPaddingLeft = 5;
@@ -57,14 +60,43 @@ namespace Gravity.UI
                 cursorWidth, cursorHeight,
                 Color.White, blinkRate: .5f);
 
-            input = new InputState();
             textInput = new StringBuilder();
 
+            output = new List<string>();
             history = new List<string>();
+            //historyIndex;
 
             registry = new CommandRegistry(game);
 
             game.Window.TextInput += HandleTextInput;
+            game.Window.KeyDown += HandleKeyDown;
+        }
+
+        private void HandleKeyDown(object? sender, InputKeyEventArgs e)
+        {
+            if (e.Key == Keys.OemTilde)
+                targetY = IsOpen ? 0f : OpenAmount;
+
+            // Handle history.
+            if (history.Count > 0)
+            {
+                if (e.Key == Keys.Up)
+                {
+                    if (historyIndex > 0)
+                        historyIndex--;
+
+                    textInput.Clear();
+                    textInput.Append(history[historyIndex]);
+                }
+                if (e.Key == Keys.Down)
+                {
+                    if (historyIndex < history.Count - 1)
+                        historyIndex++;
+
+                    textInput.Clear();
+                    textInput.Append(history[historyIndex]);
+                }
+            }
         }
 
         private void HandleTextInput(object? sender, TextInputEventArgs e)
@@ -85,20 +117,23 @@ namespace Gravity.UI
                         textInput.Remove(textInput.Length - 1, 1);
                     break;
                 case Keys.Enter:
-                    var args = textInput.ToString().Trim().Split(" ");
+                    var input = textInput.ToString();
+                    history.Add(input);
+                    historyIndex = history.Count;
+                    var args = input.Trim().Split(" ");
                     var commandName = args[0];
                     if (commandName == "")
-                        history.Add("");
+                        output.Add("");
                     else
                     {
                         var command = registry.Find(commandName);
                         if (command == null)
-                            history.Add($"Command `{commandName}` not found!");
+                            output.Add($"Command `{commandName}` not found!");
                         else
                         {
                             var output = command.Procedure.Invoke(args[1..^0]).Split("\n");
                             foreach (var line in output)
-                                history.Add(line);
+                                this.output.Add(line);
                         }
                     }
 
@@ -111,18 +146,13 @@ namespace Gravity.UI
                 textInput.Append(e.Character);
         }
 
-        public void ClearHistory()
+        public void Clear()
         {
-            history.Clear();
+            output.Clear();
         }
 
         public override void Update(GameTime gameTime)
         {
-            input.Update();
-
-            if (input.IsNewKeyPress(Keys.OemTilde, null, out _))
-                targetY = IsOpen ? 0f : OpenAmount;
-
             currentY = Numerics.Approach(currentY, targetY, gameTime.DeltaTime() * 4f);
             rectangle.Y = (int)(-height + currentY * height);
 
@@ -138,10 +168,10 @@ namespace Gravity.UI
             spriteBatch.DrawString(font, textInput, new Vector2(rectangle.Left + CursorPaddingLeft, cursor.Top), Color.White);
 
             var y = cursor.Top - cursorHeight;
-            for (var i = history.Count - 1; i >= 0; i--)
+            for (var i = output.Count - 1; i >= 0; i--)
             {
-                var position = new Vector2(rectangle.Left + CursorPaddingLeft, y - (history.Count - 1 - i) * cursorHeight);
-                spriteBatch.DrawString(font, history[i], position, Color.White);
+                var position = new Vector2(rectangle.Left + CursorPaddingLeft, y - (output.Count - 1 - i) * cursorHeight);
+                spriteBatch.DrawString(font, output[i], position, Color.White);
             }
 
             cursor.Draw(spriteBatch);

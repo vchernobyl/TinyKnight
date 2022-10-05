@@ -28,7 +28,7 @@ namespace Gravity.UI
         private string Clear(string[] args)
         {
             var console = game.Services.GetService<Console>();
-            console.ClearHistory();
+            console.Clear();
             return "";
         }
 
