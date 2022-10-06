@@ -54,7 +54,7 @@ namespace Gravity
 
         protected override void Update(GameTime gameTime)
         {
-            if (Input.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             runner.Update(gameTime.DeltaTime());

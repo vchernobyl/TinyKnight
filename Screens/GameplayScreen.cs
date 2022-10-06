@@ -16,14 +16,22 @@ namespace Gravity
         public Hud Hud { get; private set; }
         public Hero Hero { get; private set; }
 
-        public readonly List<Entity> Entities = new List<Entity>();
-        private readonly List<Entity> pendingEntities = new List<Entity>();
+        private readonly List<Entity> entities;
+        private readonly List<Entity> pendingEntities;
 
         private bool updatingEntities = false;
         private Effect flashEffect;
 
+        public IReadOnlyCollection<Entity> AllEntities
+        {
+            get { return entities; }
+        }
+
         public GameplayScreen()
         {
+            entities = new List<Entity>();
+            pendingEntities = new List<Entity>();
+
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
@@ -33,7 +41,22 @@ namespace Gravity
             if (updatingEntities)
                 pendingEntities.Add(entity);
             else
-                Entities.Add(entity);
+                entities.Add(entity);
+        }
+
+        public void RemoveEntity(Entity entity)
+        {
+            for (var i = pendingEntities.Count - 1; i >= 0; i--)
+            {
+                if (pendingEntities[i] == entity)
+                    pendingEntities.RemoveAt(i);
+            }
+
+            for (var i = entities.Count - 1; i >= 0; i--)
+            {
+                if (entities[i] == entity)
+                    entities.RemoveAt(i);
+            }
         }
 
         public override void LoadContent()
@@ -52,7 +75,7 @@ namespace Gravity
             GravityGame.WorldCamera.Scale = zoom;
 
             Hero = new Hero(this) { Position = new Vector2(100f, 25f) };
-            Entities.Add(Hero);
+            entities.Add(Hero);
 
             Hud = new Hud(this, Hero);
 
@@ -91,7 +114,7 @@ namespace Gravity
         {
             updatingEntities = true;
 
-            foreach (var entity in Entities)
+            foreach (var entity in entities)
                 entity.HandleInput(input);
 
             updatingEntities = false;
@@ -102,13 +125,13 @@ namespace Gravity
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             updatingEntities = true;
-            foreach (var entity in Entities)
+            foreach (var entity in entities)
             {
                 if (entity.EntityState == Entity.State.Active)
                     entity.EntityUpdate(gameTime);
             }
 
-            foreach (var entity in Entities)
+            foreach (var entity in entities)
             {
                 if (entity.EntityState == Entity.State.Active)
                     entity.PostUpdate(gameTime);
@@ -116,15 +139,15 @@ namespace Gravity
             updatingEntities = false;
 
             foreach (var pending in pendingEntities)
-                Entities.Add(pending);
+                entities.Add(pending);
             pendingEntities.Clear();
 
-            for (int i = Entities.Count - 1; i >= 0; i--)
+            for (int i = entities.Count - 1; i >= 0; i--)
             {
-                if (Entities[i].EntityState == Entity.State.Dead)
+                if (entities[i].EntityState == Entity.State.Dead)
                 {
-                    Entities[i].OnDestroy();
-                    Entities.RemoveAt(i);
+                    entities[i].OnDestroy();
+                    entities.RemoveAt(i);
                 }
             }
 
@@ -145,7 +168,7 @@ namespace Gravity
 
             Level.Draw(spriteBatch);
 
-            foreach (var entity in Entities)
+            foreach (var entity in entities)
             {
                 if (!entity.IsFlashing)
                     entity.Draw(spriteBatch);
@@ -156,7 +179,7 @@ namespace Gravity
             spriteBatch.Begin(samplerState: SamplerState.PointClamp,
                 effect: flashEffect,
                 transformMatrix: GravityGame.WorldCamera.Transform);
-            foreach (var entity in Entities)
+            foreach (var entity in entities)
             {
                 if (entity.IsFlashing)
                 {

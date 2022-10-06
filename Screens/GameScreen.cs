@@ -69,17 +69,6 @@ namespace Gravity
             }
         }
 
-        public bool IsSerializable { get; protected set; } = true;
-
-        /// <summary>
-        /// Activates the screen. Called when the screen is added to the screen
-        /// manager or if the game resumes from being paused or tombstoned.
-        /// </summary>
-        /// <param name="instancePreserved">
-        /// True if the game was preserved during deactivation, false if the
-        /// screen is just being added or if the game was tombstoned.
-        /// On Xbox and Windows this will always be false.
-        /// </param>
         public virtual void LoadContent() { }
 
         public virtual void UnloadContent() { }

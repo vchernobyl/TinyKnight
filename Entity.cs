@@ -127,7 +127,7 @@ namespace Gravity
             // Check for collisions with other entities.
             if (EntityCollisions)
             {
-                foreach (var other in gameplayScreen.Entities)
+                foreach (var other in gameplayScreen.AllEntities)
                 {
                     if (this == other)
                         continue;

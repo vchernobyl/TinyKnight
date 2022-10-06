@@ -13,7 +13,6 @@ namespace Gravity
     public class Hero : Entity
     {
         public int Facing { get; private set; }
-        public Weapon CurrentWeapon { get; set; }
         public int Health { get; private set; }
         public const int MaxHealth = 3;
 
@@ -36,11 +35,12 @@ namespace Gravity
         private readonly SoundEffect jumpSound;
         private readonly SoundEffect hurtSound;
 
+        private Weapon weapon;
+
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
-            CurrentWeapon = new Axe(this, gameplayScreen);
-            gameplayScreen.AddEntity(CurrentWeapon);
+            EquipWeapon(new Axe(this, gameplayScreen));
 
             Health = 3;
             Facing = 1;
@@ -79,6 +79,13 @@ namespace Gravity
             shoot = new InputAction(new[] { Buttons.X }, new[] { Keys.Space }, false);
         }
 
+        public void EquipWeapon(Weapon weapon)
+        {
+            gameplayScreen.RemoveEntity(this.weapon);
+            this.weapon = weapon;
+            gameplayScreen.AddEntity(weapon);
+        }
+
         public override void OnEntityCollisionEnter(Entity other)
         {
             // TODO: Player death state.
@@ -86,7 +93,7 @@ namespace Gravity
             {
                 Health--;
                 if (Health <= 0)
-                    gameplayScreen.ScreenManager.RemoveScreen(gameplayScreen);
+                    gameplayScreen.ExitScreen();
 
                 hurting = true;
                 hurtTime = .2;
@@ -131,7 +138,7 @@ namespace Gravity
             }
 
             if (shoot.Evaluate(input))
-                CurrentWeapon.PullTrigger();
+                weapon.PullTrigger();
         }
 
         public override void Update(GameTime gameTime)

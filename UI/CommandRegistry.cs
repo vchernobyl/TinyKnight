@@ -1,4 +1,5 @@
 ﻿using Gravity.Entities;
+using Gravity.Weapons;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Gravity.UI
                 new Command("show_solids", ToggleSolids),
                 new Command("show_colliders", ToggleColliders),
                 new Command("history", PrintHistory),
+                new Command("weapon", GiveWeapon),
             };
         }
 
@@ -154,6 +156,34 @@ namespace Gravity.UI
                     builder.Append("\n");
             }
             return builder.ToString();
+        }
+
+        private string GiveWeapon(string[] args)
+        {
+            var g = game as GravityGame;
+            var screenManager= g.Services.GetService<ScreenManager>();
+            if (screenManager.CurrentScreen is GameplayScreen gameplay)
+            {
+                if (args.Length != 1)
+                    return "command takes exactly 1 argument";
+
+                var hero = gameplay.Hero;
+                Weapon? weapon = args[0] switch
+                {
+                    "axe" => new Axe(hero, gameplay),
+                    "crossbow" => new Crossbow(hero, gameplay),
+                    _ => null,
+                };
+
+                if (weapon is Weapon)
+                {
+                    hero.EquipWeapon(weapon);
+                    return $"{args[0]} equiped";
+                }
+
+                return $"Unknown weapon {args[0]}";
+            }
+            return "You have to be in GameplayScreen to execute this command";
         }
     }
 }
