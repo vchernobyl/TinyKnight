@@ -3,18 +3,24 @@ using Gravity.Entities;
 using Gravity.GFX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections;
 
 namespace Gravity.Weapons
 {
     public class Axe : Weapon
     {
-        private bool thrown = false;
+        private enum FlyStage
+        {
+            InHands,
+            Flying,
+            Returning,
+        }
 
-        private readonly CoroutineRunner coroutine;
+        private FlyStage axeState;
+        private float throwTime;
+        private int direction;
 
         public Axe(Hero hero, GameplayScreen gameplayScreen)
-            : base(hero, gameplayScreen, fireRate: 1f, nameof(Axe))
+            : base(hero, gameplayScreen, fireRate: 1f, nameof(Axe), updateOrder: 100)
         {
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
@@ -26,7 +32,7 @@ namespace Gravity.Weapons
             sprite.Play(defaultAnimID);
             sprite.LayerDepth = 1f;
 
-            coroutine = game.Services.GetService<CoroutineRunner>();
+            axeState = FlyStage.InHands;
 
             Gravity = 0f;
             LevelCollisions = false;
@@ -35,61 +41,64 @@ namespace Gravity.Weapons
 
         public override void OnEntityCollisionEnter(Entity other)
         {
-            if (thrown && other is Enemy enemy)
+            if ((axeState == FlyStage.Flying || axeState == FlyStage.Returning) && other is Enemy enemy)
                 enemy.Damage(10);
         }
 
-        public override void PostUpdate(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            // Only make axe follow the player if it's not flying around at this moment.
-            if (thrown)
-            {
-                sprite.Rotation += .25f * hero.Facing;
-                return;
-            }
+            base.Update(gameTime);
 
-            if (hero.Facing > 0 && !thrown)
+            const float rotationSpeed = 0f;
+            const float flyingSpeed = .75f;
+            const float maxFlyTime = .5f;
+
+            switch (axeState)
             {
-                Position = hero.Position + new Vector2(5f, 0f);
-                sprite.Flip = SpriteEffects.None;
-            }
-            else
-            {
-                Position = hero.Position + new Vector2(-5f, 0f);
-                sprite.Flip = SpriteEffects.FlipHorizontally;
+                case FlyStage.InHands:
+                    Position = hero.Position;
+                    break;
+                case FlyStage.Flying:
+                    var force = direction * flyingSpeed;
+                    DX = force;
+                    throwTime += gameTime.DeltaTime();
+
+                    sprite.Rotation += rotationSpeed;
+
+                    if (throwTime >= maxFlyTime)
+                    {
+                        throwTime = 0f;
+                        axeState = FlyStage.Returning;
+                    }
+                    break;
+                case FlyStage.Returning:
+                    var dir = Vector2.Normalize(hero.Position - Position);
+                    (DX, DY) = dir * flyingSpeed;
+
+                    sprite.Rotation += rotationSpeed;
+
+                    if (Vector2.Distance(hero.Position, Position) <= 5f)
+                    {
+                        axeState = FlyStage.InHands;
+                        Position = hero.Position;
+
+                        DX = 0f;
+                        DY = 0f;
+
+                        sprite.Rotation = 0f;
+                    }
+
+                    break;
             }
         }
 
         public override void Shoot()
         {
-            if (!thrown)
-                coroutine.Run(Throw());
-        }
-
-        private IEnumerator Throw()
-        {
-            thrown = true;
-            var frames = -1;
-            var throwDirection = hero.Facing;
-            while (++frames < 10)
+            if (axeState == FlyStage.InHands)
             {
-                DX = 1.2f * throwDirection;
-                yield return null;
+                axeState = FlyStage.Flying;
+                direction = hero.Facing;
             }
-
-            while (Vector2.Distance(Position, hero.Position) > 8f)
-            {
-                var target = new Vector2(hero.Position.X + 5f * hero.Facing, hero.Position.Y);
-                var dir = target - Position;
-                dir.Normalize();
-
-                DX += dir.X * .15f;
-                DY += dir.Y * .15f;
-
-                yield return null;
-            }
-            thrown = false;
-            sprite.Rotation = 0f;
         }
     }
 }

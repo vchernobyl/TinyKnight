@@ -39,7 +39,7 @@ namespace Gravity.Weapons
             shotSound.Play();
         }
 
-        public override void PostUpdate(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             Position = hero.Position + new Vector2(3f * hero.Facing, 1f);
             sprite.Flip = hero.Facing > 0

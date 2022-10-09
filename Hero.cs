@@ -84,6 +84,7 @@ namespace Gravity
             gameplayScreen.RemoveEntity(this.weapon);
             this.weapon = weapon;
             gameplayScreen.AddEntity(weapon);
+            weapon.Position = Position;
         }
 
         public override void OnEntityCollisionEnter(Entity other)

@@ -39,9 +39,20 @@ namespace Gravity
         public void AddEntity(Entity entity)
         {
             if (updatingEntities)
-                pendingEntities.Add(entity);
+                AddOrderedEntity(entity, pendingEntities); //pendingEntities.Add(entity);
             else
-                entities.Add(entity);
+                AddOrderedEntity(entity, entities); //entities.Add(entity);
+        }
+
+        private static void AddOrderedEntity(Entity entity, List<Entity> collection)
+        {
+            var order = entity.UpdateOrder;
+            var i = 0;
+            while (i < collection.Count && order > collection[i].UpdateOrder)
+            {
+                i++;
+            }
+            collection.Insert(i, entity);
         }
 
         public void RemoveEntity(Entity entity)
@@ -75,7 +86,7 @@ namespace Gravity
             GravityGame.WorldCamera.Scale = zoom;
 
             Hero = new Hero(this) { Position = new Vector2(100f, 25f) };
-            entities.Add(Hero);
+            AddEntity(Hero);
 
             Hud = new Hud(this, Hero);
 
@@ -125,21 +136,17 @@ namespace Gravity
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             updatingEntities = true;
+
             foreach (var entity in entities)
             {
                 if (entity.EntityState == Entity.State.Active)
                     entity.EntityUpdate(gameTime);
             }
 
-            foreach (var entity in entities)
-            {
-                if (entity.EntityState == Entity.State.Active)
-                    entity.PostUpdate(gameTime);
-            }
             updatingEntities = false;
 
             foreach (var pending in pendingEntities)
-                entities.Add(pending);
+                AddOrderedEntity(pending, entities); //entities.Add(pending);
             pendingEntities.Clear();
 
             for (int i = entities.Count - 1; i >= 0; i--)

@@ -60,9 +60,12 @@ namespace Gravity
 
         private readonly List<Entity> prevFrameCollisions = new List<Entity>();
 
-        public Entity(GameplayScreen gameplayScreen)
+        public readonly int UpdateOrder;
+
+        public Entity(GameplayScreen gameplayScreen, int updateOrder = 0)
         {
             this.gameplayScreen = gameplayScreen;
+            this.UpdateOrder = updateOrder;
         }
 
         public void SetCoordinates(float x, float y)
@@ -110,8 +113,6 @@ namespace Gravity
 
         // This update should be called by entities.
         public virtual void Update(GameTime gameTime) { }
-
-        public virtual void PostUpdate(GameTime gameTime) { }
 
         public virtual void HandleInput(InputState input) { }
 

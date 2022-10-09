@@ -11,7 +11,7 @@ namespace Gravity.Entities
         private bool dead = false;
 
         public Zombie(GameplayScreen gameplayScreen)
-            : base(gameplayScreen, health: 100)
+            : base(gameplayScreen, health: 100, updateOrder: 200)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Zombie"));

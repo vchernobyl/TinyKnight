@@ -12,7 +12,7 @@ namespace Gravity.Weapons
         private float fireTime;
 
         public Weapon(Hero hero, GameplayScreen gameplayScreen,
-            float fireRate, string name) : base(gameplayScreen)
+            float fireRate, string name, int updateOrder = 0) : base(gameplayScreen, updateOrder)
         {
             this.hero = hero;
             this.fireRate = fireRate;

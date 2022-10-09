@@ -11,8 +11,8 @@ namespace Gravity.Entities
 
         private readonly SoundEffect hitSound;
 
-        public Enemy(GameplayScreen gameplayScreen, int health)
-            : base(gameplayScreen)
+        public Enemy(GameplayScreen gameplayScreen, int health, int updateOrder = 0)
+            : base(gameplayScreen, updateOrder)
         {
             Health = health;
 
