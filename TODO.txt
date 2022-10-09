@@ -70,3 +70,4 @@ TODO:
 - Greatly simplify current screen manager. For some reason it calls Update on the screen before
   calling HandleInput. It also gives us functionality that we don't need, including possibility
   for multiplayer input etc.
+- Axe sprite is too big, we need a different sprite for it!

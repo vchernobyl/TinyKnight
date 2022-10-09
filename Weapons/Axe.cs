@@ -1,5 +1,4 @@
-﻿using Gravity.Coroutines;
-using Gravity.Entities;
+﻿using Gravity.Entities;
 using Gravity.GFX;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,11 +15,11 @@ namespace Gravity.Weapons
         }
 
         private FlyStage axeState;
-        private float throwTime;
         private int direction;
+        private float speed;
 
         public Axe(Hero hero, GameplayScreen gameplayScreen)
-            : base(hero, gameplayScreen, fireRate: 1f, nameof(Axe), updateOrder: 100)
+            : base(hero, gameplayScreen, fireRate: 3f, nameof(Axe), updateOrder: 100)
         {
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
@@ -43,15 +42,28 @@ namespace Gravity.Weapons
         {
             if ((axeState == FlyStage.Flying || axeState == FlyStage.Returning) && other is Enemy enemy)
                 enemy.Damage(10);
+
+            if (axeState == FlyStage.Returning && other is Hero)
+            {
+                axeState = FlyStage.InHands;
+                Position = hero.Position;
+
+                DX = 0f;
+                DY = 0f;
+
+                sprite.Rotation = 0f;
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            const float rotationSpeed = 0f;
-            const float flyingSpeed = .75f;
-            const float maxFlyTime = .5f;
+            const float rotationSpeed = .35f;
+            const float acceleration = .085f;
+            const float deceleration = .085f;
+
+            var rotation = rotationSpeed * direction;
 
             switch (axeState)
             {
@@ -59,34 +71,25 @@ namespace Gravity.Weapons
                     Position = hero.Position;
                     break;
                 case FlyStage.Flying:
-                    var force = direction * flyingSpeed;
-                    DX = force;
-                    throwTime += gameTime.DeltaTime();
+                    speed -= deceleration;
+                    DX = direction * speed;
 
-                    sprite.Rotation += rotationSpeed;
+                    sprite.Rotation += rotation;
 
-                    if (throwTime >= maxFlyTime)
+                    if ((direction > 0 && DX < 0f) || (direction < 0 && DX > 0))
                     {
-                        throwTime = 0f;
                         axeState = FlyStage.Returning;
+                        speed = 0f;
+                        DX = 0f;
                     }
                     break;
                 case FlyStage.Returning:
                     var dir = Vector2.Normalize(hero.Position - Position);
-                    (DX, DY) = dir * flyingSpeed;
+                    speed += acceleration;
+                    DX = dir.X * speed;
+                    DY = dir.Y * speed;
 
-                    sprite.Rotation += rotationSpeed;
-
-                    if (Vector2.Distance(hero.Position, Position) <= 5f)
-                    {
-                        axeState = FlyStage.InHands;
-                        Position = hero.Position;
-
-                        DX = 0f;
-                        DY = 0f;
-
-                        sprite.Rotation = 0f;
-                    }
+                    sprite.Rotation += rotation;
 
                     break;
             }
@@ -98,6 +101,7 @@ namespace Gravity.Weapons
             {
                 axeState = FlyStage.Flying;
                 direction = hero.Facing;
+                speed = 1.75f;
             }
         }
     }

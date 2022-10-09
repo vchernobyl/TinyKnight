@@ -57,7 +57,7 @@ namespace Gravity
         {
             var origin = new Vector2(0f, .5f);
             var scale = new Vector2(distance, thickness);
-            spriteBatch.Draw(BlankPixel(spriteBatch), from, null, color, angle, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(BlankPixel(spriteBatch), from, null, color, angle, origin, scale, SpriteEffects.None, 1f);
         }
     }
 }

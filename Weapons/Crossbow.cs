@@ -41,6 +41,8 @@ namespace Gravity.Weapons
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             Position = hero.Position + new Vector2(3f * hero.Facing, 1f);
             sprite.Flip = hero.Facing > 0
                 ? SpriteEffects.None
