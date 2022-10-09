@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 namespace Gravity
 {
@@ -111,6 +112,21 @@ namespace Gravity
         {
             var speed = .0175f;
             var jumpForce = -1.25f;
+
+            // TODO: The problem with having a separate input handling method
+            // is that it is triggered before Update method (as it should).
+            // The problem is that this allows us to trigger some game logic
+            // which will cause states between entities to be out of sync or
+            // in general in weird states. For example, PullTrigger within
+            // HandleInput method can spawn an entity, this entity will not
+            // have the right Hero position, since Hero.Update is yet to be called.
+            // This will make the spawned entity to have a hero position which is
+            // lagging behind by one frame.
+            // 
+            // Possible solution: static InputManager class (https://github.com/SimonDarksideJ/XNAGameStudio/blob/archive/Samples/RolePlayingGame_4_0_Win_Xbox/RolePlayingGame_4_0_Win_Xbox/RolePlayingGame/InputManager.cs)
+            // Or something similar.
+
+            Debug.Assert(false);
 
             // Movement.
             if (!hurting)

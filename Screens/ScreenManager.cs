@@ -106,6 +106,14 @@ namespace Gravity
                 if (screen.ScreenState == ScreenState.TransitionOn ||
                     screen.ScreenState == ScreenState.Active)
                 {
+                    // TODO: This is just hacky shit and needs to be removed.
+                    // What we can do to disable gameplay input when console is
+                    // open is disabling of InputManager. This will prevent from
+                    // any gameplay actions to be evaluated. This will not prevent
+                    // us from getting text input, as it hooked to the GameWindow callbacks
+                    // and not InputManager.
+                    Debug.Assert(false);
+
                     // If this is the first active screen we came across,
                     // give it a chance to handle input.
                     if (!otherScreenHasFocus && !Game.Services.GetService<UI.Console>().IsOpen)
