@@ -1,4 +1,4 @@
-﻿namespace Gravity.GFX
+﻿namespace Gravity.Graphics
 {
     public class AnimationTrack
     {

@@ -71,3 +71,6 @@ TODO:
   calling HandleInput. It also gives us functionality that we don't need, including possibility
   for multiplayer input etc.
 - Axe sprite is too big, we need a different sprite for it!
+- Console could be a GameScreen (with IsPopup = true), which would prevent input to other screens.
+- Fix arrow not having correct direction on first frame when shooting left.
+- Fix weird stretching when jumping.

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.GFX
+namespace Gravity.Graphics
 {
     public class Sprite
     {

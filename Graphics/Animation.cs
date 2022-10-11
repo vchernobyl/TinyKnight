@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace Gravity.GFX
+namespace Gravity.Graphics
 {
     public class Animation
     {

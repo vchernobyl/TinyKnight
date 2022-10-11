@@ -1,5 +1,5 @@
 ﻿using Gravity.Entities;
-using Gravity.GFX;
+using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -29,7 +29,7 @@ namespace Gravity.Weapons
 
             sprite = spriteSheet.Create();
             sprite.Play(defaultAnimID);
-            sprite.LayerDepth = 1f;
+            sprite.LayerDepth = DrawLayer.Foreground;
 
             axeState = FlyStage.InHands;
 

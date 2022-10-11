@@ -1,5 +1,5 @@
 ﻿using Gravity.Entities;
-using Gravity.GFX;
+using Gravity.Graphics;
 using Gravity.Particles;
 using Gravity.Weapons;
 using Microsoft.Xna.Framework;
@@ -65,7 +65,7 @@ namespace Gravity
 
             sprite = spriteSheet.Create();
             sprite.Play(heroIdleAnimID);
-            sprite.LayerDepth = .1f;
+            sprite.LayerDepth = DrawLayer.Midground;
 
             jumpSound = content.Load<SoundEffect>("SoundFX/Hero_Jump");
             hurtSound = content.Load<SoundEffect>("SoundFX/Hero_Hurt");
@@ -84,7 +84,6 @@ namespace Gravity
             gameplayScreen.RemoveEntity(this.weapon);
             this.weapon = weapon;
             gameplayScreen.AddEntity(weapon);
-            weapon.Position = Position;
         }
 
         public override void OnEntityCollisionEnter(Entity other)

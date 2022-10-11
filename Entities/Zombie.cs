@@ -1,4 +1,4 @@
-﻿using Gravity.GFX;
+﻿using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -26,6 +26,7 @@ namespace Gravity.Entities
             anim.AddFrame(new Rectangle(7 * 8, 0, 8, 8), .1f);
 
             sprite = spriteSheet.Create();
+            sprite.LayerDepth = DrawLayer.Midground;
             sprite.Play(animID);
 
             facing = Numerics.PickOne(-1, 1);
@@ -40,7 +41,6 @@ namespace Gravity.Entities
         public override void Update(GameTime gameTime)
         {
             const float speed = .05f;
-            return;
             if (!dead && Level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(facing) * speed;
 

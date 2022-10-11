@@ -26,8 +26,9 @@ namespace Gravity
 
             Components.Add(screenManager);
 
-            screenManager.AddScreen(new BackgroundScreen());
-            screenManager.AddScreen(new MainMenuScreen());
+            //screenManager.AddScreen(new BackgroundScreen());
+            //screenManager.AddScreen(new MainMenuScreen());
+            screenManager.AddScreen(new GameplayScreen());
         }
 
         protected override void Initialize()

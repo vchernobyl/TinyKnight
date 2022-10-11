@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Gravity.GFX
+namespace Gravity.Graphics
 {
     public class SpriteSheet
     {

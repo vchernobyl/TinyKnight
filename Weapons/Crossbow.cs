@@ -1,4 +1,4 @@
-﻿using Gravity.GFX;
+﻿using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,7 +23,7 @@ namespace Gravity.Weapons
 
             sprite = spriteSheet.Create();
             sprite.Play(defaultAnimID);
-            sprite.LayerDepth = 1f;
+            sprite.LayerDepth = DrawLayer.Foreground;
 
             shotSound = content.Load<SoundEffect>("SoundFX/Pistol_Shot");
 
