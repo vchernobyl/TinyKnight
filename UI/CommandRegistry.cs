@@ -2,6 +2,7 @@
 using Gravity.Weapons;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Gravity.UI
@@ -25,6 +26,7 @@ namespace Gravity.UI
                 new Command("show_colliders", ToggleColliders),
                 new Command("history", PrintHistory),
                 new Command("weapon", GiveWeapon),
+                new Command("load", LoadScreen),
             };
         }
 
@@ -64,11 +66,17 @@ namespace Gravity.UI
             return "";
         }
 
+        private static GameplayScreen? GetGameplayScreen(ScreenManager screenManager)
+        {
+            return (GameplayScreen?)screenManager.GetScreens().FirstOrDefault(s => s is GameplayScreen);
+        }
+
         private string Spawn(string[] args)
         {
             var g = game as GravityGame;
             var screenManager = g.Services.GetService<ScreenManager>();
-            if (screenManager.CurrentScreen is GameplayScreen gameplayScreen)
+            var gameplayScreen = GetGameplayScreen(screenManager);
+            if (gameplayScreen != null)
             {
                 if (args.Length != 3)
                     return "spawn takes exactly 3 arguments";
@@ -160,18 +168,18 @@ namespace Gravity.UI
 
         private string GiveWeapon(string[] args)
         {
-            var g = game as GravityGame;
-            var screenManager= g.Services.GetService<ScreenManager>();
-            if (screenManager.CurrentScreen is GameplayScreen gameplay)
+            var screenManager = game.Services.GetService<ScreenManager>();
+            var gameplayScreen = GetGameplayScreen(screenManager);
+            if (gameplayScreen != null)
             {
                 if (args.Length != 1)
                     return "command takes exactly 1 argument";
 
-                var hero = gameplay.Hero;
+                var hero = gameplayScreen.Hero;
                 Weapon? weapon = args[0] switch
                 {
-                    "axe" => new Axe(hero, gameplay),
-                    "crossbow" => new Crossbow(hero, gameplay),
+                    "axe" => new Axe(hero, gameplayScreen),
+                    "crossbow" => new Crossbow(hero, gameplayScreen),
                     _ => null,
                 };
 
@@ -184,6 +192,31 @@ namespace Gravity.UI
                 return $"Unknown weapon {args[0]}";
             }
             return "You have to be in GameplayScreen to execute this command";
+        }
+
+        private string LoadScreen(string[] args)
+        {
+            if (args.Length != 1)
+                return "load takes exactly 1 argument";
+
+            var screenManager = game.Services.GetService<ScreenManager>();
+            GameScreen? screen = args[0] switch
+            {
+                "gameplay" => new GameplayScreen(),
+                "menu" => new MainMenuScreen(),
+                _ => null,
+            };
+
+            foreach (var s in screenManager.GetScreens())
+                s.ExitScreen();
+
+            if (screen != null)
+            {
+                screenManager.AddScreen(screen);
+                return $"{screen} loaded";
+            }
+            else
+                return $"screen {screen} not found";
         }
     }
 }

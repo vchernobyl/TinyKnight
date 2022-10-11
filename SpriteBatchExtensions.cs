@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Graphics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -57,7 +58,11 @@ namespace Gravity
         {
             var origin = new Vector2(0f, .5f);
             var scale = new Vector2(distance, thickness);
+<<<<<<< HEAD
             spriteBatch.Draw(BlankPixel(spriteBatch), from, null, color, angle, origin, scale, SpriteEffects.None, 1f);
+=======
+            spriteBatch.Draw(BlankPixel(spriteBatch), from, null, color, angle, origin, scale, SpriteEffects.None, DrawLayer.Topmost);
+>>>>>>> screen-manager
         }
     }
 }

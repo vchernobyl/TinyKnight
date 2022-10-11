@@ -1,5 +1,5 @@
 ﻿using Gravity.Entities;
-using Gravity.GFX;
+using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

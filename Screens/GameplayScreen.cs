@@ -106,14 +106,8 @@ namespace Gravity
                     yield return spawnInterval;
                 }
             }
-            AddEntity(new Zombie(this) { Position = Hero.Position + new Vector2(60f, 0f) });
 
             //GravityGame.Runner.Run(Spawn());
-
-            // Once the load has finished, we use ResetElapsedTime to tell the game's
-            // timining mechanism that we have just finished a very long frame, and
-            // that it should not try to catch up.
-            ScreenManager.Game.ResetElapsedTime();
         }
 
         public override void UnloadContent()
@@ -121,6 +115,14 @@ namespace Gravity
             content.Unload();
         }
 
+        // This is horseshit code. With the current setup Update
+        // is called before HandleInput. Everyone knows it's retarded game loop order.
+        // Fuck...
+        // Or maybe not, fuck if I know, I'm super confused about this. In the book
+        // 'User Interface Programming For Games' it's mentioned that enetity update
+        // happens before UI input handling. Does UI input handling is separate from
+        // entity input handling related to gameplay? Or are those separate things?
+        // Will keep this as is for now until I know better.
         public override void HandleInput(GameTime gameTime, InputState input)
         {
             updatingEntities = true;
