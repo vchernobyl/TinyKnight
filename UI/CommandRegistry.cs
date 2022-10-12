@@ -3,6 +3,7 @@ using Gravity.Weapons;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -224,9 +225,10 @@ namespace Gravity.UI
             if (args.Length != 1)
                 return "timescale takes exactly 1 argument";
 
-            if (float.TryParse(args[0], out float s))
+            if (float.TryParse(args[0], NumberStyles.Number, 
+                CultureInfo.InvariantCulture.NumberFormat, out float s))
             {
-                game.TargetElapsedTime = TimeSpan.FromTicks((int)(166667 * s));
+                game.TargetElapsedTime = TimeSpan.FromSeconds(0.0166667f * s);
                 return $"timescale set to {s}";
             }
 
