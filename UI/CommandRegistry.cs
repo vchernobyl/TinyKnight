@@ -1,6 +1,7 @@
 ﻿using Gravity.Entities;
 using Gravity.Weapons;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +20,15 @@ namespace Gravity.UI
             {
                 new Command("clear", Clear),
                 new Command("commands", AvailableCommands),
-                new Command("add", Add),
                 new Command("exit", Exit),
-                new Command("spawn", Spawn),
-                new Command("show_solids", ToggleSolids),
-                new Command("show_colliders", ToggleColliders),
+                new Command("add", AddEntity),
+                new Command("solids", ToggleSolids),
+                new Command("colliders", ToggleColliders),
                 new Command("history", PrintHistory),
                 new Command("weapon", GiveWeapon),
                 new Command("load", LoadScreen),
+                new Command("timescale", SetTimeScale),
+                new Command("spawn", ToggleSpawn),
             };
         }
 
@@ -49,17 +51,6 @@ namespace Gravity.UI
             return builder.ToString();
         }
 
-        private string Add(string[] args)
-        {
-            if (args.Length != 2)
-                return "add requires exactly 2 arguments";
-
-            if (int.TryParse(args[0], out int a) && int.TryParse(args[1], out int b))
-                return $"{a + b}";
-            else
-                return "Arguments have to be integers";
-        }
-
         private string Exit(string[] args)
         {
             game.Exit();
@@ -68,10 +59,12 @@ namespace Gravity.UI
 
         private static GameplayScreen? GetGameplayScreen(ScreenManager screenManager)
         {
-            return (GameplayScreen?)screenManager.GetScreens().FirstOrDefault(s => s is GameplayScreen);
+            return (GameplayScreen?)screenManager
+                .GetScreens()
+                .FirstOrDefault(s => s is GameplayScreen);
         }
 
-        private string Spawn(string[] args)
+        private string AddEntity(string[] args)
         {
             var g = game as GravityGame;
             var screenManager = g.Services.GetService<ScreenManager>();
@@ -126,31 +119,31 @@ namespace Gravity.UI
         private string ToggleSolids(string[] arg)
         {
             if (arg.Length != 1)
-                return "show_solids takes exactly 1 argument";
+                return "solids takes exactly 1 argument";
 
             var toggle = ToBoolean(arg[0]);
             if (ToBoolean(arg[0]) is bool flag)
             {
                 DebugInfo.ShowSolids = flag;
-                return $"show_solids is {arg[0]}";
+                return $"solids is {arg[0]}";
             }
 
-            return $"show_solids: invalid argument {toggle}";
+            return $"solids: invalid argument {toggle}";
         }
 
         private string ToggleColliders(string[] arg)
         {
             if (arg.Length != 1)
-                return "show_collider takes exactly 1 argument";
+                return "collider takes exactly 1 argument";
 
             var toggle = ToBoolean(arg[0]);
             if (ToBoolean(arg[0]) is bool flag)
             {
                 DebugInfo.ShowEntityColliders = flag;
-                return $"show_colliders is {arg[0]}";
+                return $"colliders is {arg[0]}";
             }
 
-            return $"show_colliders: invalid argument {toggle}";
+            return $"colliders: invalid argument {toggle}";
         }
 
         private string PrintHistory(string[] ars)
@@ -217,6 +210,43 @@ namespace Gravity.UI
             }
             else
                 return $"screen {screen} not found";
+        }
+
+        private string SetTimeScale(string[] args)
+        {
+            if (args.Length != 1)
+                return "timescale takes exactly 1 argument";
+
+            if (float.TryParse(args[0], out float s))
+            {
+                game.TargetElapsedTime = TimeSpan.FromTicks((int)(166667 * s));
+                return $"timescale set to {s}";
+            }
+
+            return "timescale argument has to be a number";
+        }
+
+        private string ToggleSpawn(string[] args)
+        {
+            if (args.Length != 1)
+                return "spawn takes exactly 1 argument";
+
+            var value = args[0];
+            if (ToBoolean(value) is bool on)
+            {
+                var gameplay = GetGameplayScreen(game.Services.GetService<ScreenManager>());
+                if (gameplay == null)
+                    return "gameplay screen needs to be active";
+
+                if (on)
+                    gameplay.StartEnemySpawn();
+                else
+                    gameplay.StopEnemySpawn();
+
+                return $"enemy spawn {value}";
+            }
+
+            return $"invalid argument {value}";
         }
     }
 }

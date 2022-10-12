@@ -1,9 +1,5 @@
 ﻿using Gravity.Entities;
-<<<<<<< HEAD
-using Gravity.GFX;
-=======
 using Gravity.Graphics;
->>>>>>> screen-manager
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -45,7 +41,7 @@ namespace Gravity.Weapons
         public override void OnEntityCollisionEnter(Entity other)
         {
             if ((axeState == FlyStage.Flying || axeState == FlyStage.Returning) && other is Enemy enemy)
-                enemy.Damage(10);
+                enemy.Damage(50);
 
             if (axeState == FlyStage.Returning && other is Hero)
             {

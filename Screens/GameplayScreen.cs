@@ -1,4 +1,5 @@
-﻿using Gravity.Entities;
+﻿using Gravity.Coroutines;
+using Gravity.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,6 +22,8 @@ namespace Gravity
 
         private bool updatingEntities = false;
         private Effect flashEffect;
+        private CoroutineRunner coroutine;
+        private CoroutineHandle spawnHandle;
 
         public IReadOnlyCollection<Entity> AllEntities
         {
@@ -31,9 +34,6 @@ namespace Gravity
         {
             entities = new List<Entity>();
             pendingEntities = new List<Entity>();
-
-            TransitionOnTime = TimeSpan.FromSeconds(1.5);
-            TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
 
         public void AddEntity(Entity entity)
@@ -75,6 +75,7 @@ namespace Gravity
             content ??= new ContentManager(ScreenManager.Game.Services, rootDirectory: "Content");
 
             flashEffect = content.Load<Effect>("Effects/FlashEffect");
+            coroutine = ScreenManager.Game.Services.GetService<CoroutineRunner>();
 
             Level = LevelLoader.Load(content.Load<Texture2D>("Levels/Map1"),
                 content.Load<Texture2D>("Textures/Tile"));
@@ -89,12 +90,14 @@ namespace Gravity
             AddEntity(Hero);
 
             Hud = new Hud(this, Hero);
+        }
 
-            var position = new Vector2(Level.Width / 2f, 0f);
-            const float spawnInterval = 2f;
-
+        public void StartEnemySpawn()
+        {
             IEnumerator Spawn()
             {
+                var position = new Vector2(Level.Width / 2f, 0f);
+                const float spawnInterval = 2f;
                 while (true)
                 {
                     var roll = Random.FloatValue;
@@ -106,8 +109,13 @@ namespace Gravity
                     yield return spawnInterval;
                 }
             }
+            spawnHandle = coroutine.Run(Spawn());
+        }
 
-            //GravityGame.Runner.Run(Spawn());
+        public void StopEnemySpawn()
+        {
+            if (spawnHandle != null)
+                spawnHandle.Stop();
         }
 
         public override void UnloadContent()

@@ -2,7 +2,7 @@
 
 namespace Gravity.Coroutines
 {
-    public struct CoroutineHandle
+    public class CoroutineHandle
     {
         public readonly CoroutineRunner Runner;
         public readonly IEnumerator Enumerator;

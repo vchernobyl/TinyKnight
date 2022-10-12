@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Diagnostics;
 
 namespace Gravity
 {
@@ -94,7 +93,10 @@ namespace Gravity
             {
                 Health--;
                 if (Health <= 0)
+                {
                     gameplayScreen.ExitScreen();
+                    gameplayScreen.ScreenManager.AddScreen(new MainMenuScreen());
+                }
 
                 hurting = true;
                 hurtTime = .2;
@@ -124,8 +126,6 @@ namespace Gravity
             // 
             // Possible solution: static InputManager class (https://github.com/SimonDarksideJ/XNAGameStudio/blob/archive/Samples/RolePlayingGame_4_0_Win_Xbox/RolePlayingGame_4_0_Win_Xbox/RolePlayingGame/InputManager.cs)
             // Or something similar.
-
-            Debug.Assert(false);
 
             // Movement.
             if (!hurting)
