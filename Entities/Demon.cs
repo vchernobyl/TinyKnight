@@ -1,24 +1,28 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Gravity.Graphics;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Gravity.Entities
 {
-    public class Skeleton : Enemy
+    public class Demon : Enemy
     {
         private int facing;
-        private bool dead = false;
+        private bool dead;
 
-        public Skeleton(GameplayScreen gameplayScreen)
+        public Demon(GameplayScreen gameplayScreen)
             : base(gameplayScreen, health: 100)
         {
-            var content = gameplayScreen.ScreenManager.Game.Content;
+            var game = gameplayScreen.ScreenManager.Game;
+            var content = game.Content;
 
-            //animator = new Animator(new List<Animation>
-            //{
-            //    new Animation("Skeleton", content.Load<Texture2D>("Textures/Skeleton"))
-            //});
+            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Demon"));
+            var anim = spriteSheet.CreateAnimation("Default", out int animID);
+            anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0);
+
+            sprite = spriteSheet.Create();
+            sprite.LayerDepth = DrawLayer.Midground;
+            sprite.Play(animID);
 
             facing = Numerics.PickOne(-1, 1);
         }
@@ -31,8 +35,7 @@ namespace Gravity.Entities
 
         public override void Update(GameTime gameTime)
         {
-            const float speed = .075f;
-
+            const float speed = .15f;
             if (!dead && Level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(facing) * speed;
 
@@ -44,10 +47,10 @@ namespace Gravity.Entities
                 DX = Math.Sign(facing) * speed;
             }
 
-            //if (facing > 0)
-                //animator.Flip = SpriteEffects.None;
-            //else
-                //animator.Flip = SpriteEffects.FlipHorizontally;
+            if (facing > 0)
+                sprite.Flip = SpriteEffects.None;
+            else
+                sprite.Flip = SpriteEffects.FlipHorizontally;
         }
 
         public override void OnDie()

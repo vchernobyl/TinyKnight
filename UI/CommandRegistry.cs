@@ -87,6 +87,7 @@ namespace Gravity.UI
                 {
                     "zombie" => new Zombie(gameplayScreen),
                     "bat" => new Bat(gameplayScreen),
+                    "demon" => new Demon(gameplayScreen),
                     _ => null,
                 };
 

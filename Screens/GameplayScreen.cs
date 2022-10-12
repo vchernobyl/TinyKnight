@@ -3,7 +3,6 @@ using Gravity.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -101,10 +100,12 @@ namespace Gravity
                 while (true)
                 {
                     var roll = Random.FloatValue;
-                    if (roll <= .5f)
+                    if (roll <= .33f)
                         AddEntity(new Bat(this) { Position = position });
-                    else
+                    else if (roll <= .66f)
                         AddEntity(new Zombie(this) { Position = position });
+                    else
+                        AddEntity(new Demon(this) { Position = position });
 
                     yield return spawnInterval;
                 }

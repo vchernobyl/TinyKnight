@@ -117,7 +117,7 @@ namespace Gravity.Entities
             base.Draw(batch);
         }
 
-        public override void Die()
+        public override void OnDie()
         {
             dead = true;
             DY = -.5f;

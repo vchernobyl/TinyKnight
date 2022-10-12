@@ -39,11 +39,11 @@ namespace Gravity.Entities
 
             Health -= amount;
             if (Health <= 0)
-                Die();
+                OnDie();
         }
 
         public virtual void OnHit(int amount) { }
 
-        public abstract void Die();
+        public virtual void OnDie() { }
     }
 }

@@ -24,6 +24,17 @@ Design:
   * Randomly on enemy kill
   * Spawned at some location at certain interval? (like in Unreal Tournament)
 
+Idea #1: As you kill enemies you collect their souls/coins or whatever. The more coins you have the better weapons/powerups you get?
+Should incentivise the player not to jump too early and to save coins.
+
+Idea #2: Enemies are trying to destroy the door at the bottom. Once destroyed - game over.
+
+Idea #3: What if you are actually invincible from enemy damage, and only get stunned or something? The real way to lose is if enemy
+reached the pit.
+
+The more enemies fall into the pit the harder the game should become. How do we increase the difficulty?
+- Maybe level shrinks or something? 
+- Hero weapon breaks?
 
 Power-ups:
 ----------

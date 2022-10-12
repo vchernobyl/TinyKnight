@@ -58,7 +58,7 @@ namespace Gravity.Entities
                 sprite.Flip = SpriteEffects.FlipHorizontally;
         }
 
-        public override void Die()
+        public override void OnDie()
         {
             DY = Random.FloatRange(-.4f, -.5f);
             dead = true;

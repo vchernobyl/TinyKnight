@@ -149,7 +149,7 @@ namespace Gravity
                     jumpSound.Play(volume: .7f, 0f, 0f);
                     jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
 
-                    SquashX(.5f);
+                    //SquashX(1f);
                 }
             }
 
