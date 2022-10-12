@@ -8,6 +8,13 @@ using System.Text;
 
 namespace Gravity.UI
 {
+    // TODO: A few things can be improved about command structure.
+    // 1. Not every command is going to need to write an output to a console.
+    // Some commands only output errors and nothing on success (like for example `clear`).
+    // 2. Commands can change name, but currently these don't change automatically in
+    // error messages and need to be adjusted by hand.
+    // 3. Every command can accept a certain number of arguments, validation of argument
+    // count can also be automated.
     public class CommandRegistry
     {
         private readonly Game game;

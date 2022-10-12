@@ -7,18 +7,25 @@ namespace Gravity
 {
     public class Arrow : Entity
     {
-        public Vector2 Velocity { get; set; }
-        public int Damage { get; set; }
+        private readonly Vector2 velocity;
+        private readonly int damage;
 
-        public Arrow(GameplayScreen gameplayScreen) 
+        public Arrow(GameplayScreen gameplayScreen, Vector2 velocity, int damage)
             : base(gameplayScreen)
         {
+            this.velocity = velocity;
+            this.damage = damage;
+
+
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(8, 0, 8, 8), duration: 0f);
 
             sprite = spriteSheet.Create();
+            sprite.Flip = velocity.X < 0
+                ? SpriteEffects.FlipHorizontally
+                : SpriteEffects.None;
             sprite.Play(defaultAnimID);
         }
 
@@ -26,7 +33,7 @@ namespace Gravity
         {
             if (other is Enemy enemy && enemy.IsAlive)
             {
-                enemy.Damage(Damage);
+                enemy.Damage(damage);
                 Destroy();
             }
         }
@@ -39,13 +46,8 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
-            DX = Velocity.X;
-            DY = Velocity.Y;
-
-            if (Velocity.X < 0)
-                sprite.Flip = SpriteEffects.FlipHorizontally;
-            else
-                sprite.Flip = SpriteEffects.None;
+            DX = velocity.X;
+            DY = velocity.Y;
         }
     }
 }

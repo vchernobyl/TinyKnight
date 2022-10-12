@@ -35,7 +35,7 @@ namespace Gravity.Weapons
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing * ProjectileSpeed, Random.FloatRange(-Spread, Spread));
-            gameplayScreen.AddEntity(new Arrow(gameplayScreen) { Position = position, Velocity = velocity, Damage = Damage });
+            gameplayScreen.AddEntity(new Arrow(gameplayScreen, velocity, Damage) { Position = position });
             shotSound.Play();
         }
 
