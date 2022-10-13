@@ -210,7 +210,11 @@ namespace Gravity
             sprite.Draw(Position, spriteBatch);
 
             if (DebugInfo.ShowEntityColliders)
-                spriteBatch.DrawRectangleOutline(new Rectangle((int)XX - 4, (int)YY - 4, 8, 8), new Color(0f, 255f, 0f), .35f);
+            {
+                spriteBatch.DrawRectangleOutline(
+                    new Rectangle((int)(XX - Radius), (int)(YY - Radius), (int)Radius * 2, (int)Radius * 2),
+                    new Color(0f, 255f, 0f), .35f);
+            }
         }
     }
 }

@@ -88,6 +88,8 @@ namespace Gravity
             Hero = new Hero(this) { Position = new Vector2(100f, 25f) };
             AddEntity(Hero);
 
+            AddEntity(new FirePit(this) { Position = new Vector2(Level.Width / 2f, Level.Height - Level.CellSize / 2f) });
+
             Hud = new Hud(this, Hero);
         }
 

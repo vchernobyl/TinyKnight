@@ -32,6 +32,13 @@ Idea #2: Enemies are trying to destroy the door at the bottom. Once destroyed - 
 Idea #3: What if you are actually invincible from enemy damage, and only get stunned or something? The real way to lose is if enemy
 reached the pit.
 
+Idea #4: Every time enemy jumps into a pit level gets flooded by water? And water keeps rising every time?
+
+Best idea: enemies just into the pit to "sacrifice" themselves. once they do an evil wizard teleports to kill you.
+Killing evil wizard has a chance of spawning a powerup.
+Or a ghost that follows you through walls?
+
+
 The more enemies fall into the pit the harder the game should become. How do we increase the difficulty?
 - Maybe level shrinks or something? 
 - Hero weapon breaks?
@@ -76,13 +83,10 @@ Enemies:
 TODO:
 -----
 - Experiment with arrow stretching as it travels, does it give a better impact feeling?
-- Collision masks
 - Pinky looking charging monster
 - Greatly simplify current screen manager. For some reason it calls Update on the screen before
   calling HandleInput. It also gives us functionality that we don't need, including possibility
   for multiplayer input etc.
 - Axe sprite is too big, we need a different sprite for it!
 - Console could be a GameScreen (with IsPopup = true), which would prevent input to other screens.
-- Fix arrow not having correct direction on first frame when shooting left.
-- Fix weird stretching when jumping.
-- Fix axe position in hero hands.
+- Debug circle drawing, as entity<->entity collisions are circle radius based.

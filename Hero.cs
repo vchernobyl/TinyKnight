@@ -88,7 +88,6 @@ namespace Gravity
 
         public override void OnEntityCollisionEnter(Entity other)
         {
-            // TODO: Player death state.
             if (other is Enemy enemy && enemy.IsAlive && !hurting)
             {
                 Health--;
