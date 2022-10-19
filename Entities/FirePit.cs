@@ -6,12 +6,15 @@ namespace Gravity.Entities
 {
     public class FirePit : Entity
     {
-        public FirePit(GameplayScreen gameplayScreen) : base(gameplayScreen)
+        public FirePit(GameplayScreen gameplayScreen, Vector2 position) : base(gameplayScreen)
         {
+            Position = position;
             LevelCollisions = false;
             Gravity = 0f;
+            Radius = 16;
 
-            var content = gameplayScreen.ScreenManager.Game.Content;
+            var game = gameplayScreen.ScreenManager.Game;
+            var content = game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Fire"));
 
             var anim = spriteSheet.CreateAnimation("Default", out int animID);
@@ -22,9 +25,17 @@ namespace Gravity.Entities
             sprite.Play(animID);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void OnEntityCollisionExit(Entity other)
         {
-            // 
+            if (other is Enemy)
+            {
+                other.Destroy();
+            }
+            else if (other is Hero)
+            {
+                gameplayScreen.ExitScreen();
+                gameplayScreen.ScreenManager.AddScreen(new MainMenuScreen());
+            }
         }
     }
 }

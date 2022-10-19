@@ -90,3 +90,5 @@ TODO:
 - Axe sprite is too big, we need a different sprite for it!
 - Console could be a GameScreen (with IsPopup = true), which would prevent input to other screens.
 - Debug circle drawing, as entity<->entity collisions are circle radius based.
+- Fire pit particle effects.
+- AI on/off command would be very useful.
