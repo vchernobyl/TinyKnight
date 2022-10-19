@@ -6,6 +6,8 @@ namespace Gravity.Entities
 {
     public class Wizard : Enemy
     {
+        private IState<Wizard> currentState;
+
         public Wizard(GameplayScreen gameplayScreen) 
             : base(gameplayScreen, health: 200)
         {
@@ -19,6 +21,26 @@ namespace Gravity.Entities
             sprite = spriteSheet.Create();
             sprite.LayerDepth = DrawLayer.Midground;
             sprite.Play(animID);
+
+            LevelCollisions = false;
+            Gravity = 0f;
+
+            currentState = new WizardChaseState(gameplayScreen.Hero);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (Health <= 0)
+                ChangeState(new WizardDeathState());
+
+            currentState.Execute(this);
+        }
+
+        public void ChangeState(IState<Wizard> newState)
+        {
+            currentState.Exit(this);
+            currentState = newState;
+            currentState.Enter(this);
         }
     }
 }

@@ -33,8 +33,8 @@ namespace Gravity.Entities
             }
             else if (other is Hero)
             {
-                gameplayScreen.ExitScreen();
-                gameplayScreen.ScreenManager.AddScreen(new MainMenuScreen());
+                GameplayScreen.ExitScreen();
+                GameplayScreen.ScreenManager.AddScreen(new MainMenuScreen());
             }
         }
     }

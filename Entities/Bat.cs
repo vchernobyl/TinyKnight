@@ -58,7 +58,7 @@ namespace Gravity.Entities
         private void RecalculatePath()
         {
             pointIndex = 0;
-            path = pathfinding.FindPath(Position, gameplayScreen.Hero.Position);
+            path = pathfinding.FindPath(Position, GameplayScreen.Hero.Position);
         }
 
         public override void OnLevelCollision(Vector2 normal)

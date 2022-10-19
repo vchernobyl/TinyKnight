@@ -15,7 +15,7 @@ namespace Gravity
             Dead,
         }
 
-        public Level Level => gameplayScreen.Level;
+        public Level Level => GameplayScreen.Level;
 
         // Coordinates within the grid.
         public int CX = 0;
@@ -53,7 +53,7 @@ namespace Gravity
 
         public Color FlashColor { get; private set; }
 
-        protected readonly GameplayScreen gameplayScreen;
+        public readonly GameplayScreen GameplayScreen;
         protected Sprite sprite;
 
         private double flashDuration = .0;
@@ -64,7 +64,7 @@ namespace Gravity
 
         public Entity(GameplayScreen gameplayScreen, int updateOrder = 0)
         {
-            this.gameplayScreen = gameplayScreen;
+            this.GameplayScreen = gameplayScreen;
             this.UpdateOrder = updateOrder;
         }
 
@@ -128,7 +128,7 @@ namespace Gravity
             // Check for collisions with other entities.
             if (EntityCollisions)
             {
-                foreach (var other in gameplayScreen.AllEntities)
+                foreach (var other in GameplayScreen.AllEntities)
                 {
                     if (this == other)
                         continue;

@@ -81,9 +81,9 @@ namespace Gravity
 
         public void EquipWeapon(Weapon weapon)
         {
-            gameplayScreen.RemoveEntity(this.weapon);
+            GameplayScreen.RemoveEntity(this.weapon);
             this.weapon = weapon;
-            gameplayScreen.AddEntity(weapon);
+            GameplayScreen.AddEntity(weapon);
         }
 
         public override void OnEntityCollisionEnter(Entity other)
@@ -93,8 +93,8 @@ namespace Gravity
                 Health--;
                 if (Health <= 0)
                 {
-                    gameplayScreen.ExitScreen();
-                    gameplayScreen.ScreenManager.AddScreen(new MainMenuScreen());
+                    GameplayScreen.ExitScreen();
+                    GameplayScreen.ScreenManager.AddScreen(new MainMenuScreen());
                 }
 
                 hurting = true;
