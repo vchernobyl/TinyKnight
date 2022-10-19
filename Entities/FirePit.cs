@@ -27,9 +27,11 @@ namespace Gravity.Entities
 
         public override void OnEntityCollisionExit(Entity other)
         {
-            if (other is Enemy)
+            if (other is Enemy && !(other is Wizard))
             {
                 other.Destroy();
+                var wizard = new Wizard(GameplayScreen) { Position = Position };
+                GameplayScreen.AddEntity(wizard);
             }
             else if (other is Hero)
             {
