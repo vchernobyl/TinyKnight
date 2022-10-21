@@ -4,16 +4,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity.Entities
 {
-    public class Wizard : Enemy
+    public class Ghost : Enemy
     {
-        private IState<Wizard> currentState;
+        private readonly Hero hero;
 
-        public Wizard(GameplayScreen gameplayScreen) 
-            : base(gameplayScreen, health: 200)
+        public Ghost(GameplayScreen gameplayScreen)
+            : base(gameplayScreen, health: 200, updateOrder: 200)
         {
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
-            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Wizard"));
+            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Ghost"));
 
             var anim = spriteSheet.CreateAnimation("Default", out int animID);
             anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);
@@ -25,22 +25,18 @@ namespace Gravity.Entities
             LevelCollisions = false;
             Gravity = 0f;
 
-            currentState = new WizardChaseState(gameplayScreen.Hero);
+            hero = gameplayScreen.Hero;
         }
 
         public override void Update(GameTime gameTime)
         {
             if (Health <= 0)
-                ChangeState(new WizardDeathState());
+                Destroy();
 
-            currentState.Execute(this);
-        }
-
-        public void ChangeState(IState<Wizard> newState)
-        {
-            currentState.Exit(this);
-            currentState = newState;
-            currentState.Enter(this);
+            const float speed = 0.05f;
+            var dir = Vector2.Normalize(hero.Position - Position);
+            DX = dir.X * speed;
+            DY = dir.Y * speed;
         }
     }
 }

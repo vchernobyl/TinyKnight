@@ -92,3 +92,4 @@ TODO:
 - Debug circle drawing, as entity<->entity collisions are circle radius based.
 - Fire pit particle effects.
 - AI on/off command would be very useful.
+- Console cursor movement would be useful if it's not too hard to implement.
