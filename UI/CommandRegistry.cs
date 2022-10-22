@@ -183,6 +183,7 @@ namespace Gravity.UI
                 {
                     "axe" => new Axe(hero, gameplayScreen),
                     "crossbow" => new Crossbow(hero, gameplayScreen),
+                    "cannon" => new Cannon(hero, gameplayScreen),
                     _ => null,
                 };
 

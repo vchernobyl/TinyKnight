@@ -34,6 +34,6 @@ namespace Gravity.Weapons
             }
         }
 
-        public virtual void Shoot() { }
+        protected virtual void Shoot() { }
     }
 }

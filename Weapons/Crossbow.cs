@@ -31,7 +31,7 @@ namespace Gravity.Weapons
             Gravity = 0f;
         }
 
-        public override void Shoot()
+        protected override void Shoot()
         {
             var position = hero.Position + Vector2.UnitX * hero.Facing * Level.CellSize;
             var velocity = new Vector2(hero.Facing * ProjectileSpeed, Random.FloatRange(-Spread, Spread));

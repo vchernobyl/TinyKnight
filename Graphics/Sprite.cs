@@ -8,6 +8,7 @@ namespace Gravity.Graphics
         public Vector2 Offset;
         public Vector2 Origin;
         public Vector2 Scale;
+        public Color Color;
 
         public float Rotation;
         public float LayerDepth;
@@ -21,6 +22,7 @@ namespace Gravity.Graphics
             this.spriteSheet = spriteSheet;
             this.CurrentAnimationID = int.MaxValue;
             Scale = Vector2.One;
+            Color = Color.White;
         }
 
         public void Update(GameTime gameTime)
@@ -36,7 +38,7 @@ namespace Gravity.Graphics
             var frame = Animation.CurrentFrame;
             var source = frame.Region;
 
-            spriteBatch.Draw(spriteSheet.Texture, position + Offset, source, Color.White,
+            spriteBatch.Draw(spriteSheet.Texture, position + Offset, source, Color,
                 Rotation, Origin, Scale, Flip, LayerDepth);
         }
 

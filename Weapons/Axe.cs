@@ -68,7 +68,7 @@ namespace Gravity.Weapons
             switch (axeState)
             {
                 case FlyStage.InHands:
-                    Position = hero.Position;
+                    Position = hero.Position + new Vector2(6f * hero.Facing, 0f);
                     break;
                 case FlyStage.Flying:
                     speed -= deceleration;
@@ -93,9 +93,13 @@ namespace Gravity.Weapons
 
                     break;
             }
+
+            sprite.Flip = hero.Facing > 0
+                ? SpriteEffects.None
+                : SpriteEffects.FlipHorizontally;
         }
 
-        public override void Shoot()
+        protected override void Shoot()
         {
             if (axeState == FlyStage.InHands)
             {
