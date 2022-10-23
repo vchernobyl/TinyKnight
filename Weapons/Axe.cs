@@ -1,6 +1,7 @@
 ﻿using Gravity.Entities;
 using Gravity.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity.Weapons
@@ -18,6 +19,8 @@ namespace Gravity.Weapons
         private int direction;
         private float speed;
 
+        private readonly SoundEffect sound;
+
         public Axe(Hero hero, GameplayScreen gameplayScreen)
             : base(hero, gameplayScreen, fireRate: 3f, nameof(Axe), updateOrder: 100)
         {
@@ -32,6 +35,8 @@ namespace Gravity.Weapons
             sprite.LayerDepth = DrawLayer.Foreground;
 
             axeState = FlyStage.InHands;
+
+            sound = content.Load<SoundEffect>("SoundFX/Axe_Throw");
 
             Gravity = 0f;
             LevelCollisions = false;
@@ -106,6 +111,7 @@ namespace Gravity.Weapons
                 axeState = FlyStage.Flying;
                 direction = hero.Facing;
                 speed = 1.75f;
+                sound.Play();
             }
         }
     }

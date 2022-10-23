@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="Gravity.Particles.ParticleSystemSettings">
+    <MinNumParticles>10</MinNumParticles>
+    <MaxNumParticles>15</MaxNumParticles>
+    <TextureFilename>Textures/Pixel</TextureFilename>
+    <MinInitialSpeed>30</MinInitialSpeed>
+    <MaxInitialSpeed>80</MaxInitialSpeed>
+    <AccelerationMode>EndVelocity</AccelerationMode>
+    <EndVelocity>0.5</EndVelocity>
+    <EmitterVelocitySensitivity>1</EmitterVelocitySensitivity>
+    <MinLifetime>0.1</MinLifetime>
+    <MaxLifetime>0.25</MaxLifetime>
+    <MinSize>2</MinSize>
+    <MaxSize>2</MaxSize>
+  </Asset>
+</XnaContent>

@@ -1,5 +1,6 @@
 ﻿using Gravity.Coroutines;
 using Gravity.Graphics;
+using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,8 +10,6 @@ namespace Gravity.Weapons
 {
     public class Explosion : Entity
     {
-
-
         public Explosion(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
@@ -38,7 +37,6 @@ namespace Gravity.Weapons
 
         public IEnumerator Expand()
         {
-            var red = new Color(255, 0, 77);
             var white = new Color(255, 241, 232);
             var yellow = new Color(255, 236, 39);
 
@@ -102,7 +100,8 @@ namespace Gravity.Weapons
 
     public class Cannon : Weapon
     {
-        private readonly SoundEffect shotSound;
+        private readonly SoundEffect sound;
+        private readonly ParticleSystem particles;
 
         public Cannon(Hero hero, GameplayScreen gameplayScreen)
             : base(hero, gameplayScreen, fireRate: 2f, name: "Cannon", updateOrder: 100)
@@ -117,7 +116,9 @@ namespace Gravity.Weapons
             sprite.Play(defaultAnimID);
             sprite.LayerDepth = DrawLayer.Foreground;
 
-            shotSound = content.Load<SoundEffect>("SoundFX/Cannon_Shot");
+            sound = content.Load<SoundEffect>("SoundFX/Cannon_Shot");
+            particles = new ParticleSystem(game, "Particles/Cannon_Shot");
+            game.Components.Add(particles);
 
             LevelCollisions = false;
             Gravity = 0f;
@@ -137,15 +138,15 @@ namespace Gravity.Weapons
         {
             const float ballSpeed = 1f;
             var velocity = new Vector2(hero.Facing * ballSpeed, 0f);
-            var ball = new CannonBall(GameplayScreen, velocity)
-            {
-                Position = hero.Position + new Vector2(hero.Facing * 6f, 1f)
-            };
+            var position = hero.Position + new Vector2(hero.Facing * 6f, 1f);
+            var ball = new CannonBall(GameplayScreen, velocity) { Position = position };
 
             GameplayScreen.AddEntity(ball);
-            shotSound.Play();
+            sound.Play();
+            particles.AddParticles(position, Vector2.UnitX * hero.Facing * 100f);
+            GravityGame.WorldCamera.Shake(.4f);
 
-            hero.DX += -hero.Facing * .3f;
+            hero.DX += -hero.Facing * .15f;
         }
     }
 }

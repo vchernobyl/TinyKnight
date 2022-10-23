@@ -14,7 +14,7 @@ namespace Gravity.Weapons
         private readonly SoundEffect shotSound;
 
         public Crossbow(Hero hero, GameplayScreen gameplayScreen)
-            : base(hero, gameplayScreen, fireRate: 8f, name: nameof(Crossbow))
+            : base(hero, gameplayScreen, fireRate: 8f, name: nameof(Crossbow), updateOrder: 100)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
