@@ -1,6 +1,7 @@
 ﻿using Gravity.Coroutines;
 using Gravity.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
 
@@ -8,6 +9,8 @@ namespace Gravity.Weapons
 {
     public class Explosion : Entity
     {
+
+
         public Explosion(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
@@ -20,25 +23,37 @@ namespace Gravity.Weapons
             sprite = spriteSheet.Create();
             sprite.Play(defaultAnimID);
             sprite.LayerDepth = DrawLayer.Foreground;
-            sprite.Scale = Vector2.Zero;
-            sprite.Color = Color.Gray;
+            sprite.Scale = Vector2.One * .25f;
 
             Gravity = 0f;
 
             var coroutine = game.Services.GetService<CoroutineRunner>();
             coroutine.Run(Expand());
 
+            var sound = content.Load<SoundEffect>("SoundFX/Explosion_2");
+            sound.Play();
+
             GravityGame.WorldCamera.Shake(.55f);
         }
 
         public IEnumerator Expand()
         {
+            var red = new Color(255, 0, 77);
+            var white = new Color(255, 241, 232);
+            var yellow = new Color(255, 236, 39);
+
             var frames = 0;
-            while (frames++ < 8)
+            var totalDuration = 10f;
+            while (frames++ < totalDuration)
             {
-                sprite.Color = Color.Lerp(Color.Gray, Color.White, frames / 8);
-                sprite.Scale.X += .175f;
-                sprite.Scale.Y += .175f;
+                if (frames <= 5)
+                    sprite.Color = yellow;
+                else if (frames <= 10)
+                    sprite.Color = white;
+
+                sprite.Scale.X += .13f;
+                sprite.Scale.Y += .13f;
+
                 yield return null;
             }
             Destroy();
@@ -66,11 +81,6 @@ namespace Gravity.Weapons
             sprite.Flip = velocity.X > 0
                 ? SpriteEffects.None
                 : SpriteEffects.FlipHorizontally;
-
-            (DX, DY) = velocity;
-            Gravity = 0f;
-            FrictionX = 1f;
-            FrictionY = 1f;
         }
 
         public override void OnLevelCollision(Vector2 normal)
@@ -85,13 +95,15 @@ namespace Gravity.Weapons
 
         public override void Update(GameTime gameTime)
         {
-            //DX = velocity.X;
-            //DY = velocity.Y;
+            DX = velocity.X;
+            DY = velocity.Y;
         }
     }
 
     public class Cannon : Weapon
     {
+        private readonly SoundEffect shotSound;
+
         public Cannon(Hero hero, GameplayScreen gameplayScreen)
             : base(hero, gameplayScreen, fireRate: 2f, name: "Cannon", updateOrder: 100)
         {
@@ -104,6 +116,8 @@ namespace Gravity.Weapons
             sprite = spriteSheet.Create();
             sprite.Play(defaultAnimID);
             sprite.LayerDepth = DrawLayer.Foreground;
+
+            shotSound = content.Load<SoundEffect>("SoundFX/Cannon_Shot");
 
             LevelCollisions = false;
             Gravity = 0f;
@@ -129,6 +143,9 @@ namespace Gravity.Weapons
             };
 
             GameplayScreen.AddEntity(ball);
+            shotSound.Play();
+
+            hero.DX += -hero.Facing * .3f;
         }
     }
 }

@@ -105,6 +105,12 @@
 /processorParam:Quality=Best
 /build:SoundFX/Bazooka_Shot.wav
 
+#begin SoundFX/Cannon_Shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Cannon_Shot.wav
+
 #begin SoundFX/Coin_Pickup.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -122,6 +128,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundFX/Explosion.wav
+
+#begin SoundFX/Explosion_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Explosion_1.wav
+
+#begin SoundFX/Explosion_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/Explosion_2.wav
 
 #begin SoundFX/Hero_Hurt.wav
 /importer:WavImporter
