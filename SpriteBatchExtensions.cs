@@ -54,6 +54,33 @@ namespace Gravity
             DrawLine(spriteBatch, from, distance, angle, color, thickness);
         }
 
+        public static void DrawCircle(this SpriteBatch spriteBatch, Vector2 position, float radius, Color color)
+        {
+            const int points = 256;
+
+            var rotation = MathHelper.TwoPi / points;
+
+            var sin = MathF.Sin(rotation);
+            var cos = MathF.Cos(rotation);
+
+            var ax = radius;
+            var ay = 0f;
+
+            for (var i = 0; i < points; i++)
+            {
+                var bx = cos * ax - sin * ay;
+                var by = sin * ax + cos * ay;
+
+                var from = new Vector2(position.X + ax, position.Y + ay);
+                var to = new Vector2(position.X + bx, position.Y + by);
+
+                spriteBatch.DrawLine(from, to, color, 1f);
+
+                ax = bx;
+                ay = by;
+            }
+        }
+
         private static void DrawLine(this SpriteBatch spriteBatch, Vector2 from, float distance, float angle, Color color, float thickness)
         {
             var origin = new Vector2(0f, .5f);
