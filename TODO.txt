@@ -89,9 +89,12 @@ TODO:
 - Fire pit particle effects.
 - AI on/off command would be very useful.
 - Console cursor movement would be useful if it's not too hard to implement.
-- Watch: https://www.youtube.com/watch?v=Fy0aCDmgnxg&t=107s
 - Animation curve functions from the book
-- Read: https://www.gamedeveloper.com/disciplines/how-to-prototype-a-game-in-under-7-days
 - Implement audio manager:
     * Avoid playing same sound at the same time (which gets very loud)
     * Central place to control volume
+- Draw weapon chest
+- Think about how weapon chest is going to be appearing:
+    * Dropping randomly from the top of the screen
+    * Dropped by enemies on kill
+

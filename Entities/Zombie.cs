@@ -9,25 +9,31 @@ namespace Gravity.Entities
     {
         private int facing;
         private bool dead = false;
+        private float rotationSpeed;
+
+        private readonly int deadAnimID;
 
         public Zombie(GameplayScreen gameplayScreen)
             : base(gameplayScreen, health: 100, updateOrder: 200)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Zombie"));
-            var anim = spriteSheet.CreateAnimation("Zombie_Walk", out int animID);
-            anim.AddFrame(new Rectangle(0 * 8, 0, 8, 8), .1f);
-            anim.AddFrame(new Rectangle(1 * 8, 0, 8, 8), .1f);
-            anim.AddFrame(new Rectangle(2 * 8, 0, 8, 8), .1f);
-            anim.AddFrame(new Rectangle(3 * 8, 0, 8, 8), .1f);
-            anim.AddFrame(new Rectangle(4 * 8, 0, 8, 8), .1f);
-            anim.AddFrame(new Rectangle(5 * 8, 0, 8, 8), .1f);
-            anim.AddFrame(new Rectangle(6 * 8, 0, 8, 8), .1f);
-            anim.AddFrame(new Rectangle(7 * 8, 0, 8, 8), .1f);
+            var walkAnim = spriteSheet.CreateAnimation("Zombie_Walk", out int walkAnimID);
+            walkAnim.AddFrame(new Rectangle(0 * 8, 0, 8, 8), .1f);
+            walkAnim.AddFrame(new Rectangle(1 * 8, 0, 8, 8), .1f);
+            walkAnim.AddFrame(new Rectangle(2 * 8, 0, 8, 8), .1f);
+            walkAnim.AddFrame(new Rectangle(3 * 8, 0, 8, 8), .1f);
+            walkAnim.AddFrame(new Rectangle(4 * 8, 0, 8, 8), .1f);
+            walkAnim.AddFrame(new Rectangle(5 * 8, 0, 8, 8), .1f);
+            walkAnim.AddFrame(new Rectangle(6 * 8, 0, 8, 8), .1f);
+            walkAnim.AddFrame(new Rectangle(7 * 8, 0, 8, 8), .1f);
 
             sprite = spriteSheet.Create();
             sprite.LayerDepth = DrawLayer.Midground;
-            sprite.Play(animID);
+            sprite.Play(walkAnimID);
+
+            var deadAnim = spriteSheet.CreateAnimation("Zombie_Dead", out deadAnimID);
+            deadAnim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);
 
             facing = Numerics.PickOne(-1, 1);
         }
@@ -62,6 +68,7 @@ namespace Gravity.Entities
         {
             DY = Random.FloatRange(-.4f, -.5f);
             dead = true;
+            sprite.Play(deadAnimID);
         }
     }
 }

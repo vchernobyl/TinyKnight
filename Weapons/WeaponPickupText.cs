@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity.Weapons
 {
+    // TODO: This could be an entity.
     public class WeaponPickupText : DrawableGameComponent
     {
         private readonly SpriteBatch spriteBatch;

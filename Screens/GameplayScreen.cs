@@ -24,7 +24,7 @@ namespace Gravity
         private CoroutineRunner coroutine;
         private CoroutineHandle spawnHandle;
 
-        public IReadOnlyCollection<Entity> AllEntities
+        public List<Entity> AllEntities
         {
             get { return entities; }
         }

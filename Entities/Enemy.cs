@@ -4,6 +4,7 @@ using System.Threading;
 
 namespace Gravity.Entities
 {
+    // TODO: Refactor. Every enemy should have an animation and death effects.
     public abstract class Enemy : Entity
     {
         public int Health { get; private set; }

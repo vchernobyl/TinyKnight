@@ -1,4 +1,5 @@
 ﻿using Gravity.Coroutines;
+using Gravity.Entities;
 using Gravity.Graphics;
 using Gravity.Particles;
 using Microsoft.Xna.Framework;
@@ -52,9 +53,24 @@ namespace Gravity.Weapons
                 sprite.Scale.X += .13f;
                 sprite.Scale.Y += .13f;
 
+                const float spriteSize = 32f; // This needs to be changed if sprite size changes
+                Radius = spriteSize / 2f * sprite.Scale.X;
+
                 yield return null;
             }
             Destroy();
+        }
+
+        public override void OnEntityCollisionEnter(Entity other)
+        {
+            if (other is Enemy enemy)
+            {
+                enemy.Damage(999);
+                var xDirection = Vector2.Normalize(enemy.Position - Position).X;
+                enemy.DX = xDirection * .5f;
+                enemy.DY = -.75f;
+                enemy.LevelCollisions = false;
+            }
         }
     }
 
@@ -85,10 +101,19 @@ namespace Gravity.Weapons
         {
             // Don't destroy projectile if it touches ground or ceiling.
             if (normal.Y == 0f)
-            {
-                GameplayScreen.AddEntity(new Explosion(GameplayScreen) { Position = Position });
-                Destroy();
-            }
+                Explode();
+        }
+
+        public override void OnEntityCollisionEnter(Entity other)
+        {
+            if (other is Enemy)
+                Explode();
+        }
+
+        private void Explode()
+        {
+            GameplayScreen.AddEntity(new Explosion(GameplayScreen) { Position = Position });
+            Destroy();
         }
 
         public override void Update(GameTime gameTime)
