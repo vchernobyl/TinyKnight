@@ -70,6 +70,8 @@ namespace Gravity
             AddEntity(new FirePit(this, new Vector2(Level.Width / 2f, Level.Height - Level.CellSize / 2f)));
 
             Hud = new Hud(this, Hero);
+
+            coroutine.Run(SpawnChest());
         }
 
         public void StartEnemySpawn()
@@ -179,6 +181,29 @@ namespace Gravity
                 transformMatrix: GravityGame.UiCamera.Transform);
             Hud.Draw(spriteBatch);
             spriteBatch.End();
+        }
+
+        private IEnumerator SpawnChest()
+        {
+            while (true)
+            {
+                // Choose a non-solid cell to spawn the chest from.
+                Cell PickCell()
+                {
+                    var column = Random.IntRange(0, Level.Columns);
+                    var row = Random.IntRange(0, Level.Rows);
+                    return Level.Cells[column, row];
+                }
+
+                var randomCell = PickCell();
+                while (randomCell.Solid)
+                    randomCell = PickCell();
+
+                var chest = new Chest(this) { Position = randomCell.Position };
+                AddEntity(chest);
+
+                yield return 5f; // 5 second pause.
+            }
         }
     }
 }

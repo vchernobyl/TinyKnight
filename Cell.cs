@@ -21,6 +21,7 @@ namespace Gravity
 
         public Rectangle Bounds => new Rectangle(X * Level.CellSize, Y * Level.CellSize, Level.CellSize, Level.CellSize);
         public Point Location => new Point(X, Y);
+        public Vector2 Position => new Vector2(X * Level.CellSize, Y * Level.CellSize);
 
         public Cell(int x, int y, CellType type, bool solid)
         {
