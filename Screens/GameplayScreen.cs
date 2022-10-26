@@ -16,9 +16,8 @@ namespace Gravity
         public Hud Hud { get; private set; }
         public Hero Hero { get; private set; }
 
-        private readonly LinkedList<Entity> entities;
+        private readonly List<Entity> entities;
 
-        private bool updatingEntities = false;
         private Effect flashEffect;
         private CoroutineRunner coroutine;
         private CoroutineHandle spawnHandle;
@@ -30,13 +29,18 @@ namespace Gravity
 
         public GameplayScreen()
         {
-            entities = new LinkedList<Entity>();
+            entities = new List<Entity>();
         }
 
         public void AddEntity(Entity entity)
         {
-            // TODO: Keep entities ordered based on the update order.
-            entities.AddLast(entity);
+            var order = entity.UpdateOrder;
+            var i = 0;
+            while (i < entities.Count && order > entities[i].UpdateOrder)
+            {
+                i++;
+            }
+            entities.Insert(i, entity);
         }
 
         public void RemoveEntity(Entity entity)
@@ -120,7 +124,7 @@ namespace Gravity
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            var entityCopy = new LinkedList<Entity>(entities);
+            var entityCopy = new List<Entity>(entities);
             foreach (var entity in entityCopy)
             {
                 if (entity.EntityState == Entity.State.Active)

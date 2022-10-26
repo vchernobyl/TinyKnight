@@ -1,6 +1,7 @@
 ﻿using Gravity.Graphics;
 using Gravity.Weapons;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
@@ -9,8 +10,9 @@ namespace Gravity.Entities
     public class Chest : Entity
     {
         private readonly List<Weapon> weapons;
+        private readonly SoundEffect pickupSound;
 
-        public Chest(GameplayScreen gameplayScreen) : base(gameplayScreen)
+        public Chest(GameplayScreen gameplayScreen) : base(gameplayScreen, updateOrder: 200)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Chest"));
@@ -28,6 +30,8 @@ namespace Gravity.Entities
                 new Axe(hero, gameplayScreen),
                 new Cannon(hero, gameplayScreen),
             };
+
+            pickupSound = content.Load<SoundEffect>("SoundFX/Chest_Pickup");
         }
 
         public override void OnEntityCollisionEnter(Entity other)
@@ -38,10 +42,15 @@ namespace Gravity.Entities
                 while (weapon == hero.Weapon)
                     weapon = GetRandomWeapon();
 
+                weapon.Position = hero.Position;
                 hero.EquipWeapon(weapon);
                 var game = GameplayScreen.ScreenManager.Game;
                 var text = new WeaponPickupText(game, weapon.Name, Position);
                 game.Components.Add(text);
+
+                pickupSound.Play();
+
+                Destroy();
             }
         }
 
