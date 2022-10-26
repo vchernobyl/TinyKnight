@@ -147,16 +147,14 @@ namespace Gravity.Weapons
 
             LevelCollisions = false;
             Gravity = 0f;
+
+            UpdatePosition();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            Position = hero.Position + new Vector2(2f * hero.Facing, 1f);
-            sprite.Flip = hero.Facing > 0
-                ? SpriteEffects.None
-                : SpriteEffects.FlipHorizontally;
+            UpdatePosition();
         }
 
         protected override void Shoot()
@@ -172,6 +170,14 @@ namespace Gravity.Weapons
             GravityGame.WorldCamera.Shake(.4f);
 
             hero.DX += -hero.Facing * .15f;
+        }
+
+        protected override void UpdatePosition()
+        {
+            Position = hero.Position + new Vector2(2f * hero.Facing, 1f);
+            sprite.Flip = hero.Facing > 0
+                ? SpriteEffects.None
+                : SpriteEffects.FlipHorizontally;
         }
     }
 }

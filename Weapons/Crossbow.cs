@@ -29,6 +29,8 @@ namespace Gravity.Weapons
 
             LevelCollisions = false;
             Gravity = 0f;
+
+            UpdatePosition();
         }
 
         protected override void Shoot()
@@ -42,7 +44,11 @@ namespace Gravity.Weapons
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            UpdatePosition();
+        }
 
+        protected override void UpdatePosition()
+        {
             Position = hero.Position + new Vector2(3f * hero.Facing, 1f);
             sprite.Flip = hero.Facing > 0
                 ? SpriteEffects.None

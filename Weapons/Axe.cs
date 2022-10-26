@@ -41,6 +41,8 @@ namespace Gravity.Weapons
             Gravity = 0f;
             LevelCollisions = false;
             EntityCollisions = true;
+
+            UpdatePosition();
         }
 
         public override void OnEntityCollisionEnter(Entity other)
@@ -73,7 +75,7 @@ namespace Gravity.Weapons
             switch (axeState)
             {
                 case FlyStage.InHands:
-                    Position = hero.Position + new Vector2(6f * hero.Facing, 0f);
+                    UpdatePosition();
                     break;
                 case FlyStage.Flying:
                     speed -= deceleration;
@@ -98,10 +100,6 @@ namespace Gravity.Weapons
 
                     break;
             }
-
-            sprite.Flip = hero.Facing > 0
-                ? SpriteEffects.None
-                : SpriteEffects.FlipHorizontally;
         }
 
         protected override void Shoot()
@@ -113,6 +111,14 @@ namespace Gravity.Weapons
                 speed = 1.75f;
                 sound.Play();
             }
+        }
+
+        protected override void UpdatePosition()
+        {
+            Position = hero.Position + new Vector2(6f * hero.Facing, 0f);
+            sprite.Flip = hero.Facing > 0
+                ? SpriteEffects.None
+                : SpriteEffects.FlipHorizontally;
         }
     }
 }

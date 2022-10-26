@@ -54,7 +54,7 @@ namespace Gravity
             DrawLine(spriteBatch, from, distance, angle, color, thickness);
         }
 
-        public static void DrawCircle(this SpriteBatch spriteBatch, Vector2 position, float radius, Color color)
+        public static void DrawCircle(this SpriteBatch spriteBatch, Vector2 position, float radius, Color color, float thickness = 1f)
         {
             const int points = 256;
 
@@ -74,7 +74,7 @@ namespace Gravity
                 var from = new Vector2(position.X + ax, position.Y + ay);
                 var to = new Vector2(position.X + bx, position.Y + by);
 
-                spriteBatch.DrawLine(from, to, color, 1f);
+                spriteBatch.DrawLine(from, to, color, thickness);
 
                 ax = bx;
                 ay = by;

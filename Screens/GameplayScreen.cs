@@ -16,57 +16,32 @@ namespace Gravity
         public Hud Hud { get; private set; }
         public Hero Hero { get; private set; }
 
-        private readonly List<Entity> entities;
-        private readonly List<Entity> pendingEntities;
+        private readonly LinkedList<Entity> entities;
 
         private bool updatingEntities = false;
         private Effect flashEffect;
         private CoroutineRunner coroutine;
         private CoroutineHandle spawnHandle;
 
-        public List<Entity> AllEntities
+        public IReadOnlyCollection<Entity> AllEntities
         {
             get { return entities; }
         }
 
         public GameplayScreen()
         {
-            entities = new List<Entity>();
-            pendingEntities = new List<Entity>();
+            entities = new LinkedList<Entity>();
         }
 
         public void AddEntity(Entity entity)
         {
-            if (updatingEntities)
-                AddOrderedEntity(entity, pendingEntities); //pendingEntities.Add(entity);
-            else
-                AddOrderedEntity(entity, entities); //entities.Add(entity);
-        }
-
-        private static void AddOrderedEntity(Entity entity, List<Entity> collection)
-        {
-            var order = entity.UpdateOrder;
-            var i = 0;
-            while (i < collection.Count && order > collection[i].UpdateOrder)
-            {
-                i++;
-            }
-            collection.Insert(i, entity);
+            // TODO: Keep entities ordered based on the update order.
+            entities.AddLast(entity);
         }
 
         public void RemoveEntity(Entity entity)
         {
-            for (var i = pendingEntities.Count - 1; i >= 0; i--)
-            {
-                if (pendingEntities[i] == entity)
-                    pendingEntities.RemoveAt(i);
-            }
-
-            for (var i = entities.Count - 1; i >= 0; i--)
-            {
-                if (entities[i] == entity)
-                    entities.RemoveAt(i);
-            }
+            entities.Remove(entity);
         }
 
         public override void LoadContent()
@@ -136,38 +111,24 @@ namespace Gravity
         // Will keep this as is for now until I know better.
         public override void HandleInput(GameTime gameTime, InputState input)
         {
-            updatingEntities = true;
-
-            foreach (var entity in entities)
+            var copy = new LinkedList<Entity>(entities);
+            foreach (var entity in copy)
                 entity.HandleInput(input);
-
-            updatingEntities = false;
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            updatingEntities = true;
-
-            foreach (var entity in entities)
+            var entityCopy = new LinkedList<Entity>(entities);
+            foreach (var entity in entityCopy)
             {
                 if (entity.EntityState == Entity.State.Active)
                     entity.EntityUpdate(gameTime);
-            }
-
-            updatingEntities = false;
-
-            foreach (var pending in pendingEntities)
-                AddOrderedEntity(pending, entities); //entities.Add(pending);
-            pendingEntities.Clear();
-
-            for (int i = entities.Count - 1; i >= 0; i--)
-            {
-                if (entities[i].EntityState == Entity.State.Dead)
+                else if (entity.EntityState == Entity.State.Dead)
                 {
-                    entities[i].OnDestroy();
-                    entities.RemoveAt(i);
+                    entity.OnDestroy();
+                    entities.Remove(entity);
                 }
             }
 

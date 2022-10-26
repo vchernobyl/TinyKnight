@@ -128,10 +128,9 @@ namespace Gravity
             // Check for collisions with other entities.
             if (EntityCollisions)
             {
-                for (int i = 0; i < GameplayScreen.AllEntities.Count; i++)
+                var copy = new List<Entity>(GameplayScreen.AllEntities);
+                foreach (var other in copy)
                 {
-                    var other = GameplayScreen.AllEntities[i];
-
                     if (this == other)
                         continue;
 
@@ -212,7 +211,7 @@ namespace Gravity
             sprite.Draw(Position, spriteBatch);
 
             if (DebugInfo.ShowEntityColliders)
-                spriteBatch.DrawCircle(Position, Radius, Color.LimeGreen);
+                spriteBatch.DrawCircle(Position, Radius, Color.LimeGreen, thickness: .75f);
         }
     }
 }

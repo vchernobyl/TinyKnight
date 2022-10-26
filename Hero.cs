@@ -35,7 +35,7 @@ namespace Gravity
         private readonly SoundEffect jumpSound;
         private readonly SoundEffect hurtSound;
 
-        private Weapon weapon;
+        public Weapon Weapon { get; private set; }
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
@@ -81,8 +81,8 @@ namespace Gravity
 
         public void EquipWeapon(Weapon weapon)
         {
-            GameplayScreen.RemoveEntity(this.weapon);
-            this.weapon = weapon;
+            GameplayScreen.RemoveEntity(this.Weapon);
+            this.Weapon = weapon;
             GameplayScreen.AddEntity(weapon);
         }
 
@@ -153,7 +153,7 @@ namespace Gravity
             }
 
             if (shoot.Evaluate(input))
-                weapon.PullTrigger();
+                Weapon.PullTrigger();
         }
 
         public override void Update(GameTime gameTime)
