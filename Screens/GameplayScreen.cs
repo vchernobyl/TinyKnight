@@ -59,8 +59,6 @@ namespace Gravity
                 content.Load<Texture2D>("Textures/Tile"));
 
             var zoom = 3f;
-            //GravityGame.UiCamera.Scale = zoom;
-
             GravityGame.WorldCamera.Position = new Vector2(Level.Width / 2f, Level.Height / 2f);
             GravityGame.WorldCamera.Scale = zoom;
 
@@ -72,7 +70,6 @@ namespace Gravity
             Hud = new Hud(this);
 
             coroutine.Run(SpawnChest());
-            StartEnemySpawn();
         }
 
         public void StartEnemySpawn()
@@ -203,7 +200,7 @@ namespace Gravity
                 var chest = new Chest(this) { Position = randomCell.Position };
                 AddEntity(chest);
 
-                yield return 15f; // 5 second pause.
+                yield return 15f;
             }
         }
     }
