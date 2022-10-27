@@ -20,7 +20,7 @@ namespace Gravity.Weapons
         {
             this.weaponText = weaponText;
             spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
-            font = game.Content.Load<SpriteFont>("Fonts/font");
+            font = game.Content.Load<SpriteFont>("Fonts/Default");
             this.position = position - font.MeasureString(weaponText) / 2f;
             this.position.Y -= Level.CellSize / 2f;
 

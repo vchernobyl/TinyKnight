@@ -85,7 +85,6 @@ TODO:
 - Experiment with arrow stretching as it travels, does it give a better impact feeling?
 - Axe sprite is too big, we need a different sprite for it!
 - Console could be a GameScreen (with IsPopup = true), which would prevent input to other screens.
-- Debug circle drawing, as entity<->entity collisions are circle radius based.
 - Fire pit particle effects.
 - AI on/off command would be very useful.
 - Console cursor movement would be useful if it's not too hard to implement.
@@ -93,8 +92,4 @@ TODO:
 - Implement audio manager:
     * Avoid playing same sound at the same time (which gets very loud)
     * Central place to control volume
-- Draw weapon chest
-- Think about how weapon chest is going to be appearing:
-    * Dropping randomly from the top of the screen
-    * Dropped by enemies on kill
-
+- Refactor enemy movement, it's a copy paste code 3 times over.

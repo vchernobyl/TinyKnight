@@ -37,6 +37,9 @@ namespace Gravity
 
         public Weapon Weapon { get; private set; }
 
+        private int score;
+        public event Action<int> OnScoreUpdate;
+
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
@@ -84,6 +87,11 @@ namespace Gravity
             GameplayScreen.RemoveEntity(this.Weapon);
             this.Weapon = weapon;
             GameplayScreen.AddEntity(weapon);
+        }
+
+        public void UpdateScore()
+        {
+            OnScoreUpdate?.Invoke(++score);
         }
 
         public override void OnEntityCollisionEnter(Entity other)

@@ -20,7 +20,7 @@ namespace Gravity.Entities
             anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);
 
             sprite = spriteSheet.Create();
-            sprite.LayerDepth = DrawLayer.Background;
+            sprite.LayerDepth = DrawLayer.Foreground;
             sprite.Play(animID);
 
             var hero = gameplayScreen.Hero;
@@ -44,6 +44,8 @@ namespace Gravity.Entities
 
                 weapon.Position = hero.Position;
                 hero.EquipWeapon(weapon);
+                hero.UpdateScore();
+
                 var game = GameplayScreen.ScreenManager.Game;
                 var text = new WeaponPickupText(game, weapon.Name, Position);
                 game.Components.Add(text);

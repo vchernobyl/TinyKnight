@@ -59,7 +59,7 @@ namespace Gravity
                 content.Load<Texture2D>("Textures/Tile"));
 
             var zoom = 3f;
-            GravityGame.UiCamera.Scale = zoom;
+            //GravityGame.UiCamera.Scale = zoom;
 
             GravityGame.WorldCamera.Position = new Vector2(Level.Width / 2f, Level.Height / 2f);
             GravityGame.WorldCamera.Scale = zoom;
@@ -69,9 +69,10 @@ namespace Gravity
 
             AddEntity(new FirePit(this, new Vector2(Level.Width / 2f, Level.Height - Level.CellSize / 2f)));
 
-            Hud = new Hud(this, Hero);
+            Hud = new Hud(this);
 
             coroutine.Run(SpawnChest());
+            StartEnemySpawn();
         }
 
         public void StartEnemySpawn()
@@ -79,7 +80,7 @@ namespace Gravity
             IEnumerator Spawn()
             {
                 var position = new Vector2(Level.Width / 2f, 0f);
-                const float spawnInterval = 2f;
+                const float spawnInterval = 1.5f;
                 while (true)
                 {
                     var roll = Random.FloatValue;
@@ -117,7 +118,7 @@ namespace Gravity
         // Will keep this as is for now until I know better.
         public override void HandleInput(GameTime gameTime, InputState input)
         {
-            var copy = new LinkedList<Entity>(entities);
+            var copy = new List<Entity>(entities);
             foreach (var entity in copy)
                 entity.HandleInput(input);
         }
@@ -202,7 +203,7 @@ namespace Gravity
                 var chest = new Chest(this) { Position = randomCell.Position };
                 AddEntity(chest);
 
-                yield return 5f; // 5 second pause.
+                yield return 15f; // 5 second pause.
             }
         }
     }
