@@ -119,7 +119,6 @@ namespace Gravity
         public override void HandleInput(InputState input)
         {
             var speed = .0175f;
-            var jumpForce = -1.25f;
 
             // TODO: The problem with having a separate input handling method
             // is that it is triggered before Update method (as it should).
@@ -151,12 +150,7 @@ namespace Gravity
                 }
                 if (jump.Evaluate(input) && onGround)
                 {
-                    DY = jumpForce;
-
-                    jumpSound.Play(volume: .7f, 0f, 0f);
-                    jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
-
-                    //SquashX(1f);
+                    Jump();
                 }
             }
 
@@ -198,6 +192,15 @@ namespace Gravity
         {
             sprite.Scale = new Vector2(2f - squash, squash);
             sprite.Origin.Y = 0f;
+        }
+
+        public void Jump()
+        {
+            const float force = -1.25f;
+            DY = force;
+
+            jumpSound.Play();
+            jumpParticles.AddParticles(Position + new Vector2(0f, Level.CellSize / 2f), new Vector2(DX, DY) * 10);
         }
     }
 }

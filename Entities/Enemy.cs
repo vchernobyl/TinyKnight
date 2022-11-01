@@ -10,6 +10,8 @@ namespace Gravity.Entities
         public int Health { get; private set; }
         public bool IsAlive => Health > 0;
 
+        public float RotationSpeed { get; set; }
+
         private readonly SoundEffect hitSound;
 
         public Enemy(GameplayScreen gameplayScreen, int health, int updateOrder = 0)
@@ -19,6 +21,13 @@ namespace Gravity.Entities
 
             var content = gameplayScreen.ScreenManager.Game.Content;
             hitSound = content.Load<SoundEffect>("SoundFX/Enemy_Hit");
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            sprite.Rotation += RotationSpeed;
+
+            base.Update(gameTime);
         }
 
         public void Heal(int amount)
@@ -40,7 +49,9 @@ namespace Gravity.Entities
 
             Health -= amount;
             if (Health <= 0)
+            {
                 OnDie();
+            }
         }
 
         public virtual void OnHit(int amount) { }

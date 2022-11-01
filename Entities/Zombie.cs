@@ -8,8 +8,6 @@ namespace Gravity.Entities
     public class Zombie : Enemy
     {
         private int facing;
-        private bool dead = false;
-        private float rotationSpeed;
 
         private readonly int deadAnimID;
 
@@ -40,17 +38,17 @@ namespace Gravity.Entities
 
         public override void OnLevelCollision(Vector2 normal)
         {
-            if (dead && normal == -Vector2.UnitY)
+            if (!IsAlive && normal == -Vector2.UnitY)
                 Destroy();
         }
 
         public override void Update(GameTime gameTime)
         {
             const float speed = .05f;
-            if (!dead && Level.HasCollision(CX, CY + 1))
+            if (IsAlive && Level.HasCollision(CX, CY + 1))
                 DX = Math.Sign(facing) * speed;
 
-            if (!dead &&
+            if (IsAlive &&
                 (Level.HasCollision(CX + 1, CY) && XR >= .7f ||
                 Level.HasCollision(CX - 1, CY) && XR <= .3f))
             {
@@ -66,8 +64,6 @@ namespace Gravity.Entities
 
         public override void OnDie()
         {
-            DY = Random.FloatRange(-.4f, -.5f);
-            dead = true;
             sprite.Play(deadAnimID);
         }
     }

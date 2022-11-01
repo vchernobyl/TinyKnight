@@ -92,4 +92,8 @@ TODO:
 - Implement audio manager:
     * Avoid playing same sound at the same time (which gets very loud)
     * Central place to control volume
-- Refactor enemy movement, it's a copy paste code 3 times over.
+- (OPTIONAL) Refactor enemy movement, it's a copy paste code 3 times over.
+     It will take longer to think about and implement properly, but I don't think the benefits will be justified.
+     It's not that hard to understand/navigate the code and change the values as needed. Probably will not work on.	
+- Enemy death animation/effect etc.
+- Avoid spawning chest above the pit.

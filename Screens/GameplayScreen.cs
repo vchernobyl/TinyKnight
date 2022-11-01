@@ -69,7 +69,7 @@ namespace Gravity
 
             Hud = new Hud(this);
 
-            coroutine.Run(SpawnChest());
+            coroutine.Run(SpawnChest(), delay: 5f);
         }
 
         public void StartEnemySpawn()

@@ -14,7 +14,6 @@ namespace Gravity.Entities
 
         private List<Vector2> path = new List<Vector2>();
         private int pointIndex = 0;
-        private bool dead = false;
 
         public Bat(GameplayScreen gameplayScreen) : base(gameplayScreen, health: 100)
         {
@@ -63,7 +62,7 @@ namespace Gravity.Entities
 
         public override void OnLevelCollision(Vector2 normal)
         {
-            if (dead && normal == -Vector2.UnitY)
+            if (!IsAlive && normal == -Vector2.UnitY)
                 Destroy();
         }
 
@@ -119,8 +118,6 @@ namespace Gravity.Entities
 
         public override void OnDie()
         {
-            dead = true;
-            DY = -.5f;
             Gravity = .05f;
         }
     }
