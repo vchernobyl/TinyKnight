@@ -77,7 +77,7 @@ namespace Gravity
             IEnumerator Spawn()
             {
                 var position = new Vector2(Level.Width / 2f, 0f);
-                const float spawnInterval = .5f;
+                const float spawnInterval = .75f;
                 while (true)
                 {
                     var roll = Random.FloatValue;

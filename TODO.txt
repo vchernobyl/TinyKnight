@@ -10,39 +10,6 @@ Limitations:
 - Score chaser
 - Very simple enemies, no attack animation
 
-Design:
--------
-- Enemies fall from the top, and try to reach the bottom of the level
-- Once they reach "The Pit", we have multiple possibilities:
-  * Game over
-  * Enemy respawns stronger
-  * Enemies start spawning more frequently
-  * Maybe you get some powerup when killing respawned enemy?
-  * Maybe you can jump yourself in the pit for risk/reward type of situation?
-  * Maybe you collect the coins and throw them into pit to get something?
-- Need to think about how to earn the power-ups
-  * Randomly on enemy kill
-  * Spawned at some location at certain interval? (like in Unreal Tournament)
-
-Idea #1: As you kill enemies you collect their souls/coins or whatever. The more coins you have the better weapons/powerups you get?
-Should incentivise the player not to jump too early and to save coins.
-
-Idea #2: Enemies are trying to destroy the door at the bottom. Once destroyed - game over.
-
-Idea #3: What if you are actually invincible from enemy damage, and only get stunned or something? The real way to lose is if enemy
-reached the pit.
-
-Idea #4: Every time enemy jumps into a pit level gets flooded by water? And water keeps rising every time?
-
-Best idea: enemies just into the pit to "sacrifice" themselves. once they do an evil wizard teleports to kill you.
-Killing evil wizard has a chance of spawning a powerup.
-Or a ghost that follows you through walls?
-
-
-The more enemies fall into the pit the harder the game should become. How do we increase the difficulty?
-- Maybe level shrinks or something? 
-- Hero weapon breaks?
-
 Power-ups:
 ----------
 - Twisted Mirror (makes a copy of the player, shoots/moves in the opposite direction)
@@ -73,6 +40,17 @@ Weapons:
   * Or a shield?!
 - Captain america style shield?
 
+Weapon purpose:
+---------------
+- Pistol: default weapon, average fire rate, good damage
+- Machine gun: fast fire rate, good damage
+- Bazooka: slow fire rate, instant kill, area of effect
+- Dual pistols: average fire rate, good damage, shoots in both directions
+- Revolver: slower fire rate, great damage
+- Flamethrower: lasting area of effect, crowd control
+- Mines: instant kill, crowd control
+- Laser rifle: great damage, penetration
+
 Enemies:
 --------
 - Bouncing enemy which goes up and down?
@@ -84,6 +62,8 @@ TODO:
 -----
 - Experiment with arrow stretching as it travels, does it give a better impact feeling?
 - Axe sprite is too big, we need a different sprite for it!
+    - In general axe is a shit weapon.
+    - Instead of traveling back, maybe we could throw axe multiple times like a projectile which penetrates multiple enemies?
 - Console could be a GameScreen (with IsPopup = true), which would prevent input to other screens.
 - Fire pit particle effects.
 - AI on/off command would be very useful.
@@ -98,3 +78,5 @@ TODO:
 - Enemy death animation/effect etc.
 - Avoid spawning chest above the pit.
 - Adding way more enemies makes the games more fun.
+- Camera zoon with mouse for debugging purposes.
+- Weapon bob.

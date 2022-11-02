@@ -43,7 +43,7 @@ namespace Gravity
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
-            EquipWeapon(new Cannon(this, gameplayScreen));
+            EquipWeapon(new Bomb(this, gameplayScreen));
 
             Health = 3;
             Facing = 1;

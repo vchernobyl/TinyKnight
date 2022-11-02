@@ -56,6 +56,7 @@ namespace Gravity.Entities
             if (Health <= 0)
             {
                 OnDie();
+                Destroy();
             }
         }
 
