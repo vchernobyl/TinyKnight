@@ -20,10 +20,10 @@ namespace Gravity.Weapons
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(0, 0, 32, 32), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.Play(defaultAnimID);
-            sprite.LayerDepth = DrawLayer.Foreground;
-            sprite.Scale = Vector2.One * .25f;
+            Sprite = spriteSheet.Create();
+            Sprite.Play(defaultAnimID);
+            Sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite.Scale = Vector2.One * .25f;
 
             Gravity = 0f;
 
@@ -46,15 +46,15 @@ namespace Gravity.Weapons
             while (frames++ < totalDuration)
             {
                 if (frames <= 5)
-                    sprite.Color = yellow;
+                    Sprite.Color = yellow;
                 else if (frames <= 10)
-                    sprite.Color = white;
+                    Sprite.Color = white;
 
-                sprite.Scale.X += .13f;
-                sprite.Scale.Y += .13f;
+                Sprite.Scale.X += .13f;
+                Sprite.Scale.Y += .13f;
 
                 const float spriteSize = 32f; // This needs to be changed if sprite size changes
-                Radius = spriteSize / 2f * sprite.Scale.X;
+                Radius = spriteSize / 2f * Sprite.Scale.X;
 
                 yield return null;
             }
@@ -89,10 +89,10 @@ namespace Gravity.Weapons
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(8, 16, 8, 8), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.Play(defaultAnimID);
-            sprite.LayerDepth = DrawLayer.Foreground;
-            sprite.Flip = velocity.X > 0
+            Sprite = spriteSheet.Create();
+            Sprite.Play(defaultAnimID);
+            Sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite.Flip = velocity.X > 0
                 ? SpriteEffects.None
                 : SpriteEffects.FlipHorizontally;
         }
@@ -137,9 +137,9 @@ namespace Gravity.Weapons
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(0, 16, 8, 8), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.Play(defaultAnimID);
-            sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite = spriteSheet.Create();
+            Sprite.Play(defaultAnimID);
+            Sprite.LayerDepth = DrawLayer.Foreground;
 
             sound = content.Load<SoundEffect>("SoundFX/Cannon_Shot");
             particles = new ParticleSystem(game, "Particles/Cannon_Shot");
@@ -175,7 +175,7 @@ namespace Gravity.Weapons
         protected override void UpdatePosition()
         {
             Position = hero.Position + new Vector2(2f * hero.Facing, 1f);
-            sprite.Flip = hero.Facing > 0
+            Sprite.Flip = hero.Facing > 0
                 ? SpriteEffects.None
                 : SpriteEffects.FlipHorizontally;
         }

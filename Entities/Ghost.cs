@@ -18,9 +18,9 @@ namespace Gravity.Entities
             var anim = spriteSheet.CreateAnimation("Default", out int animID);
             anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.LayerDepth = DrawLayer.Midground;
-            sprite.Play(animID);
+            Sprite = spriteSheet.Create();
+            Sprite.LayerDepth = DrawLayer.Midground;
+            Sprite.Play(animID);
 
             LevelCollisions = false;
             Gravity = 0f;

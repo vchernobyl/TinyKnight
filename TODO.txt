@@ -97,3 +97,4 @@ TODO:
      It's not that hard to understand/navigate the code and change the values as needed. Probably will not work on.	
 - Enemy death animation/effect etc.
 - Avoid spawning chest above the pit.
+- Adding way more enemies makes the games more fun.

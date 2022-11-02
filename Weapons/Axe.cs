@@ -30,9 +30,9 @@ namespace Gravity.Weapons
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(0, 8, 8, 8), 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.Play(defaultAnimID);
-            sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite = spriteSheet.Create();
+            Sprite.Play(defaultAnimID);
+            Sprite.LayerDepth = DrawLayer.Foreground;
 
             axeState = FlyStage.InHands;
 
@@ -58,7 +58,7 @@ namespace Gravity.Weapons
                 DX = 0f;
                 DY = 0f;
 
-                sprite.Rotation = 0f;
+                Sprite.Rotation = 0f;
             }
         }
 
@@ -81,7 +81,7 @@ namespace Gravity.Weapons
                     speed -= deceleration;
                     DX = direction * speed;
 
-                    sprite.Rotation += rotation;
+                    Sprite.Rotation += rotation;
 
                     if ((direction > 0 && DX < 0f) || (direction < 0 && DX > 0))
                     {
@@ -96,7 +96,7 @@ namespace Gravity.Weapons
                     DX = dir.X * speed;
                     DY = dir.Y * speed;
 
-                    sprite.Rotation += rotation;
+                    Sprite.Rotation += rotation;
 
                     break;
             }
@@ -116,7 +116,7 @@ namespace Gravity.Weapons
         protected override void UpdatePosition()
         {
             Position = hero.Position + new Vector2(6f * hero.Facing, 0f);
-            sprite.Flip = hero.Facing > 0
+            Sprite.Flip = hero.Facing > 0
                 ? SpriteEffects.None
                 : SpriteEffects.FlipHorizontally;
         }

@@ -1,16 +1,12 @@
-﻿using Gravity.Graphics;
+﻿using Gravity.AI;
+using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Gravity.Entities
 {
     public class Zombie : Enemy
     {
-        private int facing;
-
-        private readonly int deadAnimID;
-
         public Zombie(GameplayScreen gameplayScreen)
             : base(gameplayScreen, health: 100, updateOrder: 200)
         {
@@ -26,45 +22,11 @@ namespace Gravity.Entities
             walkAnim.AddFrame(new Rectangle(6 * 8, 0, 8, 8), .1f);
             walkAnim.AddFrame(new Rectangle(7 * 8, 0, 8, 8), .1f);
 
-            sprite = spriteSheet.Create();
-            sprite.LayerDepth = DrawLayer.Midground;
-            sprite.Play(walkAnimID);
+            Sprite = spriteSheet.Create();
+            Sprite.LayerDepth = DrawLayer.Midground;
+            Sprite.Play(walkAnimID);
 
-            var deadAnim = spriteSheet.CreateAnimation("Zombie_Dead", out deadAnimID);
-            deadAnim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);
-
-            facing = Numerics.PickOne(-1, 1);
-        }
-
-        public override void OnLevelCollision(Vector2 normal)
-        {
-            if (!IsAlive && normal == -Vector2.UnitY)
-                Destroy();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            const float speed = .05f;
-            if (IsAlive && Level.HasCollision(CX, CY + 1))
-                DX = Math.Sign(facing) * speed;
-
-            if (IsAlive &&
-                (Level.HasCollision(CX + 1, CY) && XR >= .7f ||
-                Level.HasCollision(CX - 1, CY) && XR <= .3f))
-            {
-                facing = -facing;
-                DX = Math.Sign(facing) * speed;
-            }
-
-            if (facing > 0)
-                sprite.Flip = SpriteEffects.None;
-            else
-                sprite.Flip = SpriteEffects.FlipHorizontally;
-        }
-
-        public override void OnDie()
-        {
-            sprite.Play(deadAnimID);
+            Behaviour = new AIBehaviour(new WalkCommand() { Speed = 0.05f });
         }
     }
 }

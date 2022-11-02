@@ -22,11 +22,11 @@ namespace Gravity
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(8, 0, 8, 8), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.Flip = velocity.X < 0
+            Sprite = spriteSheet.Create();
+            Sprite.Flip = velocity.X < 0
                 ? SpriteEffects.FlipHorizontally
                 : SpriteEffects.None;
-            sprite.Play(defaultAnimID);
+            Sprite.Play(defaultAnimID);
         }
 
         public override void OnEntityCollisionEnter(Entity other)

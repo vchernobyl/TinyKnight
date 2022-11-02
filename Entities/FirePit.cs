@@ -20,9 +20,9 @@ namespace Gravity.Entities
             var anim = spriteSheet.CreateAnimation("Default", out int animID);
             anim.AddFrame(new Rectangle(0, 0, 4 * 8, 8), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.LayerDepth = DrawLayer.Foreground;
-            sprite.Play(animID);
+            Sprite = spriteSheet.Create();
+            Sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite.Play(animID);
         }
 
         public override void OnEntityCollisionExit(Entity other)

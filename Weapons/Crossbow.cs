@@ -21,9 +21,9 @@ namespace Gravity.Weapons
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.Play(defaultAnimID);
-            sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite = spriteSheet.Create();
+            Sprite.Play(defaultAnimID);
+            Sprite.LayerDepth = DrawLayer.Foreground;
 
             shotSound = content.Load<SoundEffect>("SoundFX/Pistol_Shot");
 
@@ -50,7 +50,7 @@ namespace Gravity.Weapons
         protected override void UpdatePosition()
         {
             Position = hero.Position + new Vector2(3f * hero.Facing, 1f);
-            sprite.Flip = hero.Facing > 0
+            Sprite.Flip = hero.Facing > 0
                 ? SpriteEffects.None
                 : SpriteEffects.FlipHorizontally;
         }

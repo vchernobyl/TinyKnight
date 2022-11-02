@@ -1,14 +1,12 @@
-﻿using Gravity.Graphics;
+﻿using Gravity.AI;
+using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Gravity.Entities
 {
     public class Demon : Enemy
     {
-        private int facing;
-
         public Demon(GameplayScreen gameplayScreen)
             : base(gameplayScreen, health: 100)
         {
@@ -19,41 +17,11 @@ namespace Gravity.Entities
             var anim = spriteSheet.CreateAnimation("Default", out int animID);
             anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0);
 
-            sprite = spriteSheet.Create();
-            sprite.LayerDepth = DrawLayer.Midground;
-            sprite.Play(animID);
+            Sprite = spriteSheet.Create();
+            Sprite.LayerDepth = DrawLayer.Midground;
+            Sprite.Play(animID);
 
-            facing = Numerics.PickOne(-1, 1);
-        }
-
-        public override void OnLevelCollision(Vector2 normal)
-        {
-            if (!IsAlive && normal == -Vector2.UnitY)
-                Destroy();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            const float speed = .1f;
-            if (IsAlive && Level.HasCollision(CX, CY + 1))
-                DX = Math.Sign(facing) * speed;
-
-            if (IsAlive &&
-                (Level.HasCollision(CX + 1, CY) && XR >= .7f ||
-                Level.HasCollision(CX - 1, CY) && XR <= .3f))
-            {
-                facing = -facing;
-                DX = Math.Sign(facing) * speed;
-            }
-
-            if (facing > 0)
-                sprite.Flip = SpriteEffects.None;
-            else
-                sprite.Flip = SpriteEffects.FlipHorizontally;
-        }
-
-        public override void OnDie()
-        {
+            Behaviour = new AIBehaviour(new WalkCommand() { Speed = .1f });
         }
     }
 }

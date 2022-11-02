@@ -54,7 +54,7 @@ namespace Gravity
         public Color FlashColor { get; private set; }
 
         public readonly GameplayScreen GameplayScreen;
-        protected Sprite sprite;
+        public Sprite Sprite;
 
         private double flashDuration = .0;
 
@@ -121,7 +121,7 @@ namespace Gravity
         public void EntityUpdate(GameTime gameTime)
         {
             Update(gameTime);
-            sprite.Update(gameTime);
+            Sprite.Update(gameTime);
 
             flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
@@ -208,7 +208,7 @@ namespace Gravity
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            sprite.Draw(Position, spriteBatch);
+            Sprite.Draw(Position, spriteBatch);
 
             if (DebugInfo.ShowEntityColliders)
                 spriteBatch.DrawCircle(Position, Radius, Color.LimeGreen, thickness: .75f);

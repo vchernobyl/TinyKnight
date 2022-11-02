@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.AI;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System.Threading;
 
@@ -11,6 +12,7 @@ namespace Gravity.Entities
         public bool IsAlive => Health > 0;
 
         public float RotationSpeed { get; set; }
+        public AIBehaviour? Behaviour { get; set; }
 
         private readonly SoundEffect hitSound;
 
@@ -25,7 +27,10 @@ namespace Gravity.Entities
 
         public override void Update(GameTime gameTime)
         {
-            sprite.Rotation += RotationSpeed;
+            Sprite.Rotation += RotationSpeed;
+
+            var command = Behaviour?.Update(gameTime);
+            command?.Execute(this);
 
             base.Update(gameTime);
         }

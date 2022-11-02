@@ -66,9 +66,9 @@ namespace Gravity
             var heroIdleAnim = spriteSheet.CreateAnimation("Hero_Idle", out heroIdleAnimID);
             heroIdleAnim.AddFrame(new Rectangle(0, 16, 8, 8), .1f);
 
-            sprite = spriteSheet.Create();
-            sprite.Play(heroIdleAnimID);
-            sprite.LayerDepth = DrawLayer.Midground;
+            Sprite = spriteSheet.Create();
+            Sprite.Play(heroIdleAnimID);
+            Sprite.LayerDepth = DrawLayer.Midground;
 
             jumpSound = content.Load<SoundEffect>("SoundFX/Hero_Jump");
             hurtSound = content.Load<SoundEffect>("SoundFX/Hero_Hurt");
@@ -138,13 +138,13 @@ namespace Gravity
             {
                 if (moveLeft.Evaluate(input))
                 {
-                    sprite.Flip = SpriteEffects.FlipHorizontally;
+                    Sprite.Flip = SpriteEffects.FlipHorizontally;
                     DX += -speed;
                     Facing = -1;
                 }
                 if (moveRight.Evaluate(input))
                 {
-                    sprite.Flip = SpriteEffects.None;
+                    Sprite.Flip = SpriteEffects.None;
                     DX += speed;
                     Facing = 1;
                 }
@@ -164,13 +164,13 @@ namespace Gravity
             if (hurtTime == 0)
                 hurting = false;
 
-            sprite.Scale = Numerics.Approach(sprite.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
-            sprite.Origin = Numerics.Approach(sprite.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
+            Sprite.Scale = Numerics.Approach(Sprite.Scale, Vector2.One, gameTime.DeltaTime() * 2f);
+            Sprite.Origin = Numerics.Approach(Sprite.Origin, new Vector2(4f, 4f), gameTime.DeltaTime() * 20f);
 
             if (MathF.Abs(DX) > 0.005f)
-                sprite.Play(heroRunAnimID);
+                Sprite.Play(heroRunAnimID);
             else
-                sprite.Play(heroIdleAnimID);
+                Sprite.Play(heroIdleAnimID);
 
             var wasOnGround = onGround;
             onGround = Level.IsWithinBounds(CX, CY) && Level.HasCollision(CX, CY + 1);
@@ -185,13 +185,13 @@ namespace Gravity
         // squash vector with the original scale.
         public void SquashX(float squash)
         {
-            sprite.Scale = new Vector2(squash, 2f - squash);
+            Sprite.Scale = new Vector2(squash, 2f - squash);
         }
 
         public void SquashY(float squash)
         {
-            sprite.Scale = new Vector2(2f - squash, squash);
-            sprite.Origin.Y = 0f;
+            Sprite.Scale = new Vector2(2f - squash, squash);
+            Sprite.Origin.Y = 0f;
         }
 
         public void Jump()

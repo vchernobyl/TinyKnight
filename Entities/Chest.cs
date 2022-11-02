@@ -19,9 +19,9 @@ namespace Gravity.Entities
             var anim = spriteSheet.CreateAnimation("Zombie_Walk", out int animID);
             anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);
 
-            sprite = spriteSheet.Create();
-            sprite.LayerDepth = DrawLayer.Foreground;
-            sprite.Play(animID);
+            Sprite = spriteSheet.Create();
+            Sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite.Play(animID);
 
             var hero = gameplayScreen.Hero;
             weapons = new List<Weapon>

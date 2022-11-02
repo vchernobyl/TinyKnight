@@ -25,8 +25,8 @@ namespace Gravity.Entities
             anim.AddFrame(new Rectangle(16, 0, 8, 8), .1f);
             anim.AddFrame(new Rectangle(24, 0, 8, 8), .1f);
 
-            sprite = spriteSheet.Create();
-            sprite.Play(animID);
+            Sprite = spriteSheet.Create();
+            Sprite.Play(animID);
 
             Gravity = 0f;
 
@@ -86,9 +86,9 @@ namespace Gravity.Entities
                 DY += movement.Y * .005f;
 
                 if (DX >= 0)
-                    sprite.Flip = SpriteEffects.None;
+                    Sprite.Flip = SpriteEffects.None;
                 else
-                    sprite.Flip = SpriteEffects.FlipHorizontally;
+                    Sprite.Flip = SpriteEffects.FlipHorizontally;
             }
         }
 
