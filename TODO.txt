@@ -3,6 +3,12 @@ Main inspirations:
 - Geometry Wars
 - Super Crate Box
 
+Some ideas to get "inspired" by: https://forums.tigsource.com/index.php?topic=12585.40
+Key takeaways:
+--------------
+- stages does seem a little cramped
+- maybe, make the stages bigger so that you have more room to maneuver
+
 Limitations:
 ------------
 - Single screen
@@ -21,12 +27,17 @@ Power-ups:
 - Ice Boots (leave a trail of icecyles damaging/slowing enemies)
    * Don't seem to be very useful compared to other power-ups
 - Stomp Boots
+- Hour Glass: Slows down time/enemies
+
+Maybe instead of some of the crates having weapons, you keep your weapon, but gain a different ability, fast running, half the size, as big as the big guys for a couple of seconds, or something, I am sure the TIG force and yourself can think of actual good ideas on that front. But yeah that's just an idea of addition onto what you have, it's already great, i kinda wish i had it on my ipod!
 
 Weapons:
 --------
 - Repeater crossbow (rapid fire, but lower damage)
   * Maybe it shoots green (poison/acid arrows)
+  * Or icycles - slowing down enemies with frost?
   * Alternative fire cluster shot? aka flak cannon?
+  
 - Throwing knives/axe (slower, but higher damage)
 - Magic Wand (shooting fireballs, explosion AOE)
   * Instead of a wand, maybe it's a "mini cannon"?
@@ -39,6 +50,9 @@ Weapons:
   * Maybe it's a boomerang?
   * Or a shield?!
 - Captain america style shield?
+- Flak cannon was really fun to use last time. Let's create something similar.
+  * Ice shards flying around
+  * 
 
 Weapon purpose:
 ---------------
@@ -80,3 +94,4 @@ TODO:
 - Adding way more enemies makes the games more fun.
 - Camera zoon with mouse for debugging purposes.
 - Weapon bob.
+- Getting crates that land near the top-center (in the 'proper level') is really tricky - enemies fall so quickly that they can land on you without enough time to react.

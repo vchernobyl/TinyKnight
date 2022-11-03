@@ -90,6 +90,7 @@ namespace Gravity.UI
                     "demon" => new Demon(gameplayScreen),
                     "ghost" => new Ghost(gameplayScreen),
                     "chest" => new Chest(gameplayScreen),
+                    "cloak" => new InvisibilityCloak(gameplayScreen),
                     _ => null,
                 };
 
