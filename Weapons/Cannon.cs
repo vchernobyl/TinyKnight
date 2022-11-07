@@ -78,7 +78,6 @@ namespace Gravity.Weapons
             particles = new ParticleSystem(game, "Particles/Cannon_Shot");
             game.Components.Add(particles);
 
-            LevelCollisions = false;
             Gravity = 0f;
 
             UpdatePosition();

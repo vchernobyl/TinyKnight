@@ -22,7 +22,7 @@ namespace Gravity.Entities
             Sprite.LayerDepth = DrawLayer.Midground;
             Sprite.Play(animID);
 
-            LevelCollisions = false;
+            Collisions = Mask.Player;
             Gravity = 0f;
 
             hero = gameplayScreen.Hero;

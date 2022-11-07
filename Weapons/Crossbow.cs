@@ -27,7 +27,6 @@ namespace Gravity.Weapons
 
             shotSound = content.Load<SoundEffect>("SoundFX/Pistol_Shot");
 
-            LevelCollisions = false;
             Gravity = 0f;
 
             UpdatePosition();

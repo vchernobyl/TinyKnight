@@ -6,10 +6,11 @@ namespace Gravity
     public enum Mask
     {
         Default = 0,
-        Level = 1,
-        Player = 2,
-        Enemy = 4,
-        Item = 8,
+        None = 1,
+        Level = 2,
+        Player = 4,
+        Enemy = 8,
+        Item = 16,
         All = 255,
     }
 }

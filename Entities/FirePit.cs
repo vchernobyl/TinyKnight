@@ -9,7 +9,6 @@ namespace Gravity.Entities
         public FirePit(GameplayScreen gameplayScreen, Vector2 position) : base(gameplayScreen)
         {
             Position = position;
-            LevelCollisions = false;
             Gravity = 0f;
             Radius = 16;
 

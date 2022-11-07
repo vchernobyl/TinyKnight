@@ -68,7 +68,7 @@ namespace Gravity.Weapons
                 var xDirection = Vector2.Normalize(enemy.Position - Position).X;
                 enemy.DX = xDirection * .5f;
                 enemy.DY = -.75f;
-                enemy.LevelCollisions = false;
+                enemy.Collisions = Mask.None;
             }
         }
     }

@@ -69,7 +69,6 @@ namespace Gravity.Weapons
             sound = content.Load<SoundEffect>("SoundFX/Axe_Throw");
 
             Gravity = 0f;
-            EntityCollisions = true;
 
             UpdatePosition();
         }

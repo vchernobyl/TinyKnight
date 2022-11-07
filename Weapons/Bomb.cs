@@ -52,7 +52,6 @@ namespace Gravity.Weapons
             Sprite.LayerDepth = DrawLayer.Foreground;
             Sprite.Play(defaultAnimID);
             
-            LevelCollisions = false;
             Gravity = 0f;
 
             UpdatePosition();

@@ -20,6 +20,7 @@ namespace Gravity.Weapons
             Name = name;
 
             Category = Mask.Item;
+            Collisions = Mask.None;
         }
 
         public override void Update(GameTime gameTime)

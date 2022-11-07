@@ -34,9 +34,6 @@ namespace Gravity
 
         public float Radius = Level.CellSize / 2;
 
-        public bool LevelCollisions = true;
-        public bool EntityCollisions = true;
-
         public State EntityState = State.Active;
 
         public float FrictionX = .9f;
@@ -129,33 +126,30 @@ namespace Gravity
             flashDuration = Math.Max(.0, flashDuration - gameTime.ElapsedGameTime.TotalSeconds);
 
             // Check for collisions with other entities.
-            if (EntityCollisions)
+            var copy = new List<Entity>(GameplayScreen.AllEntities);
+            foreach (var other in copy)
             {
-                var copy = new List<Entity>(GameplayScreen.AllEntities);
-                foreach (var other in copy)
-                {
-                    if (this == other)
-                        continue;
+                if (this == other)
+                    continue;
 
-                    if (Collisions.HasFlag(other.Category) && Overlaps(other))
+                if (Collisions.HasFlag(other.Category) && Overlaps(other))
+                {
+                    if (prevFrameCollisions.Contains(other))
                     {
-                        if (prevFrameCollisions.Contains(other))
-                        {
-                            OnEntityCollisionStay(other);
-                        }
-                        else
-                        {
-                            prevFrameCollisions.Add(other);
-                            OnEntityCollisionEnter(other);
-                        }
+                        OnEntityCollisionStay(other);
                     }
                     else
                     {
-                        if (prevFrameCollisions.Contains(other))
-                        {
-                            prevFrameCollisions.Remove(other);
-                            OnEntityCollisionExit(other);
-                        }
+                        prevFrameCollisions.Add(other);
+                        OnEntityCollisionEnter(other);
+                    }
+                }
+                else
+                {
+                    if (prevFrameCollisions.Contains(other))
+                    {
+                        prevFrameCollisions.Remove(other);
+                        OnEntityCollisionExit(other);
                     }
                 }
             }
