@@ -48,6 +48,8 @@ namespace Gravity
             Health = 3;
             Facing = 1;
 
+            Category = Mask.Player;
+
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
 

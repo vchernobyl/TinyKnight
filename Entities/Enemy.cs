@@ -21,6 +21,8 @@ namespace Gravity.Entities
         {
             Health = health;
 
+            Category = Mask.Enemy;
+
             var content = gameplayScreen.ScreenManager.Game.Content;
             hitSound = content.Load<SoundEffect>("SoundFX/Enemy_Hit");
         }

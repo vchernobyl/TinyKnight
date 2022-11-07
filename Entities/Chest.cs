@@ -14,6 +14,8 @@ namespace Gravity.Entities
 
         public Chest(GameplayScreen gameplayScreen) : base(gameplayScreen, updateOrder: 200)
         {
+            Category = Mask.Item;
+
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Chest"));
             var anim = spriteSheet.CreateAnimation("Zombie_Walk", out int animID);

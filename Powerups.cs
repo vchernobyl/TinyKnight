@@ -36,6 +36,7 @@ namespace Gravity
         {
             Destroy();
             hero.Sprite.Color = Color.White * .35f;
+            hero.Collisions &= ~Mask.Enemy;
         }
     }
 }

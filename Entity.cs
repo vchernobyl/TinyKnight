@@ -43,6 +43,9 @@ namespace Gravity
         public float FrictionY = .9f;
         public float Gravity = .05f;
 
+        public Mask Category = Mask.Default;
+        public Mask Collisions = Mask.All;
+
         public Vector2 Position
         {
             get => new Vector2(XX, YY);
@@ -134,7 +137,7 @@ namespace Gravity
                     if (this == other)
                         continue;
 
-                    if (Overlaps(other))
+                    if (Collisions.HasFlag(other.Category) && Overlaps(other))
                     {
                         if (prevFrameCollisions.Contains(other))
                         {
@@ -161,7 +164,7 @@ namespace Gravity
             DX *= FrictionX;
 
             // Right side collision.
-            if (LevelCollisions && Level.HasCollision(CX + 1, CY) && XR >= .7f)
+            if (Collisions.HasFlag(Mask.Level) && Level.HasCollision(CX + 1, CY) && XR >= .7f)
             {
                 XR = .7f;
                 DX = 0f;
@@ -169,7 +172,7 @@ namespace Gravity
             }
 
             // Left side collision.
-            if (LevelCollisions && Level.HasCollision(CX - 1, CY) && XR <= .3f)
+            if (Collisions.HasFlag(Mask.Level) && Level.HasCollision(CX - 1, CY) && XR <= .3f)
             {
                 XR = .3f;
                 DX = 0f;
@@ -184,7 +187,7 @@ namespace Gravity
             DY *= FrictionY;
 
             // Top collision.
-            if (LevelCollisions && Level.HasCollision(CX, CY - 1) && YR <= .3f)
+            if (Collisions.HasFlag(Mask.Level) && Level.HasCollision(CX, CY - 1) && YR <= .3f)
             {
                 DY = .05f;
                 YR = .3f;
@@ -192,7 +195,7 @@ namespace Gravity
             }
 
             // Bottom collision.
-            if (LevelCollisions && Level.HasCollision(CX, CY + 1) && YR >= .5f)
+            if (Collisions.HasFlag(Mask.Level) && Level.HasCollision(CX, CY + 1) && YR >= .5f)
             {
                 DY = 0f;
                 YR = .5f;

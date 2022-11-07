@@ -18,6 +18,8 @@ namespace Gravity.Weapons
             this.fireRate = fireRate;
             fireTime = 1f / fireRate;
             Name = name;
+
+            Category = Mask.Item;
         }
 
         public override void Update(GameTime gameTime)
