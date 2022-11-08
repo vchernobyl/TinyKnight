@@ -1,4 +1,5 @@
 ﻿using Gravity.Entities;
+using Gravity.Powerups;
 using Gravity.Weapons;
 using Microsoft.Xna.Framework;
 using System;

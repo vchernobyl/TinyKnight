@@ -75,9 +75,6 @@ Enemies:
 TODO:
 -----
 - Experiment with arrow stretching as it travels, does it give a better impact feeling?
-- Axe sprite is too big, we need a different sprite for it!
-    - In general axe is a shit weapon.
-    - Instead of traveling back, maybe we could throw axe multiple times like a projectile which penetrates multiple enemies?
 - Console could be a GameScreen (with IsPopup = true), which would prevent input to other screens.
 - Fire pit particle effects.
 - AI on/off command would be very useful.
@@ -86,9 +83,6 @@ TODO:
 - Implement audio manager:
     * Avoid playing same sound at the same time (which gets very loud)
     * Central place to control volume
-- (OPTIONAL) Refactor enemy movement, it's a copy paste code 3 times over.
-     It will take longer to think about and implement properly, but I don't think the benefits will be justified.
-     It's not that hard to understand/navigate the code and change the values as needed. Probably will not work on.	
 - Enemy death animation/effect etc.
 - Avoid spawning chest above the pit.
 - Adding way more enemies makes the games more fun.
