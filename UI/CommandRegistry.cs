@@ -93,6 +93,7 @@ namespace Gravity.UI
                     "chest" => new Chest(gameplayScreen),
                     "cloak" => new InvisibilityCloak(gameplayScreen),
                     "potion" => new BerserkersPotion(gameplayScreen),
+                    "hourglass" => new HourGlass(gameplayScreen),
                     _ => null,
                 };
 

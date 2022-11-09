@@ -107,6 +107,10 @@ namespace Gravity
 
         public void ApplyEffect(PowerupEffect effect)
         {
+            // Discard previous effect if it's still active.
+            this.effect?.Off();
+
+            // Apply new effect.
             this.effect = effect;
             this.effect.On();
         }

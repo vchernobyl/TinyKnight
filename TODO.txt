@@ -84,8 +84,12 @@ TODO:
     * Avoid playing same sound at the same time (which gets very loud)
     * Central place to control volume
 - Enemy death animation/effect etc.
-- Avoid spawning chest above the pit.
 - Adding way more enemies makes the games more fun.
 - Camera zoon with mouse for debugging purposes.
 - Weapon bob.
 - Getting crates that land near the top-center (in the 'proper level') is really tricky - enemies fall so quickly that they can land on you without enough time to react.
+
+Bugs:
+-----
+- Avoid spawning chest above the pit.
+
