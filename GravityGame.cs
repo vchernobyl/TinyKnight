@@ -11,9 +11,10 @@ namespace Gravity
         public static Camera WorldCamera { get; private set; }
         public static Camera UiCamera { get; private set; }
 
+        public static CoroutineRunner Coroutine { get; private set; }
+
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
-        private readonly CoroutineRunner runner;
 
         public GravityGame()
         {
@@ -22,7 +23,7 @@ namespace Gravity
             IsMouseVisible = true;
 
             Services.AddService(screenManager = new ScreenManager(this));
-            Services.AddService(runner = new CoroutineRunner());
+            Services.AddService(Coroutine = new CoroutineRunner());
 
             Components.Add(screenManager);
 
@@ -58,7 +59,7 @@ namespace Gravity
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            runner.Update(gameTime.DeltaTime());
+            Coroutine.Update(gameTime.DeltaTime());
 
             base.Update(gameTime);
         }

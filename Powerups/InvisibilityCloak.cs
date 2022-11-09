@@ -4,20 +4,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity.Powerups
 {
-    public class Invisibility : Effect
+    public class Invisibility : PowerupEffect
     {
         public Invisibility(Hero hero) : base(hero, duration: 5f) { }
 
-        protected override void EffectOn()
+        public override void On()
         {
-            Hero.Sprite.Color = Color.White * .35f;
-            Hero.Collisions &= ~Mask.Enemy;
+            hero.Sprite.Color = Color.White * .35f;
+            hero.Collisions &= ~Mask.Enemy;
         }
 
-        protected override void EffectOff()
+        public override void Off()
         {
-            Hero.Sprite.Color = Color.White;
-            Hero.Collisions |= Mask.Enemy;
+            hero.Sprite.Color = Color.White;
+            hero.Collisions |= Mask.Enemy;
         }
     }
 
@@ -36,7 +36,7 @@ namespace Gravity.Powerups
             Sprite.Play(animID);
         }
 
-        protected override Effect CreateEffect()
+        protected override PowerupEffect CreateEffect()
         {
             return new Invisibility(GameplayScreen.Hero);
         }

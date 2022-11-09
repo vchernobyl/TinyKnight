@@ -2,6 +2,7 @@
 using Gravity.Graphics;
 using Gravity.Particles;
 using Gravity.Weapons;
+using Gravity.Powerups;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,6 +35,8 @@ namespace Gravity
 
         private readonly SoundEffect jumpSound;
         private readonly SoundEffect hurtSound;
+
+        private PowerupEffect? effect;
 
         public Weapon? Weapon { get; private set; }
 
@@ -100,6 +103,18 @@ namespace Gravity
         public void UpdateScore()
         {
             OnScoreUpdate?.Invoke(++score);
+        }
+
+        public void ApplyEffect(PowerupEffect effect)
+        {
+            this.effect = effect;
+            this.effect.On();
+        }
+
+        public void DiscardEffect()
+        {
+            this.effect?.Off();
+            this.effect = null;
         }
 
         public override void OnEntityCollisionEnter(Entity other)
@@ -174,6 +189,8 @@ namespace Gravity
 
         public override void Update(GameTime gameTime)
         {
+            effect?.Update(gameTime);
+
             hurtTime = Math.Max(0, hurtTime - gameTime.ElapsedGameTime.TotalSeconds);
             if (hurtTime == 0)
                 hurting = false;

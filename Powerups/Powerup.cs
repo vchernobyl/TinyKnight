@@ -1,5 +1,4 @@
-﻿using Gravity.Coroutines;
-using System.Collections;
+﻿using Microsoft.Xna.Framework;
 
 namespace Gravity.Powerups
 {
@@ -13,38 +12,41 @@ namespace Gravity.Powerups
 
         public override void OnEntityCollisionEnter(Entity other)
         {
-            if (other is Hero)
+            if (other is Hero hero)
             {
-                var game = GameplayScreen.ScreenManager.Game;
-                var coroutine = game.Services.GetService<CoroutineRunner>();
-                var effect = CreateEffect();
-                coroutine.Run(effect.ApplyEffect());
+                hero.ApplyEffect(CreateEffect());
                 Destroy();
             }
         }
 
-        protected abstract Effect CreateEffect();
+        protected abstract PowerupEffect CreateEffect();
     }
 
-    public abstract class Effect
+    public abstract class PowerupEffect
     {
-        public readonly Hero Hero;
-        public readonly float Duration;
+        protected readonly Hero hero;
+        protected readonly float duration;
 
-        public Effect(Hero hero, float duration)
+        private float time;
+
+        public PowerupEffect(Hero hero, float duration)
         {
-            Hero = hero;
-            Duration = duration;
+            this.hero = hero;
+            this.duration = duration;
         }
 
-        protected abstract void EffectOn();
-        protected abstract void EffectOff();
+        public abstract void On();
+        public abstract void Off();
 
-        public IEnumerator ApplyEffect()
+        public void Update(GameTime gameTime)
         {
-            EffectOn();
-            yield return Duration;
-            EffectOff();
+            OnUpdate(gameTime);
+
+            time += gameTime.DeltaTime();
+            if (time >= duration)
+                hero.DiscardEffect();
         }
+
+        protected virtual void OnUpdate(GameTime gameTime) { }
     }
 }

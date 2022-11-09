@@ -5,27 +5,49 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity.Powerups
 {
-    public class Berserk : Effect
+    public class Berserk : PowerupEffect
     {
         private Weapon? weapon;
+        private bool blinkToggle;
+        private float blinkTime;
+        private float time;
 
-        public Berserk(Hero hero) : base(hero, duration: 10f)
+        public Berserk(Hero hero) : base(hero, duration: 5f)
         {
         }
 
-        protected override void EffectOff()
+        public override void Off()
         {
-            Hero.Sprite.Color = Color.White;
-            Hero.EquipWeapon(weapon);
-            Hero.Invincible = false;
+            hero.Sprite.Color = Color.White;
+            hero.EquipWeapon(weapon);
+            hero.Invincible = false;
         }
 
-        protected override void EffectOn()
+        public override void On()
         {
-            weapon = Hero.Weapon;
-            Hero.Sprite.Color = Color.Red;
-            Hero.EquipWeapon(null);
-            Hero.Invincible = true;
+            weapon = hero.Weapon;
+            hero.Sprite.Color = Color.Red;
+            hero.EquipWeapon(null);
+            hero.Invincible = true;
+        }
+
+        protected override void OnUpdate(GameTime gameTime)
+        {
+            time += gameTime.DeltaTime();
+
+            var percentage = 1f - time / duration;
+            if (percentage < .3f)
+            {
+                blinkTime += gameTime.DeltaTime();
+                var blinkFor = MathHelper.Max(percentage, .2f);
+                if (blinkTime >= blinkFor)
+                {
+                    blinkTime = 0f;
+                    blinkToggle = !blinkToggle;
+                }
+
+                hero.Sprite.Color = blinkToggle ? Color.Red : Color.White;
+            }
         }
     }
 
@@ -44,7 +66,7 @@ namespace Gravity.Powerups
             Sprite.Play(animID);
         }
 
-        protected override Effect CreateEffect()
+        protected override PowerupEffect CreateEffect()
         {
             return new Berserk(GameplayScreen.Hero);
         }
