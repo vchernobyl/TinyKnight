@@ -1,35 +1,43 @@
 ﻿using Gravity.Graphics;
+using Gravity.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity.Powerups
 {
-    public class Invisibility : Effect
+    public class Berserk : Effect
     {
-        public Invisibility(Hero hero) : base(hero, duration: 5f) { }
+        private Weapon? weapon;
 
-        protected override void EffectOn()
+        public Berserk(Hero hero) : base(hero, duration: 10f)
         {
-            Hero.Sprite.Color = Color.White * .35f;
-            Hero.Collisions &= ~Mask.Enemy;
         }
 
         protected override void EffectOff()
         {
             Hero.Sprite.Color = Color.White;
-            Hero.Collisions |= Mask.Enemy;
+            Hero.EquipWeapon(weapon);
+            Hero.Invincible = false;
+        }
+
+        protected override void EffectOn()
+        {
+            weapon = Hero.Weapon;
+            Hero.Sprite.Color = Color.Red;
+            Hero.EquipWeapon(null);
+            Hero.Invincible = true;
         }
     }
 
-    public class InvisibilityCloak : Powerup
+    public class BerserkersPotion : Powerup
     {
-        public InvisibilityCloak(GameplayScreen gameplayScreen) : base(gameplayScreen)
+        public BerserkersPotion(GameplayScreen gameplayScreen) : base(gameplayScreen)
         {
             var game = gameplayScreen.ScreenManager.Game;
             var content = game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
             var anim = spriteSheet.CreateAnimation("Default", out int animID);
-            anim.AddFrame(new Rectangle(0, 32, 8, 8), duration: 0f);
+            anim.AddFrame(new Rectangle(0, 40, 8, 8), duration: 0f);
 
             Sprite = spriteSheet.Create();
             Sprite.LayerDepth = DrawLayer.Foreground;
@@ -38,7 +46,7 @@ namespace Gravity.Powerups
 
         protected override Effect CreateEffect()
         {
-            return new Invisibility(GameplayScreen.Hero);
+            return new Berserk(GameplayScreen.Hero);
         }
     }
 }

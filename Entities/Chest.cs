@@ -42,7 +42,7 @@ namespace Gravity.Entities
             if (other is Hero hero)
             {
                 var weapon = GetRandomWeapon();
-                while (weapon.Name == hero.Weapon.Name)
+                while (weapon.Name == hero.Weapon?.Name)
                     weapon = GetRandomWeapon();
 
                 weapon.Position = hero.Position;

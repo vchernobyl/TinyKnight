@@ -42,6 +42,11 @@ namespace Gravity.Entities
             Health += amount;
         }
 
+        public void Kill()
+        {
+            Damage(Health);
+        }
+
         public void Damage(int amount)
         {
             OnHit(amount);

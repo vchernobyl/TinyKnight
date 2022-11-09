@@ -35,10 +35,12 @@ namespace Gravity
         private readonly SoundEffect jumpSound;
         private readonly SoundEffect hurtSound;
 
-        public Weapon Weapon { get; private set; }
+        public Weapon? Weapon { get; private set; }
 
         private int score;
         public event Action<int> OnScoreUpdate;
+
+        public bool Invincible = false;
 
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
@@ -84,11 +86,15 @@ namespace Gravity
             shoot = new InputAction(new[] { Buttons.X }, new[] { Keys.Space }, false);
         }
 
-        public void EquipWeapon(Weapon weapon)
+        public void EquipWeapon(Weapon? weapon)
         {
-            GameplayScreen.RemoveEntity(this.Weapon);
-            this.Weapon = weapon;
-            GameplayScreen.AddEntity(weapon);
+            if (Weapon != null)
+                GameplayScreen.RemoveEntity(Weapon);
+
+            Weapon = weapon;
+
+            if (weapon != null)
+                GameplayScreen.AddEntity(weapon);
         }
 
         public void UpdateScore()
@@ -100,6 +106,12 @@ namespace Gravity
         {
             if (other is Enemy enemy && enemy.IsAlive && !hurting)
             {
+                if (Invincible)
+                {
+                    enemy.Kill();
+                    return;
+                }
+
                 Health--;
                 if (Health <= 0)
                 {
@@ -157,7 +169,7 @@ namespace Gravity
             }
 
             if (shoot.Evaluate(input))
-                Weapon.PullTrigger();
+                Weapon?.PullTrigger();
         }
 
         public override void Update(GameTime gameTime)
