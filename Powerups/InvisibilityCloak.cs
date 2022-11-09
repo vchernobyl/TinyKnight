@@ -10,13 +10,16 @@ namespace Gravity.Powerups
 
         public override void On()
         {
-            hero.Sprite.Color = Color.White * .35f;
+            var invisibilityColor = Color.White * .35f;
+            hero.Sprite.Color = invisibilityColor;
+            hero.Weapon.Sprite.Color = invisibilityColor;
             hero.Collisions &= ~Mask.Enemy;
         }
 
         public override void Off()
         {
             hero.Sprite.Color = Color.White;
+            hero.Weapon.Sprite.Color = Color.White;
             hero.Collisions |= Mask.Enemy;
         }
     }
