@@ -38,7 +38,30 @@ namespace Gravity.UI
                 new Command("load", LoadScreen),
                 new Command("timescale", SetTimeScale),
                 new Command("spawn", ToggleSpawn),
+                new Command("kill_entities", KillEntities)
             };
+        }
+
+        private string KillEntities(string[] arg)
+        {
+            var g = game as GravityGame;
+            var screenManager = g.Services.GetService<ScreenManager>();
+            var gameplayScreen = GetGameplayScreen(screenManager);
+
+            if (gameplayScreen != null)
+            {
+                foreach (var e in gameplayScreen.AllEntities)
+                {
+                    if (e is Hero || e is Weapon || e is FirePit)
+                        continue;
+                    else
+                        e.Destroy();
+                }
+
+                return "";
+            }
+            else
+                return "You have to be in GameplayScreen to spawn an entity";
         }
 
         private string Clear(string[] args)
@@ -190,6 +213,7 @@ namespace Gravity.UI
                     "crossbow" => new Crossbow(hero, gameplayScreen),
                     "cannon" => new Cannon(hero, gameplayScreen),
                     "bomb" => new Bomb(hero, gameplayScreen),
+                    "star" => new ThrowingStar(hero),
                     _ => null,
                 };
 
@@ -234,7 +258,7 @@ namespace Gravity.UI
             if (args.Length != 1)
                 return "timescale takes exactly 1 argument";
 
-            if (float.TryParse(args[0], NumberStyles.Number, 
+            if (float.TryParse(args[0], NumberStyles.Number,
                 CultureInfo.InvariantCulture.NumberFormat, out float s))
             {
                 game.TargetElapsedTime = TimeSpan.FromSeconds(0.0166667f * s);

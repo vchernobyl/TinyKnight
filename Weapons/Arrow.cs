@@ -2,6 +2,7 @@
 using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Gravity
 {
@@ -20,7 +21,7 @@ namespace Gravity
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
-            anim.AddFrame(new Rectangle(8, 0, 8, 8), duration: 0f);
+            anim.AddFrame(new Rectangle(8 * 4, 0, 8, 8), duration: 0f);
 
             Sprite = spriteSheet.Create();
             Sprite.Flip = velocity.X < 0

@@ -5,7 +5,27 @@ using System;
 
 namespace Gravity.Powerups
 {
-    internal class HourGlass : Powerup
+    public class TimeSlowdown : PowerupEffect
+    {
+        public TimeSlowdown(Hero hero, float duration) : base(hero, duration)
+        {
+        }
+
+        public override void Off()
+        {
+        }
+
+        public override void On()
+        {
+            foreach (var e in hero.GameplayScreen.AllEntities)
+            {
+                e.DX = MathF.Sign(e.DX) * .05f;
+                e.DY = MathF.Sign(e.DY) * .05f;
+            }
+        }
+    }
+
+    public class HourGlass : Powerup
     {
         public HourGlass(GameplayScreen gameplayScreen) : base(gameplayScreen)
         {
@@ -22,7 +42,7 @@ namespace Gravity.Powerups
 
         protected override PowerupEffect CreateEffect()
         {
-            throw new NotImplementedException();
+            return new TimeSlowdown(GameplayScreen.Hero, duration: 10f);
         }
     }
 }

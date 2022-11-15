@@ -52,7 +52,7 @@ Weapons:
 - Captain america style shield?
 - Flak cannon was really fun to use last time. Let's create something similar.
   * Ice shards flying around
-  * 
+  * Maybe it should spawn more shards on direct hit, to discourage random spamming?
 
 Weapon purpose:
 ---------------

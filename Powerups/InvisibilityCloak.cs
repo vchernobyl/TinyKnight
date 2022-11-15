@@ -6,7 +6,7 @@ namespace Gravity.Powerups
 {
     public class Invisibility : PowerupEffect
     {
-        public Invisibility(Hero hero) : base(hero, duration: 5f) { }
+        public Invisibility(Hero hero, float duration) : base(hero, duration) { }
 
         public override void On()
         {
@@ -41,7 +41,7 @@ namespace Gravity.Powerups
 
         protected override PowerupEffect CreateEffect()
         {
-            return new Invisibility(GameplayScreen.Hero);
+            return new Invisibility(GameplayScreen.Hero, duration: 7f);
         }
     }
 }

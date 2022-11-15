@@ -12,7 +12,7 @@ namespace Gravity.Powerups
         private float blinkTime;
         private float time;
 
-        public Berserk(Hero hero) : base(hero, duration: 5f)
+        public Berserk(Hero hero, float duration) : base(hero, duration)
         {
         }
 
@@ -68,7 +68,7 @@ namespace Gravity.Powerups
 
         protected override PowerupEffect CreateEffect()
         {
-            return new Berserk(GameplayScreen.Hero);
+            return new Berserk(GameplayScreen.Hero, duration: 7f);
         }
     }
 }
