@@ -16,11 +16,10 @@ namespace Gravity
             this.velocity = velocity;
             this.damage = damage;
 
-
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
-            anim.AddFrame(new Rectangle(8 * 4, 0, 8, 8), duration: 0f);
+            anim.AddFrame(new Rectangle(8 * 1, 0, 8, 8), duration: 0f);
 
             Sprite = spriteSheet.Create();
             Sprite.Rotation = velocity.X < 0
