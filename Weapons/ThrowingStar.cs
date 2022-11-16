@@ -1,4 +1,5 @@
-﻿using Gravity.Graphics;
+﻿using Gravity.Entities;
+using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,7 +24,9 @@ namespace Gravity.Weapons
             Sprite.LayerDepth = DrawLayer.Foreground;
             Sprite.Play(defaultAnimID);
 
+            Category = Mask.Projectile;
             Collisions = Mask.Enemy | Mask.Level;
+
             Gravity = 0f;
             FrictionX = 1f;
             FrictionY = 1f;
@@ -43,6 +46,15 @@ namespace Gravity.Weapons
 
             velocity = Vector2.Reflect(velocity, normal);
         }
+
+        public override void OnEntityCollisionEnter(Entity other)
+        {
+            if (other is Enemy enemy)
+            {
+                Destroy();
+                enemy.Damage(amount: 40);
+            }
+        }
     }
 
     public class ThrowingStarProjectile : Entity
@@ -59,6 +71,7 @@ namespace Gravity.Weapons
             Sprite.LayerDepth = DrawLayer.Foreground;
             Sprite.Play(defaultAnimID);
 
+            Category = Mask.Projectile;
             Collisions = Mask.Enemy | Mask.Level;
         }
 
@@ -71,7 +84,17 @@ namespace Gravity.Weapons
         public override void OnLevelCollision(Vector2 normal)
         {
             Destroy();
-            SpawnShards(5, normal);
+            SpawnShards(3, normal);
+        }
+
+        public override void OnEntityCollisionEnter(Entity other)
+        {
+            if (other is Enemy enemy)
+            {
+                Destroy();
+                enemy.Kill();
+                SpawnShards(6, -Vector2.UnitY);
+            }
         }
 
         private void SpawnShards(uint amount, Vector2 normal)

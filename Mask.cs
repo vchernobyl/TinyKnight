@@ -11,6 +11,8 @@ namespace Gravity
         Player = 4,
         Enemy = 8,
         Item = 16,
+        Projectile = 32,
+        FirePit = 64,
         All = 255,
     }
 }

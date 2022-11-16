@@ -55,7 +55,12 @@ namespace Gravity.Entities
             {
                 hitSound.Play(volume: .5f, 0f, 0f);
                 Flash(duration: .1f, Color.Red);
-                Thread.Sleep(millisecondsTimeout: 20);
+
+                // TODO: This currently causes a lot of problems when multiple enemies are being
+                // hit at once. It looks like the sleep amount is accumulated and game freezes
+                // for longer than expected.
+                //Thread.Sleep(millisecondsTimeout: 20);
+
                 GravityGame.WorldCamera.Shake(trauma: .48f);
             }
 

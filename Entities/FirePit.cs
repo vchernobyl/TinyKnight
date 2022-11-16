@@ -22,6 +22,8 @@ namespace Gravity.Entities
             Sprite = spriteSheet.Create();
             Sprite.LayerDepth = DrawLayer.Foreground;
             Sprite.Play(animID);
+
+            Category = Mask.FirePit;
         }
 
         public override void OnEntityCollisionExit(Entity other)

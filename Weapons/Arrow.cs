@@ -2,7 +2,6 @@
 using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Gravity
 {
@@ -24,9 +23,9 @@ namespace Gravity
             anim.AddFrame(new Rectangle(8 * 4, 0, 8, 8), duration: 0f);
 
             Sprite = spriteSheet.Create();
-            Sprite.Flip = velocity.X < 0
-                ? SpriteEffects.FlipHorizontally
-                : SpriteEffects.None;
+            Sprite.Rotation = velocity.X < 0
+                ? MathHelper.ToRadians(-135f)
+                : MathHelper.ToRadians(45f);
             Sprite.Play(defaultAnimID);
         }
 
