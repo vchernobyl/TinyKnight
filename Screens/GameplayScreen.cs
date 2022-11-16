@@ -1,5 +1,6 @@
 ﻿using Gravity.Coroutines;
 using Gravity.Entities;
+using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -70,6 +71,8 @@ namespace Gravity
             Hud = new Hud(this);
 
             coroutine.Run(SpawnChest(), delay: 5f);
+
+            DebugShapeRenderer.Initialize(ScreenManager.SpriteBatch);
         }
 
         public void StartEnemySpawn()

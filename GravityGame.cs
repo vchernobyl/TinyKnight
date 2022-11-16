@@ -1,4 +1,5 @@
 ﻿using Gravity.Coroutines;
+using Gravity.Graphics;
 using Gravity.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,6 +48,7 @@ namespace Gravity
         protected override void LoadContent()
         {
             var spriteBatch = new SpriteBatch(GraphicsDevice);
+            DebugShapeRenderer.Initialize(spriteBatch);
             Services.AddService(spriteBatch);
 
             var console = new Console(this);
@@ -69,6 +71,8 @@ namespace Gravity
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             base.Draw(gameTime);
+
+            DebugShapeRenderer.Draw(gameTime);
         }
     }
 }
