@@ -48,7 +48,7 @@ namespace Gravity
         protected override void LoadContent()
         {
             var spriteBatch = new SpriteBatch(GraphicsDevice);
-            DebugShapeRenderer.Initialize(spriteBatch);
+            DebugRenderer.Initialize(spriteBatch);
             Services.AddService(spriteBatch);
 
             var console = new Console(this);
@@ -72,7 +72,7 @@ namespace Gravity
 
             base.Draw(gameTime);
 
-            DebugShapeRenderer.Draw(gameTime);
+            DebugRenderer.Draw(gameTime);
         }
     }
 }

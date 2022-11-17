@@ -29,22 +29,22 @@ namespace Gravity
         }
 
         // TODO: Why is this taking Point instead of Vector2? We should probably allow of drawing in floating point precision.
-        public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Point position, Point size, Color color, float thickenss = 1f)
+        public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Vector2 position, Vector2 size, Color color, float thickenss = 1f)
         {
             var topRight = new Vector2(position.X + size.X, position.Y);
-            DrawLine(spriteBatch, position.ToVector2(), topRight, color, thickenss);
+            DrawLine(spriteBatch, position, topRight, color, thickenss);
 
-            var bottomRight = (position + size).ToVector2();
+            var bottomRight = (position + size);
             DrawLine(spriteBatch, topRight, bottomRight, color, thickenss);
 
             var bottomLeft = new Vector2(position.X, position.Y + size.Y);
             DrawLine(spriteBatch, bottomRight, bottomLeft, color, thickenss);
-            DrawLine(spriteBatch, bottomLeft, position.ToVector2(), color, thickenss);
+            DrawLine(spriteBatch, bottomLeft, position, color, thickenss);
         }
 
         public static void DrawRectangleOutline(this SpriteBatch spriteBatch, Rectangle rectangle, Color color, float thickness = 1f)
         {
-            DrawRectangleOutline(spriteBatch, rectangle.Location, rectangle.Size, color, thickness);
+            DrawRectangleOutline(spriteBatch, rectangle.Location.ToVector2(), rectangle.Size.ToVector2(), color, thickness);
         }
 
         public static void DrawLine(this SpriteBatch spriteBatch, Vector2 from, Vector2 to, Color color, float thickness)

@@ -213,8 +213,6 @@ namespace Gravity
             // Landing.
             if (!wasOnGround && onGround)
                 SquashY(.5f);
-
-            DebugShapeRenderer.AddLine(Vector2.Zero, Position, Color.Green);
         }
 
         // TODO: These currently assume that every sprite/animator "normal"

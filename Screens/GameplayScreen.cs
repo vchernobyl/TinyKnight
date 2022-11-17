@@ -72,7 +72,7 @@ namespace Gravity
 
             coroutine.Run(SpawnChest(), delay: 5f);
 
-            DebugShapeRenderer.Initialize(ScreenManager.SpriteBatch);
+            DebugRenderer.Initialize(ScreenManager.SpriteBatch);
         }
 
         public void StartEnemySpawn()
