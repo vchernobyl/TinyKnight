@@ -33,6 +33,7 @@ namespace Gravity.UI
                 new Command("add", AddEntity),
                 new Command("solids", ToggleSolids),
                 new Command("colliders", ToggleColliders),
+                new Command("grid", ToggleGrid),
                 new Command("history", PrintHistory),
                 new Command("weapon", GiveWeapon),
                 new Command("load", LoadScreen),
@@ -182,6 +183,21 @@ namespace Gravity.UI
             }
 
             return $"colliders: invalid argument {toggle}";
+        }
+
+        private string ToggleGrid(string[] arg)
+        {
+            if (arg.Length != 1)
+                return "grid takes exactly 1 argument";
+
+            var toggle = ToBoolean(arg[0]);
+            if (ToBoolean(arg[0]) is bool flag)
+            {
+                DebugInfo.ShowGrid = flag;
+                return $"grid is {arg[0]}";
+            }
+
+            return $"grid: invalid argument {toggle}";
         }
 
         private string PrintHistory(string[] ars)

@@ -50,7 +50,12 @@ namespace Gravity
                 if (cell.Solid && DebugInfo.ShowSolids)
                 {
                     var outline = cell.Bounds;
-                    batch.DrawRectangleOutline(outline, Color.Red, 1f);
+                    batch.DrawRectangleOutline(outline, Color.Red, .5f);
+                }
+
+                if (DebugInfo.ShowGrid)
+                {
+                    batch.DrawRectangleOutline(cell.Bounds, Color.White, .5f);
                 }
             }
         }
