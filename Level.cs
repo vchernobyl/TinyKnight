@@ -41,29 +41,29 @@ namespace Gravity
 
         public Cell this[int col, int row] => Cells[col, row];
 
-        public bool CheckLineIsBlocked(Point start, Point end)
+        public bool CheckLineIsBlocked(Vector2 start, Vector2 end)
         {
-            var line = Bresenham.GetLine(start, end);
+            var startPoint = new Point(
+                (int)start.X / CellSize, 
+                (int)start.Y / CellSize);
+
+            var endPoint = new Point(
+                (int)end.X / CellSize,
+                (int)end.Y / CellSize);
+
+            var line = Bresenham.GetLine(startPoint, endPoint);
             foreach (var point in line)
             {
                 foreach (var cell in Cells)
                 {
                     if (cell.Solid && cell.Location == point)
                     {
-                        var a = new Vector2(start.X * CellSize + CellSize / 2f,
-                            start.Y * CellSize + CellSize / 2f);
-                        var b = new Vector2(cell.Position.X + CellSize / 2f,
-                            cell.Position.Y + CellSize / 2f);
-                        DebugRenderer.AddLine(a, b, Color.Red);
+                        DebugRenderer.AddLine(start, cell.Position, Color.Red);
                         return true;
                     }
                 }
             }
-            var c = new Vector2(start.X * CellSize + CellSize / 2f,
-                start.Y * CellSize + CellSize / 2f);
-            var d = new Vector2(end.X * CellSize + CellSize / 2f,
-                end.Y * CellSize + CellSize / 2f);
-            DebugRenderer.AddLine(c, d, Color.Green);
+            DebugRenderer.AddLine(start, end, Color.Green);
             return false;
         }
 

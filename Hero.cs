@@ -218,7 +218,7 @@ namespace Gravity
             var worldPos = GravityGame.WorldCamera.ScreenToWorldSpace(mousePos);
             //DebugRenderer.AddLine(Vector2.Zero, worldPos, Color.Yellow, thickness: .5f);
 
-            Level.CheckLineIsBlocked(new Point(CX, CY), new Point((int)worldPos.X / Level.CellSize, (int)worldPos.Y / Level.CellSize));
+            //_ = Level.CheckLineIsBlocked(Position, worldPos);
         }
 
         // TODO: These currently assume that every sprite/animator "normal"

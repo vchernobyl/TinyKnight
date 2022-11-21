@@ -7,11 +7,12 @@ namespace Gravity.Weapons
 {
     public class ShieldProjectile : Entity
     {
-        private const float MaxRange = 45f;
+        private const float MaxRange = 75f;
         private const uint MaxHits = 5;
 
         private Vector2 velocity;
         private Enemy? target;
+        private int hitCount;
 
         public ShieldProjectile(GameplayScreen gameplayScreen, Vector2 velocity)
             : base(gameplayScreen)
@@ -41,6 +42,12 @@ namespace Gravity.Weapons
             {
                 enemy.Damage(amount: 50);
                 SetNextTarget(enemy);
+
+                if (++hitCount >= MaxHits)
+                {
+                    Destroy();
+                    return;
+                }
             }
         }
 
@@ -92,7 +99,9 @@ namespace Gravity.Weapons
                 if (entity is Enemy enemy && enemy != lastHitEnemy)
                 {
                     var dist = Vector2.Distance(Position, entity.Position);
-                    if (dist <= MaxRange && dist < closestDistance)
+                    if (dist <= MaxRange && 
+                        dist < closestDistance && 
+                        !Level.CheckLineIsBlocked(Position, entity.Position))
                     {
                         closestDistance = dist;
                         closestEnemy = enemy;
