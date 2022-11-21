@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace Gravity
 {
+    // Implementation the Bresenham algorithm
+    // as described in: https://deepnight.net/tutorial/bresenham-magic-raycasting-line-of-sight-pathfinding/
     public static class Bresenham
     {
         public static List<Point> GetLine(Point start, Point end)
