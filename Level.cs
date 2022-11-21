@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Gravity.Graphics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Gravity
@@ -39,6 +40,32 @@ namespace Gravity
         }
 
         public Cell this[int col, int row] => Cells[col, row];
+
+        public bool CheckLineIsBlocked(Point start, Point end)
+        {
+            var line = Bresenham.GetLine(start, end);
+            foreach (var point in line)
+            {
+                foreach (var cell in Cells)
+                {
+                    if (cell.Solid && cell.Location == point)
+                    {
+                        var a = new Vector2(start.X * CellSize + CellSize / 2f,
+                            start.Y * CellSize + CellSize / 2f);
+                        var b = new Vector2(cell.Position.X + CellSize / 2f,
+                            cell.Position.Y + CellSize / 2f);
+                        DebugRenderer.AddLine(a, b, Color.Red);
+                        return true;
+                    }
+                }
+            }
+            var c = new Vector2(start.X * CellSize + CellSize / 2f,
+                start.Y * CellSize + CellSize / 2f);
+            var d = new Vector2(end.X * CellSize + CellSize / 2f,
+                end.Y * CellSize + CellSize / 2f);
+            DebugRenderer.AddLine(c, d, Color.Green);
+            return false;
+        }
 
         public void Draw(SpriteBatch batch)
         {

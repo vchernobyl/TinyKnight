@@ -218,11 +218,7 @@ namespace Gravity
             var worldPos = GravityGame.WorldCamera.ScreenToWorldSpace(mousePos);
             //DebugRenderer.AddLine(Vector2.Zero, worldPos, Color.Yellow, thickness: .5f);
 
-            var points = Bresenham.GetLine(Point.Zero, worldPos.ToPoint());
-            foreach (var p in points)
-            {
-                DebugRenderer.AddRectangle(p.ToVector2(), Vector2.One , Color.Purple);
-            }
+            Level.CheckLineIsBlocked(new Point(CX, CY), new Point((int)worldPos.X / Level.CellSize, (int)worldPos.Y / Level.CellSize));
         }
 
         // TODO: These currently assume that every sprite/animator "normal"
