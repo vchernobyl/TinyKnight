@@ -214,11 +214,8 @@ namespace Gravity
             if (!wasOnGround && onGround)
                 SquashY(.5f);
 
-            var mousePos = Mouse.GetState().Position.ToVector2();
-            var worldPos = GravityGame.WorldCamera.ScreenToWorldSpace(mousePos);
-            //DebugRenderer.AddLine(Vector2.Zero, worldPos, Color.Yellow, thickness: .5f);
-
-            //_ = Level.CheckLineIsBlocked(Position, worldPos);
+            DebugShapeRenderer.AddLine(Vector2.Zero, Position, Color.Yellow);
+            DebugShapeRenderer.AddLine(Position, Position + new Vector2(0, -5f), Color.Red);
         }
 
         // TODO: These currently assume that every sprite/animator "normal"
