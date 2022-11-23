@@ -36,6 +36,11 @@ namespace Gravity.Graphics
         private static GraphicsDevice graphics;
         private static BasicEffect effect;
 
+        // This holds the vertices for our unit circle that we will use when drawing circles.
+        private const int CircleResolution = 30;
+        private const int CircleLineCount = CircleResolution + 1;
+        private static Vector2[] unitCircle;
+
         [Conditional("DEBUG")]
         public static void Initialize(GraphicsDevice graphicsDevice)
         {
@@ -49,6 +54,8 @@ namespace Gravity.Graphics
                 Projection = Matrix.CreateOrthographicOffCenter(
                     graphics.Viewport.Bounds, zNearPlane: 0f, zFarPlane: 1f),
             };
+
+            InitializeCircle();
         }
 
         [Conditional("DEBUG")]
@@ -79,10 +86,16 @@ namespace Gravity.Graphics
         }
 
         [Conditional("DEBUG")]
-        public static void AddCircle(Vector2 center, float radius, float lifetime = 0f)
+        public static void AddCircle(Vector2 center, float radius, Color color, float lifetime = 0f)
         {
-            // TODO: Use Bresenham's algorithm to draw pixel perfect circle.
-            throw new NotImplementedException();
+            var shape = GetShapeForLines(CircleLineCount, lifetime);
+
+            // Iterate our unit circle vertices.
+            for (var i = 0; i < unitCircle.Length; i++)
+            {
+                var vertPos = unitCircle[i] * radius + center;
+                shape.Vertices[i] = new VertexPositionColor(new Vector3(vertPos, 0f), color);
+            }
         }
 
         [Conditional("DEBUG")]
@@ -186,6 +199,21 @@ namespace Gravity.Graphics
             shape.Lifetime = lifetime;
 
             return shape;
+        }
+
+        private static void InitializeCircle()
+        {
+            // We need two vertices per line.
+            unitCircle = new Vector2[CircleLineCount * 2];
+
+            var step = MathHelper.TwoPi / CircleResolution;
+            var index = 0;
+
+            for (var a = 0f; a < MathHelper.TwoPi; a += step)
+            {
+                unitCircle[index++] = new Vector2(MathF.Cos(a), MathF.Sin(a));
+                unitCircle[index++] = new Vector2(MathF.Cos(a + step), MathF.Sin(a + step));
+            }
         }
     }
 
