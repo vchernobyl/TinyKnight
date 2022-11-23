@@ -71,9 +71,6 @@ namespace Gravity
             Hud = new Hud(this);
 
             coroutine.Run(SpawnChest(), delay: 5f);
-
-            DebugRenderer.Initialize(ScreenManager.SpriteBatch);
-            //DebugShapeRenderer.Initialize(ScreenManager.GraphicsDevice);
         }
 
         public void StartEnemySpawn()
@@ -184,7 +181,7 @@ namespace Gravity
             Hud.Draw(spriteBatch);
             spriteBatch.End();
 
-            DebugShapeRenderer.Draw(gameTime, view: GravityGame.WorldCamera.Transform);
+            DebugRenderer.Draw(gameTime, view: GravityGame.WorldCamera.Transform);
         }
 
         private IEnumerator SpawnChest()

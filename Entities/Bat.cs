@@ -92,30 +92,6 @@ namespace Gravity.Entities
             }
         }
 
-        public override void Draw(SpriteBatch batch)
-        {
-            if (DebugInfo.ShowNavigation)
-            {
-                for (int i = 0; i < path.Count - 1; i++)
-                    batch.DrawLine(path[i], path[i + 1], Color.DarkBlue, thickness: 2f);
-
-                foreach (var point in path)
-                {
-                    var rectangle = new Rectangle(
-                        (int)point.X - Level.CellSize / 2,
-                        (int)point.Y - Level.CellSize / 2,
-                        Level.CellSize,
-                        Level.CellSize);
-                    rectangle.Inflate(-9.5f, -9.5f);
-                    batch.DrawRectangle(rectangle, Color.Blue);
-                }
-
-                navGrid.Draw(batch);
-            }
-
-            base.Draw(batch);
-        }
-
         public override void OnDie()
         {
             Gravity = .05f;

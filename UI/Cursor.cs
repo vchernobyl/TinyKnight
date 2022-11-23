@@ -10,6 +10,7 @@ namespace Gravity.UI
         
         private float blinkTime;
         private readonly float blinkDuration;
+        private readonly Texture2D texture;
 
         private bool toggle;
 
@@ -31,9 +32,10 @@ namespace Gravity.UI
             set { rectangle.Location = value; }
         }
 
-        public Cursor(int x, int y, int width, int height,
+        public Cursor(Texture2D texture, int x, int y, int width, int height,
             Color color, float blinkRate = 1f)
         {
+            this.texture = texture;
             this.rectangle = new Rectangle(x, y, width, height);
             this.color = color;
             this.blinkTime = 0f;
@@ -59,7 +61,7 @@ namespace Gravity.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawRectangle(rectangle, toggle ? color : Color.Transparent);
+            spriteBatch.Draw(texture, rectangle, toggle ? color : Color.Transparent);
         }
     }
 }

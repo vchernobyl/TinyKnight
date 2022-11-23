@@ -67,7 +67,7 @@ namespace Gravity.Weapons
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            spriteBatch.DrawCircle(Position, MaxRange, Color.Yellow);
+            DebugRenderer.AddCircle(Position, MaxRange, Color.Yellow);
         }
 
         private void SetNextTarget(Enemy? lastHitEnemy)

@@ -46,7 +46,7 @@ namespace Gravity
             WorldCamera = new Camera(GraphicsDevice.Viewport);
             UiCamera = new Camera(new Viewport());
 
-            DebugShapeRenderer.Initialize(GraphicsDevice);
+            DebugRenderer.Initialize(GraphicsDevice);
 
             base.Initialize();
         }
@@ -54,7 +54,7 @@ namespace Gravity
         protected override void LoadContent()
         {
             var spriteBatch = new SpriteBatch(GraphicsDevice);
-            DebugRenderer.Initialize(spriteBatch);
+            DebugRenderer.Initialize(GraphicsDevice);
             Services.AddService(spriteBatch);
 
             var console = new Console(this);
@@ -78,7 +78,7 @@ namespace Gravity
 
             base.Draw(gameTime);
 
-            DebugRenderer.Draw(gameTime);
+            DebugRenderer.Draw(gameTime, view: WorldCamera.Transform);
         }
     }
 }

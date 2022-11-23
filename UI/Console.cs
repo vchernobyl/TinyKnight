@@ -17,6 +17,7 @@ namespace Gravity.UI
         private readonly SpriteBatch spriteBatch;
         private readonly SpriteFont font;
 
+        private readonly Texture2D pixel;
         private readonly Color backgroundColor;
         private readonly Cursor cursor;
 
@@ -52,11 +53,12 @@ namespace Gravity.UI
             spriteBatch = game.Services.GetService<SpriteBatch>();
             font = game.Content.Load<SpriteFont>("Fonts/Default");
 
+            pixel = game.Content.Load<Texture2D>("Textures/Pixel");
             backgroundColor = new Color(.2f, .4f, .6f, .85f);
             rectangle = new Rectangle(0, -height, width, height);
 
             (cursorWidth, cursorHeight) = font.MeasureString("M").ToPoint();
-            cursor = new Cursor(rectangle.Left + CursorPaddingLeft,
+            cursor = new Cursor(pixel, rectangle.Left + CursorPaddingLeft,
                 rectangle.Bottom - CursorPaddingBottom,
                 cursorWidth, cursorHeight,
                 Color.White, blinkRate: .5f);
@@ -162,7 +164,7 @@ namespace Gravity.UI
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.DrawRectangle(rectangle, backgroundColor);
+            spriteBatch.Draw(pixel, rectangle, backgroundColor);
             spriteBatch.DrawString(font, textInput, new Vector2(rectangle.Left + CursorPaddingLeft, cursor.Top), Color.White);
 
             var y = cursor.Top - cursorHeight;

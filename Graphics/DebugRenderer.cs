@@ -6,129 +6,215 @@ using System.Diagnostics;
 
 namespace Gravity.Graphics
 {
-    public static class DebugRenderer
+    public class DebugRenderer
     {
-        private abstract class DebugShape
+        private class DebugShape
         {
-            public Color Color = Color.Green;
-            public float Thickness = 1f;
-            public float Lifetime = 0f; // 0 here means the shape will only be drawn for a single frame.
+            /// <summary>
+            /// The array of vertices the shape can use.
+            /// </summary>
+            public VertexPositionColor[] Vertices;
 
-            public abstract void Draw(SpriteBatch spriteBatch);
+            /// <summary>
+            /// The number of lines to draw for this shape.
+            /// </summary>
+            public int LineCount;
+
+            /// <summary>
+            /// The length of time to keep this shape visible.
+            /// </summary>
+            public float Lifetime;
         }
 
-        private class DebugLine : DebugShape
-        {
-            public Vector2 Start;
-            public Vector2 End;
+        // We use a cache system to reuse our DebugShape instances to avoid creating garbage.
+        private static readonly List<DebugShape> cachedShapes = new List<DebugShape>();
+        private static readonly List<DebugShape> activeShapes = new List<DebugShape>();
 
-            public override void Draw(SpriteBatch spriteBatch)
-            {
-                spriteBatch.DrawLine(Start, End, Color, Thickness);
-            }
-        }
+        // Allocate an array to hold our vertices; this will grow as needed by our renderer.
+        private static VertexPositionColor[] verts = new VertexPositionColor[64];
 
-        private class DebugRectangle : DebugShape
-        {
-            public Vector2 Position;
-            public Vector2 Size;
+        private static GraphicsDevice graphics;
+        private static BasicEffect effect;
 
-            public override void Draw(SpriteBatch spriteBatch)
-            {
-                spriteBatch.DrawRectangleOutline(Position, Size, Color, Thickness);
-            }
-        }
-
-        private class DebugCircle : DebugShape
-        {
-            public Vector2 Center;
-            public float Radius;
-
-            public override void Draw(SpriteBatch spriteBatch)
-            {
-                spriteBatch.DrawCircle(Center, Radius, Color, Thickness);
-            }
-        }
-
-        private static Texture2D? pixel;
-        private static SpriteBatch? batch;
-
-        // List of all the shapes which are scheduled to be rendered in a current frame.
-        private static readonly List<DebugShape> shapes = new List<DebugShape>();
+        // This holds the vertices for our unit circle that we will use when drawing circles.
+        private const int CircleResolution = 30;
+        private const int CircleLineCount = CircleResolution + 1;
+        private static Vector2[] unitCircle;
 
         [Conditional("DEBUG")]
-        public static void Initialize(SpriteBatch spriteBatch)
+        public static void Initialize(GraphicsDevice graphicsDevice)
         {
-            batch = spriteBatch;
-            pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            pixel.SetData(new[] { Color.White });
-        }
-
-        [Conditional("DEBUG")]
-        public static void AddLine(Vector2 start, Vector2 end, Color color,
-            float thickness = 1f, float lifetime = 0f)
-        {
-            var line = new DebugLine
+            graphics = graphicsDevice;
+            effect = new BasicEffect(graphicsDevice)
             {
-                Color = color,
-                Thickness = thickness,
-                Lifetime = lifetime,
-                Start = start,
-                End = end
+                VertexColorEnabled = true,
+                TextureEnabled = false,
+                DiffuseColor = Vector3.One,
+                World = Matrix.Identity,
+                Projection = Matrix.CreateOrthographicOffCenter(
+                    graphics.Viewport.Bounds, zNearPlane: 0f, zFarPlane: 1f),
             };
-            shapes.Add(line);
+
+            InitializeCircle();
         }
 
         [Conditional("DEBUG")]
-        public static void AddRectangle(Vector2 topLeft, Vector2 size, Color color,
-            float thickness = 1f, float lifetime = 0f)
+        public static void AddLine(Vector2 a, Vector2 b, Color color, float lifetime = 0f)
         {
-            var rectangle = new DebugRectangle
-            {
-                Color = color,
-                Thickness = thickness,
-                Lifetime = lifetime,
-                Position = topLeft,
-                Size = size
-            };
-            shapes.Add(rectangle);
+            var shape = GetShapeForLines(1, lifetime);
+
+            shape.Vertices[0] = new VertexPositionColor(new Vector3(a, 0f), color);
+            shape.Vertices[1] = new VertexPositionColor(new Vector3(b, 0f), color);
         }
 
         [Conditional("DEBUG")]
-        public static void AddCircle(Vector2 center, float radius, Color color,
-            float thickness = 1f, float lifetime = 0f)
+        public static void AddRectangle(Rectangle rect, Color color, float lifetime = 0f)
         {
-            var circle = new DebugCircle
-            {
-                Color = color,
-                Thickness = thickness,
-                Lifetime = lifetime,
-                Center = center,
-                Radius = radius,
-            };
-            shapes.Add(circle);
+            var shape = GetShapeForLines(4, lifetime);
+
+            shape.Vertices[0] = new VertexPositionColor(new Vector3(rect.Left, rect.Top, 0f), color);
+            shape.Vertices[1] = new VertexPositionColor(new Vector3(rect.Right, rect.Top, 0f), color);
+
+            shape.Vertices[2] = new VertexPositionColor(new Vector3(rect.Right, rect.Top, 0f), color);
+            shape.Vertices[3] = new VertexPositionColor(new Vector3(rect.Right, rect.Bottom, 0f), color);
+
+            shape.Vertices[4] = new VertexPositionColor(new Vector3(rect.Right, rect.Bottom, 0f), color);
+            shape.Vertices[5] = new VertexPositionColor(new Vector3(rect.Left, rect.Bottom, 0f), color);
+
+            shape.Vertices[6] = new VertexPositionColor(new Vector3(rect.Left, rect.Bottom, 0f), color);
+            shape.Vertices[7] = new VertexPositionColor(new Vector3(rect.Left, rect.Top, 0f), color);
         }
 
         [Conditional("DEBUG")]
-        public static void Draw(GameTime gameTime)
+        public static void AddCircle(Vector2 center, float radius, Color color, float lifetime = 0f)
         {
-            if (batch == null)
-                throw new Exception($"{nameof(DebugRenderer)} was not initialized!");
+            var shape = GetShapeForLines(CircleLineCount, lifetime);
 
-            batch.Begin(transformMatrix: GravityGame.WorldCamera.Transform);
-            foreach (var shape in shapes)
+            // Iterate our unit circle vertices.
+            for (var i = 0; i < unitCircle.Length; i++)
             {
-                shape.Draw(batch);
-                shape.Lifetime -= gameTime.DeltaTime();
+                var vertPos = unitCircle[i] * radius + center;
+                shape.Vertices[i] = new VertexPositionColor(new Vector3(vertPos, 0f), color);
             }
-            batch.End();
+        }
 
-            // Remove all debug shape which have expired lifetime.
-            for (int i = shapes.Count - 1; i >= 0; i--)
+        [Conditional("DEBUG")]
+        public static void Draw(GameTime gameTime, Matrix view)
+        {
+            // Update our effect with the matrices.
+            effect.View = view;
+
+            int vertexCount = 0;
+            foreach (var shape in activeShapes)
+                vertexCount += shape.LineCount * 2;
+
+            if (vertexCount > 0)
             {
-                if (shapes[i].Lifetime <= 0f)
-                    shapes.RemoveAt(i);
+                // Make sure the vertex buffer is large enough.
+                if (verts.Length < vertexCount)
+                {
+                    // If we have to resize, we make our array twice as large as necessary so
+                    // we hopefully won't have to resize it for a while.
+                    verts = new VertexPositionColor[vertexCount * 2];
+                }
+
+                // Now go through the shapes again to move the vertices to the buffer and
+                // add up the number of lines to draw.
+                var lineCount = 0;
+                var vertIndex = 0;
+                foreach (var shape in activeShapes)
+                {
+                    lineCount += shape.LineCount;
+                    var shapeVerts = shape.LineCount * 2;
+                    for (var i = 0; i < shapeVerts; i++)
+                        verts[vertIndex++] = shape.Vertices[i];
+                }
+
+                // Start our effect to begin rendering.
+                effect.CurrentTechnique.Passes[0].Apply();
+
+                // We draw in a loop because the Reach profile only supports 65,535 primitives. While it's
+                // not incredibly likely, if a game tries to render more than 65,535 lines we don't want to
+                // crash. We handle this by doing a loop and drawing as many lines as we can at a time, capped
+                // at our limit. We then move ahead in our vertex array and draw the next set of lines.
+                var vertexOffset = 0;
+                while (lineCount > 0)
+                {
+                    var linesToDraw = Math.Min(lineCount, 65_535);
+                    graphics.DrawUserPrimitives(PrimitiveType.LineList, verts, vertexOffset, linesToDraw);
+                    vertexOffset += linesToDraw * 2;
+                    lineCount -= linesToDraw;
+                }
+
+                // Go through our active shapes and retire any shapes that have expired to the cache list.
+                var resort = false;
+                for (var i = activeShapes.Count - 1; i >= 0; i--)
+                {
+                    var s = activeShapes[i];
+                    s.Lifetime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (s.Lifetime <= 0f)
+                    {
+                        cachedShapes.Add(s);
+                        activeShapes.RemoveAt(i);
+                        resort = true;
+                    }
+                }
+
+                // If we move any shapes around, we need to resort the cached list
+                // to ensure that the smallest shapes are the first in the list.
+                if (resort)
+                    cachedShapes.Sort((s1, s2) => s1.Vertices.Length.CompareTo(s2.Vertices.Length));
+            }
+        }
+
+        private static DebugShape GetShapeForLines(int lineCount, float lifetime)
+        {
+            DebugShape? shape = null;
+
+            // We go through our cached list trying to find a shape that contains
+            // a large enough array to hold our desired line count. If we find such
+            // a shape, we move it from our cahced list to our active list and break
+            // out of the loop.
+            var vertCount = lineCount * 2;
+            for (var i = 0; i < cachedShapes.Count; i++)
+            {
+                if (cachedShapes[i].Vertices.Length >= vertCount)
+                {
+                    shape = cachedShapes[i];
+                    cachedShapes.RemoveAt(i);
+                    activeShapes.Add(shape);
+                    break;
+                }
+            }
+
+            // If we didn't find a shape in our cache, we create a new shape and add it
+            // to the active list.
+            if (shape == null)
+            {
+                shape = new DebugShape { Vertices = new VertexPositionColor[vertCount] };
+                activeShapes.Add(shape);
+            }
+
+            shape.LineCount = lineCount;
+            shape.Lifetime = lifetime;
+
+            return shape;
+        }
+
+        private static void InitializeCircle()
+        {
+            // We need two vertices per line.
+            unitCircle = new Vector2[CircleLineCount * 2];
+
+            var step = MathHelper.TwoPi / CircleResolution;
+            var index = 0;
+
+            for (var a = 0f; a < MathHelper.TwoPi; a += step)
+            {
+                unitCircle[index++] = new Vector2(MathF.Cos(a), MathF.Sin(a));
+                unitCircle[index++] = new Vector2(MathF.Cos(a + step), MathF.Sin(a + step));
             }
         }
     }
+
 }

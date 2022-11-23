@@ -208,7 +208,7 @@ namespace Gravity
             Sprite.Draw(Position, spriteBatch);
 
             if (DebugInfo.ShowEntityColliders)
-                spriteBatch.DrawCircle(Position, Radius, Color.LimeGreen, thickness: .75f);
+                DebugRenderer.AddCircle(Position, Radius, Color.LimeGreen);
         }
     }
 }
