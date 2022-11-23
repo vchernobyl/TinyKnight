@@ -52,15 +52,6 @@ namespace Gravity.Graphics
         }
 
         [Conditional("DEBUG")]
-        public static void AddLine(Vector3 a, Vector3 b, Color color, float lifetime = 0f)
-        {
-            var shape = GetShapeForLines(1, lifetime);
-
-            shape.Vertices[0] = new VertexPositionColor(a, color);
-            shape.Vertices[1] = new VertexPositionColor(b, color);
-        }
-
-        [Conditional("DEBUG")]
         public static void AddLine(Vector2 a, Vector2 b, Color color, float lifetime = 0f)
         {
             var shape = GetShapeForLines(1, lifetime);
@@ -70,24 +61,21 @@ namespace Gravity.Graphics
         }
 
         [Conditional("DEBUG")]
-        public static void AddTriangle(Vector3 a, Vector3 b, Vector3 c, Color color, float lifetime = 0f)
-        {
-            var shape = GetShapeForLines(3, lifetime);
-
-            shape.Vertices[0] = new VertexPositionColor(a, color);
-            shape.Vertices[1] = new VertexPositionColor(b, color);
-
-            shape.Vertices[2] = new VertexPositionColor(b, color);
-            shape.Vertices[3] = new VertexPositionColor(c, color);
-
-            shape.Vertices[4] = new VertexPositionColor(c, color);
-            shape.Vertices[5] = new VertexPositionColor(a, color);
-        }
-
-        [Conditional("DEBUG")]
         public static void AddRectangle(Rectangle rect, Color color, float lifetime = 0f)
         {
-            throw new NotImplementedException();
+            var shape = GetShapeForLines(4, lifetime);
+
+            shape.Vertices[0] = new VertexPositionColor(new Vector3(rect.Left, rect.Top, 0f), color);
+            shape.Vertices[1] = new VertexPositionColor(new Vector3(rect.Right, rect.Top, 0f), color);
+
+            shape.Vertices[2] = new VertexPositionColor(new Vector3(rect.Right, rect.Top, 0f), color);
+            shape.Vertices[3] = new VertexPositionColor(new Vector3(rect.Right, rect.Bottom, 0f), color);
+
+            shape.Vertices[4] = new VertexPositionColor(new Vector3(rect.Right, rect.Bottom, 0f), color);
+            shape.Vertices[5] = new VertexPositionColor(new Vector3(rect.Left, rect.Bottom, 0f), color);
+
+            shape.Vertices[6] = new VertexPositionColor(new Vector3(rect.Left, rect.Bottom, 0f), color);
+            shape.Vertices[7] = new VertexPositionColor(new Vector3(rect.Left, rect.Top, 0f), color);
         }
 
         [Conditional("DEBUG")]

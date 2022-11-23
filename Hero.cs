@@ -215,7 +215,7 @@ namespace Gravity
                 SquashY(.5f);
 
             DebugShapeRenderer.AddLine(Vector2.Zero, Position, Color.Yellow);
-            DebugShapeRenderer.AddLine(Position, Position + new Vector2(0, -5f), Color.Red);
+            DebugShapeRenderer.AddRectangle(new Rectangle((int)Position.X, (int)Position.Y, 5, 5), Color.White);
         }
 
         // TODO: These currently assume that every sprite/animator "normal"
