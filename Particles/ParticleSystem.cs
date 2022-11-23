@@ -178,6 +178,7 @@ namespace Gravity.Particles
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, blendState,
+                SamplerState.PointClamp,
                 transformMatrix: GravityGame.WorldCamera.Transform);
 
             foreach (var p in particles)
@@ -203,7 +204,8 @@ namespace Gravity.Particles
                 // Since we want the maximum alpha to be 1, not .25, we'll scale
                 // the entire equation by 4.
                 var alpha = 4 * normalizedLifetime * (1 - normalizedLifetime);
-                var color = Color.White * alpha;
+                var color = Color.Lerp(new Color(settings.StartColor / 255), new Color(settings.EndColor / 255),
+                    normalizedLifetime) * alpha;
 
                 // Make particles grow as they age. They'll start at 75% of their
                 // size, and increase to 100% once they're finished.

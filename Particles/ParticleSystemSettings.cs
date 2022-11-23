@@ -118,6 +118,13 @@ namespace Gravity.Particles
         [ContentSerializer(Optional = true)]
         public Vector2 Gravity = Vector2.Zero;
 
+        // Controls the color transition from beginning of the particle's life
+        // to the end. We are using Vector3 as Color is not serializable by default.
+        [ContentSerializer(Optional = true)]
+        public Vector3 StartColor = Vector3.One;
+        [ContentSerializer(Optional = true)]
+        public Vector3 EndColor = Vector3.One;
+
         // Alpha blending settings. Our default gives us a BlendState
         // equivalent to BlendState.AlphaBlend which is suitable for many
         // particle effects.

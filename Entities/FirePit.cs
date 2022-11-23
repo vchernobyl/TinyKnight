@@ -1,4 +1,5 @@
 ﻿using Gravity.Graphics;
+using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,6 +7,9 @@ namespace Gravity.Entities
 {
     public class FirePit : Entity
     {
+        private readonly ParticleSystem fireSystem;
+        private readonly ParticleEmitter fireEmitter;
+
         public FirePit(GameplayScreen gameplayScreen, Vector2 position) : base(gameplayScreen)
         {
             Position = position;
@@ -13,15 +17,9 @@ namespace Gravity.Entities
             Radius = 16;
 
             var game = gameplayScreen.ScreenManager.Game;
-            var content = game.Content;
-            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Fire"));
-
-            var anim = spriteSheet.CreateAnimation("Default", out int animID);
-            anim.AddFrame(new Rectangle(0, 0, 4 * 8, 8), duration: 0f);
-
-            Sprite = spriteSheet.Create();
-            Sprite.LayerDepth = DrawLayer.Foreground;
-            Sprite.Play(animID);
+            fireSystem = new ParticleSystem(game, "Particles/FirePit");
+            fireEmitter = new ParticleEmitter(fireSystem, particlesPerSecond: 80, position);
+            game.Components.Add(fireSystem);
 
             Category = Mask.FirePit;
         }
@@ -39,6 +37,11 @@ namespace Gravity.Entities
                 GameplayScreen.ExitScreen();
                 GameplayScreen.ScreenManager.AddScreen(new MainMenuScreen());
             }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            fireEmitter.Update(gameTime, Position);
         }
     }
 }

@@ -231,6 +231,7 @@ namespace Gravity.UI
                     "bomb" => new Bomb(hero, gameplayScreen),
                     "star" => new ThrowingStar(hero),
                     "shield" => new Shield(hero),
+                    "staff" => new FireStaff(hero),
                     _ => null,
                 };
 

@@ -4,6 +4,7 @@ using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -66,7 +67,7 @@ namespace Gravity
             Hero = new Hero(this) { Position = new Vector2(100f, 25f) };
             AddEntity(Hero);
 
-            AddEntity(new FirePit(this, new Vector2(Level.Width / 2f, Level.Height - Level.CellSize / 2f)));
+            AddEntity(new FirePit(this, new Vector2(Level.Width / 2f, (Level.Height - Level.CellSize / 2f) + 15f)));
 
             Hud = new Hud(this);
 

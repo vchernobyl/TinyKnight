@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XnaContent>
+<XnaContent xmlns:ns="Microsoft.Xna.Framework">
   <Asset Type="Gravity.Particles.ParticleSystemSettings">
     <MinNumParticles>10</MinNumParticles>
     <MaxNumParticles>15</MaxNumParticles>

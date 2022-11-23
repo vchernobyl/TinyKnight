@@ -7,17 +7,18 @@ namespace Gravity.Weapons
 {
     public class ShieldProjectile : Entity
     {
+        private const float Speed = .75f;
         private const float MaxRange = 75f;
         private const uint MaxHits = 5;
 
-        private Vector2 velocity;
+        private Vector2 direction;
         private Enemy? target;
         private int hitCount;
 
-        public ShieldProjectile(GameplayScreen gameplayScreen, Vector2 velocity)
+        public ShieldProjectile(GameplayScreen gameplayScreen, Vector2 direction)
             : base(gameplayScreen)
         {
-            this.velocity = velocity;
+            this.direction = direction;
 
             var content = GameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
@@ -59,9 +60,9 @@ namespace Gravity.Weapons
         public override void Update(GameTime gameTime)
         {
             if (target != null)
-                velocity = Vector2.Normalize(target.Position - Position);
+                direction = Vector2.Normalize(target.Position - Position) * Speed;
 
-            (DX, DY) = velocity;
+            (DX, DY) = direction * Speed;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -143,9 +144,8 @@ namespace Gravity.Weapons
 
         protected override void Shoot()
         {
-            const float force = 1f;
-            var velocity = new Vector2(hero.Facing * force, 0f);
-            GameplayScreen.AddEntity(new ShieldProjectile(GameplayScreen, velocity)
+            var direction = new Vector2(hero.Facing, 0f);
+            GameplayScreen.AddEntity(new ShieldProjectile(GameplayScreen, direction)
             {
                 Position = Position
             });

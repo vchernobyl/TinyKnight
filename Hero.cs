@@ -48,7 +48,7 @@ namespace Gravity
         public Hero(GameplayScreen gameplayScreen)
             : base(gameplayScreen)
         {
-            EquipWeapon(new Shield(this));
+            EquipWeapon(new FireStaff(this));
 
             Health = 3;
             Facing = 1;
@@ -189,6 +189,11 @@ namespace Gravity
 
             if (shoot.Evaluate(input))
                 Weapon?.PullTrigger();
+
+            if (input.IsNewKeyPress(Keys.E))
+            {
+                GameplayScreen.AddEntity(new Flame(GameplayScreen) { Position = Position });
+            }
         }
 
         public override void Update(GameTime gameTime)

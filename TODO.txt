@@ -58,12 +58,17 @@ Weapon purpose:
 ---------------
 - Pistol: default weapon, average fire rate, good damage
 - Machine gun: fast fire rate, good damage
+- Shotgun
 - Bazooka: slow fire rate, instant kill, area of effect
 - Dual pistols: average fire rate, good damage, shoots in both directions
 - Revolver: slower fire rate, great damage
 - Flamethrower: lasting area of effect, crowd control
 - Mines: instant kill, crowd control
 - Laser rifle: great damage, penetration
+- Grenade launcher
+- Katana
+- Minigun
+- Disc Gun
 
 Enemies:
 --------
@@ -92,4 +97,5 @@ TODO:
 Bugs:
 -----
 - Avoid spawning chest above the pit.
-
+- Fix bats getting stuck on solid edges when not using near-solids.
+- Weapon settings class loaded from an XML config.

@@ -39,7 +39,7 @@ namespace Gravity.AI
 
         public int Cost(Point a, Point b)
         {
-            return NearSolids.Contains(a) ? 5 : 1;
+            return 1;// NearSolids.Contains(a) ? 2 : 1;
         }
 
         public IEnumerable<Point> Neighbours(Point p)
