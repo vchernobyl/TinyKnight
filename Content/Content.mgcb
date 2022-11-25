@@ -71,21 +71,6 @@
 /processor:PassThroughProcessor
 /build:Particles/Cannon_Shot.xml
 
-#begin Particles/EmitterSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Particles/EmitterSettings.xml
-
-#begin Particles/ExplosionSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Particles/ExplosionSettings.xml
-
-#begin Particles/ExplosionSmokeSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Particles/ExplosionSmokeSettings.xml
-
 #begin Particles/Fire.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
@@ -100,26 +85,6 @@
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Particles/HeroJumpParticleSettings.xml
-
-#begin Particles/HeroLandingParticleSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Particles/HeroLandingParticleSettings.xml
-
-#begin Particles/HeroRunTrailParticleSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Particles/HeroRunTrailParticleSettings.xml
-
-#begin Particles/RocketTrailSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Particles/RocketTrailSettings.xml
-
-#begin Particles/SmokePlumeSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
-/build:Particles/SmokePlumeSettings.xml
 
 #begin SoundFX/Axe_Throw.wav
 /importer:WavImporter
