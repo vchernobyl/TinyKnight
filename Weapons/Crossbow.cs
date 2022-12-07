@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Gravity.Weapons
 {
@@ -14,10 +13,10 @@ namespace Gravity.Weapons
 
         private readonly SoundEffect shotSound;
 
-        public Crossbow(Hero hero, GameplayScreen gameplayScreen)
-            : base(hero, gameplayScreen, fireRate: 8f, name: nameof(Crossbow), updateOrder: 100)
+        public Crossbow(Hero hero)
+            : base(hero, hero.GameplayScreen, fireRate: 8f, name: nameof(Crossbow), updateOrder: 100)
         {
-            var content = gameplayScreen.ScreenManager.Game.Content;
+            var content = hero.GameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
             var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
             anim.AddFrame(new Rectangle(0, 0, 8, 8), duration: 0f);

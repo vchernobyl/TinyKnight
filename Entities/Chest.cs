@@ -28,7 +28,7 @@ namespace Gravity.Entities
             var hero = gameplayScreen.Hero;
             weapons = new List<Weapon>
             {
-                new Crossbow(hero, gameplayScreen),
+                new Crossbow(hero),
                 new Axe(hero, gameplayScreen),
                 new Cannon(hero, gameplayScreen),
                 new Bomb(hero, gameplayScreen),

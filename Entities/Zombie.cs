@@ -24,7 +24,6 @@ namespace Gravity.Entities
             Sprite = spriteSheet.Create();
             Sprite.LayerDepth = DrawLayer.Midground;
             Sprite.Play(walkAnimID);
-
         }
     }
 }

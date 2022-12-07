@@ -226,7 +226,7 @@ namespace Gravity.UI
                 Weapon? weapon = args[0] switch
                 {
                     "axe" => new Axe(hero, gameplayScreen),
-                    "crossbow" => new Crossbow(hero, gameplayScreen),
+                    "crossbow" => new Crossbow(hero),
                     "cannon" => new Cannon(hero, gameplayScreen),
                     "bomb" => new Bomb(hero, gameplayScreen),
                     "star" => new ThrowingStar(hero),

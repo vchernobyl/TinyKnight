@@ -11,16 +11,16 @@ namespace Gravity.Entities
         public int Health { get; private set; }
         public bool IsAlive => Health > 0;
 
-        public float RotationSpeed { get; set; }
-
         private readonly SoundEffect hitSound;
 
         public Action<Enemy> OnEnemyKilled;
 
         private int facing = Numerics.PickOne(1, -1);
-        private int knockback = 0;
 
-        public float Speed { get; set; } = .1f;
+        public float MaxSpeed { get; set; } = .1f;
+        public float Acceleration { get; set; } = .01f;
+
+        private const float Knockback = .05f;
 
         public Enemy(GameplayScreen gameplayScreen, int health, int updateOrder = 0)
             : base(gameplayScreen, updateOrder)
@@ -35,18 +35,14 @@ namespace Gravity.Entities
 
         public override void Update(GameTime gameTime)
         {
-            Sprite.Rotation += RotationSpeed;
-
-            if (IsAlive && Level.HasCollision(CX, CY + 1))
-                DX = Math.Sign(facing) * Speed;
-
-            if (IsAlive &&
-                (Level.HasCollision(CX + 1, CY) && XR >= .7f ||
-                Level.HasCollision(CX - 1, CY) && XR <= .3f))
+            if (Level.HasCollision(CX + 1, CY) && XR >= .7f ||
+                Level.HasCollision(CX - 1, CY) && XR <= .3f)
             {
                 facing = -facing;
-                DX = Math.Sign(facing) * Speed;
             }
+
+            if (MathF.Abs(DX) < MaxSpeed)
+                DX += Acceleration * facing;
 
             Sprite.Flip = facing > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
@@ -72,9 +68,7 @@ namespace Gravity.Entities
                 hitSound.Play(volume: .5f, 0f, 0f);
                 Flash(duration: .125f, Color.White);
 
-                // Knockback.
-                var sign = MathF.Sign(DX);
-                DX = sign * 5f;
+                DX -= facing * Knockback;
 
                 // TODO: This currently causes a lot of problems when multiple enemies are being
                 // hit at once. It looks like the sleep amount is accumulated and game freezes
