@@ -33,6 +33,8 @@ namespace Gravity.Entities
                 new Cannon(hero, gameplayScreen),
                 new Bomb(hero, gameplayScreen),
                 new ThrowingStar(hero),
+                new Shield(hero),
+                new FireStaff(hero),
             };
 
             pickupSound = content.Load<SoundEffect>("SoundFX/Chest_Pickup");

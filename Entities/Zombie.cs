@@ -1,5 +1,4 @@
-﻿using Gravity.AI;
-using Gravity.Graphics;
+﻿using Gravity.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,7 +7,7 @@ namespace Gravity.Entities
     public class Zombie : Enemy
     {
         public Zombie(GameplayScreen gameplayScreen)
-            : base(gameplayScreen, health: 100, updateOrder: 200)
+            : base(gameplayScreen, health: 1000000, updateOrder: 200)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Zombie"));
@@ -26,7 +25,6 @@ namespace Gravity.Entities
             Sprite.LayerDepth = DrawLayer.Midground;
             Sprite.Play(walkAnimID);
 
-            Behaviour = new AIBehaviour(new WalkCommand() { Speed = 0.05f });
         }
     }
 }

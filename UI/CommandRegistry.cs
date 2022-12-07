@@ -39,7 +39,7 @@ namespace Gravity.UI
                 new Command("load", LoadScreen),
                 new Command("timescale", SetTimeScale),
                 new Command("spawn", ToggleSpawn),
-                new Command("kill_entities", KillEntities)
+                new Command("kill_entities", KillEntities),
             };
         }
 

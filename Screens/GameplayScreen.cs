@@ -71,7 +71,7 @@ namespace Gravity
 
             Hud = new Hud(this);
 
-            coroutine.Run(SpawnChest(), delay: 5f);
+            //coroutine.Run(SpawnChest(), delay: 5f);
         }
 
         public void StartEnemySpawn()
@@ -82,13 +82,15 @@ namespace Gravity
                 const float spawnInterval = 1f;
                 while (true)
                 {
-                    var roll = Random.FloatValue;
-                    if (roll <= .33f)
-                        AddEntity(new Bat(this) { Position = position });
-                    else if (roll <= .66f)
-                        AddEntity(new Zombie(this) { Position = position });
-                    else
-                        AddEntity(new Demon(this) { Position = position });
+                    AddEntity(new Zombie(this) { Position = position });
+
+                    //var roll = Random.FloatValue;
+                    //if (roll <= .33f)
+                    //    AddEntity(new Bat(this) { Position = position });
+                    //else if (roll <= .66f)
+                    //    AddEntity(new Zombie(this) { Position = position });
+                    //else
+                    //    AddEntity(new Demon(this) { Position = position });
 
                     yield return spawnInterval;
                 }

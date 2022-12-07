@@ -67,11 +67,6 @@ namespace Gravity
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-                WorldCamera.Position.Y += 1;
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-                WorldCamera.Position.Y -= 1;
-
             Coroutine.Update(gameTime.DeltaTime());
 
             base.Update(gameTime);

@@ -29,7 +29,7 @@ namespace Gravity.Weapons
             Sprite.LayerDepth = DrawLayer.Foreground;
             Sprite.Play(defaultAnimID);
 
-            Category = Mask.Projectile;
+            Category = Mask.PlayerProjectile;
             Collisions = Mask.Level | Mask.Enemy;
 
             Gravity = 0f;

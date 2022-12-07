@@ -1,47 +1,55 @@
-﻿using Gravity.Coroutines;
+﻿using Gravity.Entities;
 using Gravity.Graphics;
-using Gravity.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections;
 
 namespace Gravity.Weapons
 {
     public class Flame : Entity
     {
-        private readonly Game game;
-        private readonly ParticleSystem fireParticles;
-        private readonly ParticleEmitter fireEmitter;
-
         public Flame(GameplayScreen gameplayScreen) : base(gameplayScreen)
         {
-            game = gameplayScreen.ScreenManager.Game;
-            fireParticles = new ParticleSystem(game, "Particles/Fire");
-            game.Components.Add(fireParticles);
-            fireEmitter = new ParticleEmitter(fireParticles, 30, Position);
+            var content = GameplayScreen.ScreenManager.Game.Content;
+            var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
+            var anim = spriteSheet.CreateAnimation("Default", out int defaultAnimID);
+            anim.AddFrame(new Rectangle(8, 8 * 7, 8, 8), duration: 0f);
 
-            var coroutine = game.Services.GetService<CoroutineRunner>();
-            coroutine.Run(DestroyAfter(delay: 2f));
+            Sprite = spriteSheet.Create();
+            Sprite.LayerDepth = DrawLayer.Foreground;
+            Sprite.Play(defaultAnimID);
+
+            Category = Mask.PlayerProjectile;
+            Collisions = Mask.Enemy | Mask.Level;
+
+            FrictionX = 1f;
+            FrictionY = 1f;
+            Gravity = 0f;
+        }
+
+        public override void OnEntityCollisionEnter(Entity other)
+        {
+            if (other is Enemy enemy)
+            {
+                enemy.Damage(25);
+                Destroy();
+            }
+        }
+
+        public override void OnLevelCollision(Vector2 normal)
+        {
+            Destroy();
         }
 
         public override void Update(GameTime gameTime)
         {
-            fireEmitter.Update(gameTime, Position);
-        }
-
-        private IEnumerator DestroyAfter(float delay)
-        {
-            yield return delay;
-            Destroy();
-            yield return delay;
-            game.Components.Remove(fireParticles);
+            Sprite.Rotation = Numerics.VectorToRadians(new Vector2(DX, DY));
         }
     }
 
     public class FireStaff : Weapon
     {
         public FireStaff(Hero hero) :
-            base(hero, hero.GameplayScreen, 12f, nameof(FireStaff), updateOrder: 200)
+            base(hero, hero.GameplayScreen, fireRate: 5f, nameof(FireStaff), updateOrder: 200)
         {
             var content = hero.GameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Weapons"));
@@ -65,12 +73,18 @@ namespace Gravity.Weapons
 
         protected override void Shoot()
         {
-            var flame = new Flame(GameplayScreen)
+            const float speed = .75f;
+
+            var yVelocities = new float[] { 0f, -.1f, -.2f, -.3f };
+            foreach (var yVel in yVelocities)
             {
-                Position = Position,
-                DX = hero.Facing
-            };
-            GameplayScreen.AddEntity(flame);
+                GameplayScreen.AddEntity(new Flame(GameplayScreen)
+                {
+                    Position = Position + new Vector2(6f * hero.Facing, -4f),
+                    DX = hero.Facing * speed,
+                    DY = yVel,
+                });
+            }
         }
 
         protected override void UpdatePosition()

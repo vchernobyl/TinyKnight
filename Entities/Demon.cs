@@ -20,8 +20,6 @@ namespace Gravity.Entities
             Sprite = spriteSheet.Create();
             Sprite.LayerDepth = DrawLayer.Midground;
             Sprite.Play(animID);
-
-            Behaviour = new AIBehaviour(new WalkCommand() { Speed = .1f });
         }
     }
 }

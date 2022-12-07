@@ -1,7 +1,7 @@
-﻿using Gravity.AI;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using System.Threading;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Gravity.Entities
 {
@@ -12,9 +12,15 @@ namespace Gravity.Entities
         public bool IsAlive => Health > 0;
 
         public float RotationSpeed { get; set; }
-        public AIBehaviour? Behaviour { get; set; }
 
         private readonly SoundEffect hitSound;
+
+        public Action<Enemy> OnEnemyKilled;
+
+        private int facing = Numerics.PickOne(1, -1);
+        private int knockback = 0;
+
+        public float Speed { get; set; } = .1f;
 
         public Enemy(GameplayScreen gameplayScreen, int health, int updateOrder = 0)
             : base(gameplayScreen, updateOrder)
@@ -31,8 +37,18 @@ namespace Gravity.Entities
         {
             Sprite.Rotation += RotationSpeed;
 
-            var command = Behaviour?.Update(gameTime);
-            command?.Execute(this);
+            if (IsAlive && Level.HasCollision(CX, CY + 1))
+                DX = Math.Sign(facing) * Speed;
+
+            if (IsAlive &&
+                (Level.HasCollision(CX + 1, CY) && XR >= .7f ||
+                Level.HasCollision(CX - 1, CY) && XR <= .3f))
+            {
+                facing = -facing;
+                DX = Math.Sign(facing) * Speed;
+            }
+
+            Sprite.Flip = facing > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
             base.Update(gameTime);
         }
@@ -54,7 +70,11 @@ namespace Gravity.Entities
             // Hit effects.
             {
                 hitSound.Play(volume: .5f, 0f, 0f);
-                Flash(duration: .1f, Color.Red);
+                Flash(duration: .125f, Color.White);
+
+                // Knockback.
+                var sign = MathF.Sign(DX);
+                DX = sign * 5f;
 
                 // TODO: This currently causes a lot of problems when multiple enemies are being
                 // hit at once. It looks like the sleep amount is accumulated and game freezes
@@ -68,6 +88,7 @@ namespace Gravity.Entities
             if (Health <= 0)
             {
                 OnDie();
+                OnEnemyKilled?.Invoke(this);
                 Destroy();
             }
         }
