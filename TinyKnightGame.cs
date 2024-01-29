@@ -32,8 +32,8 @@ namespace Gravity
             Components.Add(new FrameRateCounter(this));
 #endif
 
-            //screenManager.AddScreen(new BackgroundScreen());
-            //screenManager.AddScreen(new MainMenuScreen());
+            screenManager.AddScreen(new BackgroundScreen());
+            screenManager.AddScreen(new MainMenuScreen());
             screenManager.AddScreen(new GameplayScreen());
         }
 

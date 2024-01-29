@@ -7,7 +7,7 @@ namespace Gravity.Entities
     public class Zombie : Enemy
     {
         public Zombie(GameplayScreen gameplayScreen)
-            : base(gameplayScreen, health: 1000000, updateOrder: 200)
+            : base(gameplayScreen, health: 150, updateOrder: 200)
         {
             var content = gameplayScreen.ScreenManager.Game.Content;
             var spriteSheet = new SpriteSheet(content.Load<Texture2D>("Textures/Zombie"));
