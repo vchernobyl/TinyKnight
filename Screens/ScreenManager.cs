@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Gravity
+namespace TinyKnight
 {
     /// <summary>
     /// The screen manager is a component which manages one or more

@@ -1,8 +1,8 @@
-﻿using Gravity.Graphics;
+﻿using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Entities
+namespace TinyKnight.Entities
 {
     public class Ghost : Enemy
     {

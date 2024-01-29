@@ -1,4 +1,4 @@
-﻿namespace Gravity
+﻿namespace TinyKnight
 {
     public static class Random
     {

@@ -1,10 +1,10 @@
-﻿using Gravity.AI;
-using Gravity.Graphics;
+﻿using TinyKnight.AI;
+using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Gravity.Entities
+namespace TinyKnight.Entities
 {
     public class Bat : Enemy
     {

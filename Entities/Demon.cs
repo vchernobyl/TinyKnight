@@ -1,9 +1,9 @@
-﻿using Gravity.AI;
-using Gravity.Graphics;
+﻿using TinyKnight.AI;
+using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Entities
+namespace TinyKnight.Entities
 {
     public class Demon : Enemy
     {

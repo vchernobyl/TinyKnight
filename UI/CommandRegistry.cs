@@ -1,6 +1,6 @@
-﻿using Gravity.Entities;
-using Gravity.Powerups;
-using Gravity.Weapons;
+﻿using TinyKnight.Entities;
+using TinyKnight.Powerups;
+using TinyKnight.Weapons;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Gravity.UI
+namespace TinyKnight.UI
 {
     // TODO: A few things can be improved about command structure.
     // 1. Not every command is going to need to write an output to a console.

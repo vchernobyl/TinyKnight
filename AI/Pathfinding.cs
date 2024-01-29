@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gravity.AI
+namespace TinyKnight.AI
 {
     public class Pathfinding
     {

@@ -1,11 +1,11 @@
-﻿using Gravity.Coroutines;
-using Gravity.Graphics;
-using Gravity.UI;
+﻿using TinyKnight.Coroutines;
+using TinyKnight.Graphics;
+using TinyKnight.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class TinyKnightGame : Game
     {

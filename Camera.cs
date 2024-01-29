@@ -2,7 +2,7 @@
 using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class Camera
     {

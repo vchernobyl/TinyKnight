@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Gravity.Powerups
+namespace TinyKnight.Powerups
 {
     public abstract class Powerup : Entity
     {

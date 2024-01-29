@@ -1,9 +1,9 @@
-﻿using Gravity.Graphics;
-using Gravity.Weapons;
+﻿using TinyKnight.Graphics;
+using TinyKnight.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Powerups
+namespace TinyKnight.Powerups
 {
     public class Berserk : PowerupEffect
     {

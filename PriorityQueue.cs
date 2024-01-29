@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class PriorityQueue<T>
     {

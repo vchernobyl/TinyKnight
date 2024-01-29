@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Gravity
+namespace TinyKnight
 {
     /// <summary>
     /// Helper class that represents a single entry in a MenuScreen.

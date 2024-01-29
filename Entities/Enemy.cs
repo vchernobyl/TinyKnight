@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Gravity.Entities
+namespace TinyKnight.Entities
 {
     // TODO: Refactor. Every enemy should have an animation and death effects.
     public abstract class Enemy : Entity

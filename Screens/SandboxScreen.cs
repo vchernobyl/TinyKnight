@@ -1,9 +1,9 @@
-﻿using Gravity.Particles;
+﻿using TinyKnight.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class SandboxScreen : GameScreen
     {

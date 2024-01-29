@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Gravity.Particles
+namespace TinyKnight.Particles
 {
     public class Particle
     {

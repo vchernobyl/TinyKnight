@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Weapons
+namespace TinyKnight.Weapons
 {
     // TODO: This could be an entity.
     public class WeaponPickupText : DrawableGameComponent

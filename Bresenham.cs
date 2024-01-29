@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Gravity
+namespace TinyKnight
 {
     // Implementation the Bresenham algorithm
     // as described in: https://deepnight.net/tutorial/bresenham-magic-raycasting-line-of-sight-pathfinding/

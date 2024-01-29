@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Graphics
+namespace TinyKnight.Graphics
 {
     public class Sprite
     {

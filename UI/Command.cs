@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gravity.UI
+namespace TinyKnight.UI
 {
     public class Command
     {

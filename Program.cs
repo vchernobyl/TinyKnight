@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gravity
+namespace TinyKnight
 {
     public static class Program
     {

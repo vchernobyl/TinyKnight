@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gravity.UI
+namespace TinyKnight.UI
 {
     public class Console : DrawableGameComponent
     {

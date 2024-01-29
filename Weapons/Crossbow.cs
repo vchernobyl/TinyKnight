@@ -1,9 +1,9 @@
-﻿using Gravity.Graphics;
+﻿using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Weapons
+namespace TinyKnight.Weapons
 {
     public class Crossbow : Weapon
     {

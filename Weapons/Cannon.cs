@@ -1,11 +1,11 @@
-﻿using Gravity.Entities;
-using Gravity.Graphics;
-using Gravity.Particles;
+﻿using TinyKnight.Entities;
+using TinyKnight.Graphics;
+using TinyKnight.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Weapons
+namespace TinyKnight.Weapons
 {
     public class CannonBall : Entity
     {

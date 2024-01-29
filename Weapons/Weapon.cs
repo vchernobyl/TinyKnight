@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Gravity.Weapons
+namespace TinyKnight.Weapons
 {
     public abstract class Weapon : Entity
     {

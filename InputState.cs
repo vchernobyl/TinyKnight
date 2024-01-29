@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Collections.Generic;
 
-namespace Gravity
+namespace TinyKnight
 {
     // TODO: Currently we support 4 gamepads at once, which is cool.
     // However, we technically also implement support for 4 connected

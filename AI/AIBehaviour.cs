@@ -1,9 +1,9 @@
-﻿using Gravity.Entities;
+﻿using TinyKnight.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Gravity.AI
+namespace TinyKnight.AI
 {
     public interface ICommand
     {

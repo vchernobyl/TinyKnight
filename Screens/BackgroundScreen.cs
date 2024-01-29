@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Gravity
+namespace TinyKnight
 {
     /// <summary>
     /// The background screen sits behind the other menu screens.

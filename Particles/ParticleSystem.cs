@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Gravity.Particles
+namespace TinyKnight.Particles
 {
     public class ParticleSystem : DrawableGameComponent
     {

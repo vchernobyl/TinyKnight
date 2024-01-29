@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input.Touch;
 using System;
 
-namespace Gravity
+namespace TinyKnight
 {
     public enum ScreenState
     {

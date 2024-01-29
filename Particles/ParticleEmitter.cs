@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Gravity.Particles
+namespace TinyKnight.Particles
 {
     /// <summary>
     /// Helper for objects that want to leave particles behind them

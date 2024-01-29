@@ -1,4 +1,4 @@
-﻿namespace Gravity.Graphics
+﻿namespace TinyKnight.Graphics
 {
     public static class DrawLayer
     {

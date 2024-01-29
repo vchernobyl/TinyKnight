@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Gravity.Graphics
+namespace TinyKnight.Graphics
 {
     public class DebugRenderer
     {

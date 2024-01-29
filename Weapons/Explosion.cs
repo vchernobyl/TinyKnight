@@ -1,12 +1,12 @@
-﻿using Gravity.Coroutines;
-using Gravity.Entities;
-using Gravity.Graphics;
+﻿using TinyKnight.Coroutines;
+using TinyKnight.Entities;
+using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections;
 
-namespace Gravity.Weapons
+namespace TinyKnight.Weapons
 {
     public class Explosion : Entity
     {

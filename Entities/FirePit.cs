@@ -1,9 +1,9 @@
-﻿using Gravity.Graphics;
-using Gravity.Particles;
+﻿using TinyKnight.Graphics;
+using TinyKnight.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Gravity.Entities
+namespace TinyKnight.Entities
 {
     public class FirePit : Entity
     {

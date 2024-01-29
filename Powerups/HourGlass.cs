@@ -1,9 +1,9 @@
-﻿using Gravity.Graphics;
+﻿using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Gravity.Powerups
+namespace TinyKnight.Powerups
 {
     public class TimeSlowdown : PowerupEffect
     {

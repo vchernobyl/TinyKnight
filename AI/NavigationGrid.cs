@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace Gravity.AI
+namespace TinyKnight.AI
 {
     public class NavigationGrid : IWeightedGraph<Point>
     {

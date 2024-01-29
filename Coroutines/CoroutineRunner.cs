@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Gravity.Coroutines
+namespace TinyKnight.Coroutines
 {
     public class CoroutineRunner
     {

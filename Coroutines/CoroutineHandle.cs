@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Gravity.Coroutines
+namespace TinyKnight.Coroutines
 {
     public class CoroutineHandle
     {

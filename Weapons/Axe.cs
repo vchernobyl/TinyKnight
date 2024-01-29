@@ -1,11 +1,11 @@
-﻿using Gravity.Entities;
-using Gravity.Graphics;
+﻿using TinyKnight.Entities;
+using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Gravity.Weapons
+namespace TinyKnight.Weapons
 {
     public class AxeProjectile : Entity
     {

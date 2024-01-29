@@ -1,4 +1,4 @@
-﻿namespace Gravity
+﻿namespace TinyKnight
 {
     class OptionsMenuScreen : MenuScreen
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Gravity
+namespace TinyKnight
 {
     /// <summary>
     /// Defines an action that is designed by some set of buttons

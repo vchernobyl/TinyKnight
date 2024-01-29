@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class Timer
     {

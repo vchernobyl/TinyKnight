@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Gravity
+namespace TinyKnight
 {
     /// <summary>
     /// Base class for screens that contain a menu of options.

@@ -1,10 +1,10 @@
-﻿using Gravity.Graphics;
+﻿using TinyKnight.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class Entity
     {

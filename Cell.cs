@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class Cell
     {

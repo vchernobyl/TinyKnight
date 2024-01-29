@@ -1,11 +1,11 @@
-﻿using Gravity.Graphics;
-using Gravity.Weapons;
+﻿using TinyKnight.Graphics;
+using TinyKnight.Weapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Gravity.Entities
+namespace TinyKnight.Entities
 {
     public class Chest : Entity
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace Gravity.Graphics
+namespace TinyKnight.Graphics
 {
     public class Animation
     {

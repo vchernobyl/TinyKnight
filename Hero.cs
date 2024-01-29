@@ -1,15 +1,15 @@
-﻿using Gravity.Entities;
-using Gravity.Graphics;
-using Gravity.Particles;
-using Gravity.Weapons;
-using Gravity.Powerups;
+﻿using TinyKnight.Entities;
+using TinyKnight.Graphics;
+using TinyKnight.Particles;
+using TinyKnight.Weapons;
+using TinyKnight.Powerups;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace Gravity
+namespace TinyKnight
 {
     public class Hero : Entity
     {

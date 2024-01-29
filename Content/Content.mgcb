@@ -10,8 +10,8 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\bin\Debug\netcoreapp3.1\Gravity.dll
 /reference:..\bin\Debug\netcoreapp3.1\MonoGame.Framework.dll
+/reference:..\bin\Debug\netcoreapp3.1\TinyKnight.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -67,23 +67,23 @@
 /build:Levels/Map1_Entities.png
 
 #begin Particles/Cannon_Shot.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
+/importer:
+/processor:
 /build:Particles/Cannon_Shot.xml
 
 #begin Particles/Fire.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
+/importer:
+/processor:
 /build:Particles/Fire.xml
 
 #begin Particles/FirePit.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
+/importer:
+/processor:
 /build:Particles/FirePit.xml
 
 #begin Particles/HeroJumpParticleSettings.xml
-/importer:XmlImporter
-/processor:PassThroughProcessor
+/importer:
+/processor:
 /build:Particles/HeroJumpParticleSettings.xml
 
 #begin SoundFX/Axe_Throw.wav
