@@ -72,7 +72,10 @@ namespace TinyKnight
             foreach (var cell in Cells)
             {
                 if (cell.Type == Cell.CellType.Wall)
-                    batch.Draw(cellTexture, cell.Bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+                {
+                    var dest = new Rectangle(cell.Bounds.X, cell.Bounds.Y + 1, cell.Bounds.Width, cell.Bounds.Height);
+                    batch.Draw(cellTexture, dest, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+                }
 
                 if (cell.Solid && DebugInfo.ShowSolids)
                 {

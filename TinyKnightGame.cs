@@ -39,8 +39,8 @@ namespace TinyKnight
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 1500;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 770;
+            graphics.PreferredBackBufferHeight = 578;
             graphics.ApplyChanges();
 
             WorldCamera = new Camera(GraphicsDevice.Viewport);
