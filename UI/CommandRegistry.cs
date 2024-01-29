@@ -45,7 +45,7 @@ namespace Gravity.UI
 
         private string KillEntities(string[] arg)
         {
-            var g = game as GravityGame;
+            var g = game as TinyKnightGame;
             var screenManager = g.Services.GetService<ScreenManager>();
             var gameplayScreen = GetGameplayScreen(screenManager);
 
@@ -99,7 +99,7 @@ namespace Gravity.UI
 
         private string AddEntity(string[] args)
         {
-            var g = game as GravityGame;
+            var g = game as TinyKnightGame;
             var screenManager = g.Services.GetService<ScreenManager>();
             var gameplayScreen = GetGameplayScreen(screenManager);
             if (gameplayScreen != null)

@@ -99,7 +99,7 @@ namespace Gravity.Weapons
             GameplayScreen.AddEntity(ball);
             sound.Play();
             particles.AddParticles(position, Vector2.UnitX * hero.Facing * 100f);
-            GravityGame.WorldCamera.Shake(.4f);
+            TinyKnightGame.WorldCamera.Shake(.4f);
 
             hero.DX += -hero.Facing * .15f;
         }

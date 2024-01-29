@@ -31,7 +31,7 @@ namespace Gravity
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                var position = GravityGame.WorldCamera.ScreenToWorldSpace(Mouse.GetState().Position.ToVector2());
+                var position = TinyKnightGame.WorldCamera.ScreenToWorldSpace(Mouse.GetState().Position.ToVector2());
                 fire.AddParticles(position, Vector2.Zero);
             }
         }

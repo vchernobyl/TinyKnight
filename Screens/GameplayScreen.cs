@@ -61,8 +61,8 @@ namespace Gravity
                 content.Load<Texture2D>("Textures/Tile"));
 
             var zoom = 3f;
-            GravityGame.WorldCamera.Position = new Vector2(Level.Width / 2f, Level.Height / 2f);
-            GravityGame.WorldCamera.Scale = zoom;
+            TinyKnightGame.WorldCamera.Position = new Vector2(Level.Width / 2f, Level.Height / 2f);
+            TinyKnightGame.WorldCamera.Scale = zoom;
 
             Hero = new Hero(this) { Position = new Vector2(100f, 25f) };
             AddEntity(Hero);
@@ -140,8 +140,8 @@ namespace Gravity
                 }
             }
 
-            GravityGame.WorldCamera.Update(gameTime);
-            GravityGame.UiCamera.Update(gameTime);
+            TinyKnightGame.WorldCamera.Update(gameTime);
+            TinyKnightGame.UiCamera.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
@@ -153,7 +153,7 @@ namespace Gravity
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack,
                 samplerState: SamplerState.PointClamp,
-                transformMatrix: GravityGame.WorldCamera.Transform);
+                transformMatrix: TinyKnightGame.WorldCamera.Transform);
 
             Level.Draw(spriteBatch);
 
@@ -167,7 +167,7 @@ namespace Gravity
 
             spriteBatch.Begin(samplerState: SamplerState.PointClamp,
                 effect: flashEffect,
-                transformMatrix: GravityGame.WorldCamera.Transform);
+                transformMatrix: TinyKnightGame.WorldCamera.Transform);
             foreach (var entity in entities)
             {
                 if (entity.IsFlashing)
@@ -180,11 +180,11 @@ namespace Gravity
             spriteBatch.End();
 
             spriteBatch.Begin(samplerState: SamplerState.PointClamp,
-                transformMatrix: GravityGame.UiCamera.Transform);
+                transformMatrix: TinyKnightGame.UiCamera.Transform);
             Hud.Draw(spriteBatch);
             spriteBatch.End();
 
-            DebugRenderer.Draw(gameTime, view: GravityGame.WorldCamera.Transform);
+            DebugRenderer.Draw(gameTime, view: TinyKnightGame.WorldCamera.Transform);
         }
 
         private IEnumerator SpawnChest()

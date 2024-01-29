@@ -7,7 +7,7 @@ namespace Gravity
         [STAThread]
         static void Main()
         {
-            using var game = new GravityGame();
+            using var game = new TinyKnightGame();
             game.Run();
         }
     }

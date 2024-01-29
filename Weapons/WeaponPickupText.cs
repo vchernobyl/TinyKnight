@@ -40,7 +40,7 @@ namespace Gravity.Weapons
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(transformMatrix: GravityGame.WorldCamera.Transform);
+            spriteBatch.Begin(transformMatrix: TinyKnightGame.WorldCamera.Transform);
             spriteBatch.DrawString(font, weaponText, position, Color.White * alpha);
             spriteBatch.End();
         }

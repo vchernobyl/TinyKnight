@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Gravity
 {
-    public class GravityGame : Game
+    public class TinyKnightGame : Game
     {
         public static Camera WorldCamera { get; private set; }
         public static Camera UiCamera { get; private set; }
@@ -17,7 +17,7 @@ namespace Gravity
         private readonly GraphicsDeviceManager graphics;
         private readonly ScreenManager screenManager;
 
-        public GravityGame()
+        public TinyKnightGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

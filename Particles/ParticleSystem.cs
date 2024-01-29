@@ -179,7 +179,7 @@ namespace Gravity.Particles
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, blendState,
                 SamplerState.PointClamp,
-                transformMatrix: GravityGame.WorldCamera.Transform);
+                transformMatrix: TinyKnightGame.WorldCamera.Transform);
 
             foreach (var p in particles)
             {

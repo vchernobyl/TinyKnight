@@ -75,7 +75,7 @@ namespace Gravity.Entities
                 // for longer than expected.
                 //Thread.Sleep(millisecondsTimeout: 20);
 
-                GravityGame.WorldCamera.Shake(trauma: .48f);
+                TinyKnightGame.WorldCamera.Shake(trauma: .48f);
             }
 
             Health -= amount;

@@ -46,7 +46,7 @@ namespace Gravity
         public Texture2D BlankTexture { get; private set; }
         #endregion
 
-        public ScreenManager(GravityGame game) : base(game)
+        public ScreenManager(TinyKnightGame game) : base(game)
         {
             TouchPanel.EnabledGestures = GestureType.None;
         }

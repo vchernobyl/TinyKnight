@@ -32,7 +32,7 @@ namespace Gravity.Weapons
             var sound = content.Load<SoundEffect>("SoundFX/Explosion_2");
             sound.Play();
 
-            GravityGame.WorldCamera.Shake(.55f);
+            TinyKnightGame.WorldCamera.Shake(.55f);
         }
 
         public IEnumerator Expand()
